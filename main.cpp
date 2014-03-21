@@ -1,5 +1,5 @@
 #include <iostream>
-#include <SDL2/SDL.h>
+#include "SDL2/SDL.h"
 #include "SDL2_image/SDL_image.h"
 #include <stdio.h>
 #include <string>
@@ -239,6 +239,7 @@ bool init(){
 			}
 			else
 			{
+                /*
 				//Initialize renderer color
 				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
                 
@@ -249,6 +250,7 @@ bool init(){
 					printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
 					success = false;
 				}
+                 */
                 
 			}
         }
@@ -268,8 +270,9 @@ bool loadMedia(){
 		success = false;
 	}
 	
+    /*
     //Load front alpha texture
-	if( !gModulatedTexture.loadFromFile( "ElsaPoseAlpha2.png" ) )
+	if( !gModulatedTexture.loadFromFile( pathForImage("ElsaPoseAlpha2.png" )) )
 	{
 		printf( "Failed to load front texture!\n" );
 		success = false;
@@ -279,6 +282,7 @@ bool loadMedia(){
 		//Set standard alpha blending
 		gModulatedTexture.setBlendMode( SDL_BLENDMODE_BLEND );
 	}
+     */
     
 	//Load background texture
 	if( !gBackgroundTexture.loadFromFile( "arendelle.jpg" ) )
@@ -294,8 +298,9 @@ bool loadMedia(){
 		success = false;
 	}
     
+    /*
     //Load sprite sheet texture
-	if( !gSpriteSheetTexture.loadFromFile( "foo.png" ) )
+	if( !gSpriteSheetTexture.loadFromFile( pathForImage("foo.png" )) )
 	{
 		printf( "Failed to load walking animation texture!\n" );
 		success = false;
@@ -323,6 +328,7 @@ bool loadMedia(){
 		gSpriteClips[ 3 ].w =  64;
 		gSpriteClips[ 3 ].h = 205;
 	}
+     */
 
 	return success;
 }
