@@ -5,14 +5,24 @@ using namespace std;
 
 class MainCharacter {
 private: 
-	int health;
-	int power;
-	int pp;
-	int ppRegen;
+	//these can be upgraded using level points
+	int maxHealth;
+	int standardPower;
+	int maxPP; //mana for moves
+	int standardPPRegen;
 
+	//these are augmented in battle and reset afterwords (except health)
+	int currentHealth;
+	int currentPower;
+	int currentPP;
+	int currentPPRegen;
+
+	//these are not increased by level points
 	int level;
 	int exp;
 	int expToNext;
+	int armor;
+	int accuracy;
 
 	string name;
 	vector<Move> moves;
