@@ -27,6 +27,7 @@ private:
 	int accuracy;
 
 	string name;
+    string file;
 	vector<Move> moves;
 	Move activeMoves[4];
 
@@ -36,4 +37,5 @@ public:
 	MainCharacter(string fileName);
 
 	void actOnCharacter(Character &ch, Move m);
+    void levelUp(int healthAdded, int powerAdded, int ppRegenAdded, int armorAdded);
 };
