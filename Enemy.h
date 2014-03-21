@@ -5,16 +5,21 @@ using namespace std;
 
 class Enemy {
 private: 
-	int health;
-	int power;
-	int pp;
-	int ppRegen;
-
-	//Don't we want armor, accuracy, maxHealth, maxPP, maxPower, maxAccuracy, maxArmor
-	//Do we want status effects?
-
+	//these can be upgraded using level points
+	int maxHealth;
+	int standardPower;
+	int maxPP; //mana for moves
+	int standardPPRegen;
+	int armor;
+	int accuracy;
 	string name;
-	//vector<Move> moves;
+
+	//these are augmented in battle and reset afterwords (except health)
+	int currentHealth;
+	int currentPower;
+	int currentPP;
+	int currentPPRegen;
+
 	Move activeMoves[4];
 
 	string spriteName;
