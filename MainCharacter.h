@@ -1,5 +1,7 @@
-#include <string.h>
-#include <vector.h>
+#include <string>
+#include <vector>
+
+using namespace std;
 
 class MainCharacter {
 private: 
