@@ -1,5 +1,5 @@
 #include <iostream>
-#include "SDL2/SDL.h"
+#include <SDL2/SDL.h>
 #include "SDL2_image/SDL_image.h"
 #include <stdio.h>
 #include <string>
@@ -81,6 +81,9 @@ SDL_Renderer* gRenderer = NULL;
 
 //Scene textures
 LTexture gelsaTexture;
+LTexture gkatTexture;
+LTexture gjackTexture;
+LTexture galbusTexture;
 LTexture gBackgroundTexture;
 LTexture gBViewTexture;
 
@@ -222,7 +225,7 @@ bool init(){
 		}
         
 		//Create window
-		gWindow = SDL_CreateWindow( "Elsa", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
+		gWindow = SDL_CreateWindow( "Final Fantasy", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
 		if( gWindow == NULL )
 		{
 			printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
@@ -239,7 +242,6 @@ bool init(){
 			}
 			else
 			{
-                /*
 				//Initialize renderer color
 				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
                 
@@ -250,7 +252,6 @@ bool init(){
 					printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
 					success = false;
 				}
-                 */
                 
 			}
         }
@@ -269,20 +270,39 @@ bool loadMedia(){
 		printf( "Failed to load elsa' texture image!\n" );
 		success = false;
 	}
-	
-    /*
-    //Load front alpha texture
-	if( !gModulatedTexture.loadFromFile( pathForImage("ElsaPoseAlpha2.png" )) )
+    
+    //Load kat texture
+	if( !gkatTexture.loadFromFile( "katBattle.png" ) )
 	{
-		printf( "Failed to load front texture!\n" );
+		printf( "Failed to load elsa' texture image!\n" );
 		success = false;
 	}
+    
+    //Load jack texture
+	if( !gjackTexture.loadFromFile( "jackBattle.png" ) )
+	{
+		printf( "Failed to load elsa' texture image!\n" );
+		success = false;
+	}
+    
+    //Load albus texture
+	if( !galbusTexture.loadFromFile( "albusBattle.png" ) )
+	{
+		printf( "Failed to load elsa' texture image!\n" );
+		success = false;
+	}
+	
+    //Load front alpha texture
+	//if( !gModulatedTexture.loadFromFile( "ElsaPoseAlpha2.png" ) )
+	//{
+	//	printf( "Failed to load front texture!\n" );
+	//	success = false;
+	//}
 	else
 	{
 		//Set standard alpha blending
 		gModulatedTexture.setBlendMode( SDL_BLENDMODE_BLEND );
 	}
-     */
     
 	//Load background texture
 	if( !gBackgroundTexture.loadFromFile( "arendelle.jpg" ) )
@@ -298,13 +318,12 @@ bool loadMedia(){
 		success = false;
 	}
     
-    /*
     //Load sprite sheet texture
-	if( !gSpriteSheetTexture.loadFromFile( pathForImage("foo.png" )) )
-	{
-		printf( "Failed to load walking animation texture!\n" );
-		success = false;
-	}
+	//if( !gSpriteSheetTexture.loadFromFile( "foo.png" ) )
+	//{
+	//	printf( "Failed to load walking animation texture!\n" );
+	//	success = false;
+	//}
 	else
 	{
 		//Set sprite clips
@@ -328,8 +347,7 @@ bool loadMedia(){
 		gSpriteClips[ 3 ].w =  64;
 		gSpriteClips[ 3 ].h = 205;
 	}
-     */
-
+    
 	return success;
 }
 //------------------------------------------------------------------------------
@@ -393,12 +411,18 @@ int main( int argc, char* args[] )
             //Alpha Modulation component
             Uint8 a = 0;
             
-            //elsa Position
+            //character Positions
             int elsaX = 750;
-            int elsaY = 300;
+            int elsaY = 400;
+            int katX = 750;
+            int katY = 250;
+            int jackX = 600;
+            int jackY = 300;
+            int albusX = 900;
+            int albusY = 300;
             
-//			//Set default current surface
-//			gCurrentSurface = gKeyPressSurfaces[ KEY_PRESS_SURFACE_DEFAULT ];
+            //			//Set default current surface
+            //			gCurrentSurface = gKeyPressSurfaces[ KEY_PRESS_SURFACE_DEFAULT ];
             
 			//While application is running
 			while( !quit )
@@ -535,70 +559,73 @@ int main( int argc, char* args[] )
 						}
 					}
                 }
-        
-
+                
+                
                 
                 //for(int i=0; i<5; elsaX-=3, i++){
                 
-                    //Clear screen
-                    SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
-                    SDL_RenderClear( gRenderer );
+                //Clear screen
+                SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+                SDL_RenderClear( gRenderer );
                 
-                    //Top viewport
-                    SDL_Rect topViewport;
-                    topViewport.x = 0;
-                    topViewport.y = SCREEN_HEIGHT / 3;
-                    topViewport.w = SCREEN_WIDTH;
-                    topViewport.h = SCREEN_HEIGHT;
-                    SDL_RenderSetViewport( gRenderer, &topViewport );
-                    
-                    //Render background texture to screen
-                    gBackgroundTexture.setColor(r,g,b);
-                    gBackgroundTexture.render(0,150);
+                //Top viewport
+                SDL_Rect topViewport;
+                topViewport.x = 0;
+                topViewport.y = SCREEN_HEIGHT / 3;
+                topViewport.w = SCREEN_WIDTH;
+                topViewport.h = SCREEN_HEIGHT;
+                SDL_RenderSetViewport( gRenderer, &topViewport );
                 
-                    //Render elsa to the screen
-                    gelsaTexture.render( elsaX, elsaY, NULL, degrees, NULL, flipType );
+                //Render background texture to screen
+                gBackgroundTexture.setColor(r,g,b);
+                gBackgroundTexture.render(0,150);
                 
-                    //Render front blended Elsa
-                    gModulatedTexture.setAlpha( a );
-                    gModulatedTexture.render( elsaX, elsaY, NULL, degrees, NULL, flipType );
+                //Render characters to the screen
+                gelsaTexture.render( elsaX, elsaY, NULL, degrees, NULL, flipType );
+                gkatTexture.render( katX, katY, NULL, degrees, NULL, flipType );
+                gjackTexture.render( jackX, jackY, NULL, degrees, NULL, flipType );
+                galbusTexture.render( albusX, albusY, NULL, degrees, NULL, flipType );
                 
-                    //Bottom viewport
-                    SDL_Rect bottomViewport;
-                    bottomViewport.x = 0;
-                    bottomViewport.y = 0;
-                    bottomViewport.w = SCREEN_WIDTH;
-                    bottomViewport.h = SCREEN_HEIGHT / 3;
-                    SDL_RenderSetViewport( gRenderer, &bottomViewport );
+                //Render front blended Elsa
+                gModulatedTexture.setAlpha( a );
+                gModulatedTexture.render( elsaX, elsaY, NULL, degrees, NULL, flipType );
                 
-                    //Render elsa to the screen
-                    gBViewTexture.render(0,0);
-
+                //Bottom viewport
+                SDL_Rect bottomViewport;
+                bottomViewport.x = 0;
+                bottomViewport.y = 0;
+                bottomViewport.w = SCREEN_WIDTH;
+                bottomViewport.h = SCREEN_HEIGHT / 3;
+                SDL_RenderSetViewport( gRenderer, &bottomViewport );
                 
-                    
+                //Render battleStat boxes to the screen
+                gBViewTexture.render(0,0);
                 
                 
-    //                //Render current frame
-    //				SDL_Rect* currentClip = &gSpriteClips[ frame / 4 ];
-    //				gSpriteSheetTexture.render( ( SCREEN_WIDTH - currentClip->w ) / 2, ( SCREEN_HEIGHT - currentClip->h ) / 2, currentClip );
-                    
-                    
-                    //Update screen
-                    SDL_RenderPresent( gRenderer );
                 
-                SDL_Delay(50);
                 
-                    //SDL_Delay(100);
                 
-    //                //Go to next frame
-    //				++frame;
-    //                
-    //				//Cycle animation
-    //				if( frame / 4 >= WALKING_ANIMATION_FRAMES )
-    //				{
-    //					frame = 0;
-    //				}
-                    
+                //                //Render current frame
+                //				SDL_Rect* currentClip = &gSpriteClips[ frame / 4 ];
+                //				gSpriteSheetTexture.render( ( SCREEN_WIDTH - currentClip->w ) / 2, ( SCREEN_HEIGHT - currentClip->h ) / 2, currentClip );
+                
+                
+                //Update screen
+                SDL_RenderPresent( gRenderer );
+                
+                SDL_Delay(30);
+                
+                //SDL_Delay(100);
+                
+                //                //Go to next frame
+                //				++frame;
+                //
+                //				//Cycle animation
+                //				if( frame / 4 >= WALKING_ANIMATION_FRAMES )
+                //				{
+                //					frame = 0;
+                //				}
+                
                 //}
                 
 			}
