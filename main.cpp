@@ -51,6 +51,32 @@ private:
     int mWidth;
     int mHeight;
 };
+//------------------------------------------------------------------------------
+class Character{
+public:
+    Character(); //constructor
+    Character(int x, int y); //non-default constructor
+    int getX();
+    int getY();
+    double getDegs();
+    SDL_RendererFlip getDir();
+    void setDegs(double value);
+    void setDir(int direction);
+    void moveRel(int x, int y); //move relative to current pos.
+    void moveAbs(int x, int y); //move to absolute location in window
+    SDL_RendererFlip flipRight();
+    SDL_RendererFlip flipLeft();
+private:
+    int xLoc;
+    int yLoc;
+    double degs; //degrees of rotation
+    int faceDir; //direction they are facing (1=up, 2=down, 3=left, 4=right)
+    SDL_RendererFlip flipDir;
+    
+    
+    
+};
+
 
 //------------------------------------------------------------------------------
 
@@ -62,6 +88,18 @@ enum KeyPressSurfaces{
 	KEY_PRESS_SURFACE_LEFT,
 	KEY_PRESS_SURFACE_RIGHT,
 	KEY_PRESS_SURFACE_TOTAL
+};
+
+enum WindowLayouts{
+	BATTLE_LAYOUT,
+    OPEN_LAYOUT
+};
+
+enum MainCharacters{
+	ALBUS,
+    ELSA,
+    JACK,
+    KAT
 };
 
 //Starts up SDL and creates window
@@ -80,12 +118,27 @@ SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
 
 //Scene textures
-LTexture gelsaTexture;
-LTexture gkatTexture;
-LTexture gjackTexture;
-LTexture galbusTexture;
-LTexture gBackgroundTexture;
-LTexture gBViewTexture;
+//Battle Images
+LTexture elsaBattleTexture;
+LTexture katBattleTexture;
+LTexture jackBattleTexture;
+LTexture albusBattleTexture;
+//Dialogue Images
+LTexture elsaDialogueTexture;
+LTexture katDialogueTexture;
+LTexture jackDialogueTexture;
+LTexture albusDialogueTexture;
+//Sprite Sheets
+LTexture elsaSpriteTexture;
+LTexture katSpriteTexture;
+LTexture jackSpriteTexture;
+LTexture albusSpriteTexture;
+//Background Images
+LTexture NorthMountBGTexture;
+LTexture CaveBGTexture;
+LTexture IslandBGTexture;
+LTexture ForestBGTexture;
+LTexture BViewTexture;
 
 //Scene Alpha texture
 LTexture gModulatedTexture;
@@ -125,6 +178,66 @@ LTexture::LTexture()
 LTexture::~LTexture()
 {
 	free();
+}
+//------------------------------------------------------------------------------
+int Character::getX(){
+    return xLoc;
+}
+//------------------------------------------------------------------------------
+int Character::getY(){
+    return yLoc;
+}
+//------------------------------------------------------------------------------
+void Character::moveRel(int x, int y){
+    xLoc=getX()+x;
+    yLoc=getY()+y;
+}
+//------------------------------------------------------------------------------
+void Character::moveAbs(int x, int y){
+    xLoc=x;
+    yLoc=y;
+}
+//------------------------------------------------------------------------------
+void Character::setDegs(double value){
+    degs=value;
+}
+//------------------------------------------------------------------------------
+double Character::getDegs(){
+    return degs;
+}
+//------------------------------------------------------------------------------
+void Character::setDir(int direction){
+    faceDir=direction;
+}
+//------------------------------------------------------------------------------
+SDL_RendererFlip Character::getDir(){
+    return flipDir;
+}
+//------------------------------------------------------------------------------
+SDL_RendererFlip Character::flipLeft(){
+    flipDir=SDL_FLIP_NONE;
+    return flipDir;
+}
+//------------------------------------------------------------------------------
+SDL_RendererFlip Character::flipRight(){
+    flipDir=SDL_FLIP_HORIZONTAL;
+    return flipDir;
+}
+//------------------------------------------------------------------------------
+Character::Character(){
+    //initialize stuff
+    xLoc=0;
+    yLoc=0;
+    degs=0;
+    flipDir=SDL_FLIP_NONE;
+}
+//------------------------------------------------------------------------------
+Character::Character(int x, int y){
+    //initialize stuff
+    xLoc=x;
+    yLoc=y;
+    degs=0;
+    flipDir=SDL_FLIP_NONE;
 }
 //------------------------------------------------------------------------------
 bool LTexture::loadFromFile( string path )
@@ -264,66 +377,64 @@ bool loadMedia(){
 	//Loading success flag
 	bool success = true;
     
-    //Load elsa texture
-	if( !gelsaTexture.loadFromFile( "elsaBattle.png" ) )
+    //Load battle textures
+	if( !elsaBattleTexture.loadFromFile( "elsaBattle.png" ) )
+	{
+		printf( "Failed to load elsa' texture image!\n" );
+		success = false;
+	}
+    if( !katBattleTexture.loadFromFile( "katBattle.png" ) )
+	{
+		printf( "Failed to load elsa' texture image!\n" );
+		success = false;
+	}
+    if( !jackBattleTexture.loadFromFile( "jackBattle.png" ) )
+	{
+		printf( "Failed to load elsa' texture image!\n" );
+		success = false;
+	}
+    if( !albusBattleTexture.loadFromFile( "albusBattle.png" ) )
 	{
 		printf( "Failed to load elsa' texture image!\n" );
 		success = false;
 	}
     
-    //Load kat texture
-	if( !gkatTexture.loadFromFile( "katBattle.png" ) )
+    //Load dialogue textures
+	if( !albusDialogueTexture.loadFromFile( "albusDialogue.png" ) )
+	{
+		printf( "Failed to load elsa' texture image!\n" );
+		success = false;
+	}
+    if( !katDialogueTexture.loadFromFile( "katDialogue.png" ) )
+	{
+		printf( "Failed to load elsa' texture image!\n" );
+		success = false;
+	}
+    if( !elsaDialogueTexture.loadFromFile( "elsaDialogue.png" ) )
+	{
+		printf( "Failed to load elsa' texture image!\n" );
+		success = false;
+	}
+    if( !jackDialogueTexture.loadFromFile( "jackDialogue.png" ) )
 	{
 		printf( "Failed to load elsa' texture image!\n" );
 		success = false;
 	}
     
-    //Load jack texture
-	if( !gjackTexture.loadFromFile( "jackBattle.png" ) )
-	{
-		printf( "Failed to load elsa' texture image!\n" );
-		success = false;
-	}
-    
-    //Load albus texture
-	if( !galbusTexture.loadFromFile( "albusBattle.png" ) )
-	{
-		printf( "Failed to load elsa' texture image!\n" );
-		success = false;
-	}
-	
-    //Load front alpha texture
-	//if( !gModulatedTexture.loadFromFile( "ElsaPoseAlpha2.png" ) )
-	//{
-	//	printf( "Failed to load front texture!\n" );
-	//	success = false;
-	//}
-	else
-	{
-		//Set standard alpha blending
-		gModulatedTexture.setBlendMode( SDL_BLENDMODE_BLEND );
-	}
-    
-	//Load background texture
-	if( !gBackgroundTexture.loadFromFile( "arendelle.jpg" ) )
+	//Load background textures
+	if( !NorthMountBGTexture.loadFromFile( "arendelle.jpg" ) )
 	{
 		printf( "Failed to load background texture image!\n" );
 		success = false;
 	}
     
     //Load bottom viewport texture
-	if( !gBViewTexture.loadFromFile( "BattleStats.jpg" ) )
+	if( !BViewTexture.loadFromFile( "BattleStats.jpg" ) )
 	{
 		printf( "Failed to load bottom viewport texture image!\n" );
 		success = false;
 	}
-    
-    //Load sprite sheet texture
-	//if( !gSpriteSheetTexture.loadFromFile( "foo.png" ) )
-	//{
-	//	printf( "Failed to load walking animation texture!\n" );
-	//	success = false;
-	//}
+
 	else
 	{
 		//Set sprite clips
@@ -354,8 +465,8 @@ bool loadMedia(){
 void close(){
     
     //Free loaded images
-	gelsaTexture.free();
-	gBackgroundTexture.free();
+	elsaBattleTexture.free();
+	NorthMountBGTexture.free();
     
     //Free loaded images
 	gSpriteSheetTexture.free();
@@ -391,38 +502,31 @@ int main( int argc, char* args[] )
 			//Main loop flag
 			bool quit = false;
             
+            //Characters
+            Character Elsa(720,500);
+            Character Albus(750,350);
+            Character Jack(650,430);
+            Character Kat(850,430);
+            
 			//Event handler
 			SDL_Event e;
             
-            //Angle of rotation
-            double degrees = 0;
+            //initial layout
+            WindowLayouts layout=BATTLE_LAYOUT;
             
-            //Flip type
-            SDL_RendererFlip flipType = SDL_FLIP_NONE;
+            //initial active character
+            MainCharacters activeCharacter=ELSA;
             
-            //Current animation frame
-			//int frame = 0;
+            //Angle of rotation iterator for oscillating
+            int elsaRotIterator=0;
+            int jackRotIterator=0;
+            int albusRotIterator=0;
+            int katRotIterator=0;
             
             //Color Modulation components
             Uint8 r = 255;
             Uint8 g = 255;
             Uint8 b = 255;
-            
-            //Alpha Modulation component
-            Uint8 a = 0;
-            
-            //character Positions
-            int elsaX = 750;
-            int elsaY = 400;
-            int katX = 750;
-            int katY = 250;
-            int jackX = 600;
-            int jackY = 300;
-            int albusX = 900;
-            int albusY = 300;
-            
-            //			//Set default current surface
-            //			gCurrentSurface = gKeyPressSurfaces[ KEY_PRESS_SURFACE_DEFAULT ];
             
 			//While application is running
 			while( !quit )
@@ -430,128 +534,102 @@ int main( int argc, char* args[] )
 				//Handle events on queue
 				while( SDL_PollEvent( &e ) != 0 )
 				{
+                    
 					//User requests quit
 					if( e.type == SDL_QUIT )
 					{
 						quit = true;
 					}
-                    //On keypress change rgb values
+                    
+                    //Process User Input
 					else if( e.type == SDL_KEYDOWN )
 					{
 						switch( e.key.keysym.sym )
 						{
-                                //Increase red
-							case SDLK_q:
-                                r += 32;
-                                break;
-                                
-                                //Increase green
-							case SDLK_w:
-                                g += 32;
-                                break;
-                                
-                                //Increase blue
-							case SDLK_e:
-                                b += 32;
-                                break;
-                                
-                                //Decrease red
-							case SDLK_a:
-                                r -= 32;
-                                break;
-                                
-                                //Decrease green
-							case SDLK_s:
-                                g -= 32;
-                                break;
-                                
-                                //Decrease blue
-							case SDLK_d:
-                                b -= 32;
-                                break;
-                                
-                                //Decrease blue
-							case SDLK_p:
-                                r -= 32;
-                                g -= 32;
-                                b -= 32;
-                                break;
-                                
-                                //Decrease blue
-							case SDLK_o:
-                                r += 32;
-                                g += 32;
-                                b += 32;
-                                break;
-                                
-                                //Increase transparency
-							case SDLK_z:
-                                //Cap if over 255
-                                if( a + 15 > 255/2 )
-                                {
-                                    a = 255/2;
-                                }
-                                //Increment otherwise
-                                else
-                                {
-                                    a += 15;
-                                }
-                                break;
-                                
-                                //Decrease transparency
-							case SDLK_x:
-                                //Cap if below 0
-                                if( a - 15 < 0 )
-                                {
-                                    a = 0;
-                                }
-                                //Decrement otherwise
-                                else
-                                {
-                                    a -= 15;
-                                }
-                                break;
-                                
-                                //move elsa up
+                            //move character up
                             case SDLK_UP:
-                                elsaY-=15;
+                                if(activeCharacter==ELSA) Elsa.moveRel(0,-15);
+                                if(activeCharacter==KAT) Kat.moveRel(0,-15);
+                                if(activeCharacter==JACK) Jack.moveRel(0,-15);
+                                if(activeCharacter==ALBUS) Albus.moveRel(0,-15);
                                 break;
                                 
-                                //move elsa down
+                            //move character down
                             case SDLK_DOWN:
-                                elsaY+=15;
+                                if(activeCharacter==ELSA) Elsa.moveRel(0,15);
+                                if(activeCharacter==KAT) Kat.moveRel(0,15);
+                                if(activeCharacter==JACK) Jack.moveRel(0,15);
+                                if(activeCharacter==ALBUS) Albus.moveRel(0,15);
                                 break;
                                 
-                                //move elsa left
+                            //move character left
                             case SDLK_LEFT:
-                                flipType = SDL_FLIP_NONE;
-                                elsaX-=15;
+                                if(activeCharacter==ELSA){
+                                    Elsa.moveRel(-15,0);
+                                    Elsa.flipLeft();
+                                }
+                                if(activeCharacter==KAT){
+                                    Kat.moveRel(-15,0);
+                                    Kat.flipLeft();
+                                }
+                                if(activeCharacter==JACK){
+                                    Jack.moveRel(-15,0);
+                                    Jack.flipLeft();
+                                }
+                                if(activeCharacter==ALBUS){
+                                    Albus.moveRel(-15,0);
+                                    Albus.flipLeft();
+                                }
                                 break;
                                 
-                                //move elsa right
+                            //move character right
                             case SDLK_RIGHT:
-                                flipType = SDL_FLIP_HORIZONTAL;
-                                elsaX+=15;
+                                if(activeCharacter==ELSA){
+                                    Elsa.moveRel(15,0);
+                                    Elsa.flipRight();
+                                }
+                                if(activeCharacter==KAT){
+                                    Kat.moveRel(15,0);
+                                    Kat.flipRight();
+                                }
+                                if(activeCharacter==JACK){
+                                    Jack.moveRel(15,0);
+                                    Jack.flipRight();
+                                }
+                                if(activeCharacter==ALBUS){
+                                    Albus.moveRel(15,0);
+                                    Albus.flipRight();
+                                }
+                                break;
+                              
+                            //set Albus as active
+                            case SDLK_1:
+                                activeCharacter=ALBUS;
+                                break;
+                            
+                            //set Elsa as active
+                            case SDLK_2:
+                                activeCharacter=ELSA;
                                 break;
                                 
-                            case SDLK_c:
-                                degrees -= 7.5;
+                            //set Jack as active
+                            case SDLK_3:
+                                activeCharacter=JACK;
                                 break;
                                 
-                            case SDLK_v:
-                                degrees += 7.5;
+                            //set Kat as active
+                            case SDLK_4:
+                                activeCharacter=KAT;
                                 break;
                                 
-                            case SDLK_r:
-                                flipType = SDL_FLIP_HORIZONTAL;
+                            //set open-world layout
+                            case SDLK_o:
+                                layout=OPEN_LAYOUT;
                                 break;
                                 
-                            case SDLK_t:
-                                flipType = SDL_FLIP_NONE;
-                                break;
-                                
-                            case SDLK_y:
-                                flipType = SDL_FLIP_VERTICAL;
+                            //set battle layout
+                            case SDLK_b:
+                                layout=BATTLE_LAYOUT;
                                 break;
                                 
                             default:
@@ -560,73 +638,81 @@ int main( int argc, char* args[] )
 					}
                 }
                 
-                
-                
-                //for(int i=0; i<5; elsaX-=3, i++){
-                
                 //Clear screen
                 SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
                 SDL_RenderClear( gRenderer );
                 
-                //Top viewport
-                SDL_Rect topViewport;
-                topViewport.x = 0;
-                topViewport.y = SCREEN_HEIGHT / 3;
-                topViewport.w = SCREEN_WIDTH;
-                topViewport.h = SCREEN_HEIGHT;
-                SDL_RenderSetViewport( gRenderer, &topViewport );
+                if(layout == BATTLE_LAYOUT){
                 
-                //Render background texture to screen
-                gBackgroundTexture.setColor(r,g,b);
-                gBackgroundTexture.render(0,150);
-                
-                //Render characters to the screen
-                gelsaTexture.render( elsaX, elsaY, NULL, degrees, NULL, flipType );
-                gkatTexture.render( katX, katY, NULL, degrees, NULL, flipType );
-                gjackTexture.render( jackX, jackY, NULL, degrees, NULL, flipType );
-                galbusTexture.render( albusX, albusY, NULL, degrees, NULL, flipType );
-                
-                //Render front blended Elsa
-                gModulatedTexture.setAlpha( a );
-                gModulatedTexture.render( elsaX, elsaY, NULL, degrees, NULL, flipType );
-                
-                //Bottom viewport
-                SDL_Rect bottomViewport;
-                bottomViewport.x = 0;
-                bottomViewport.y = 0;
-                bottomViewport.w = SCREEN_WIDTH;
-                bottomViewport.h = SCREEN_HEIGHT / 3;
-                SDL_RenderSetViewport( gRenderer, &bottomViewport );
-                
-                //Render battleStat boxes to the screen
-                gBViewTexture.render(0,0);
-                
-                
-                
-                
-                
-                //                //Render current frame
-                //				SDL_Rect* currentClip = &gSpriteClips[ frame / 4 ];
-                //				gSpriteSheetTexture.render( ( SCREEN_WIDTH - currentClip->w ) / 2, ( SCREEN_HEIGHT - currentClip->h ) / 2, currentClip );
-                
+                    //Top viewport
+                    SDL_Rect topViewport;
+                    topViewport.x = 0;
+                    topViewport.y = SCREEN_HEIGHT / 3;
+                    topViewport.w = SCREEN_WIDTH;
+                    topViewport.h = SCREEN_HEIGHT;
+                    SDL_RenderSetViewport( gRenderer, &topViewport );
+                    
+                    //Render background texture to screen
+                    NorthMountBGTexture.setColor(r,g,b);
+                    NorthMountBGTexture.render(0,150);
+                    
+                    //Render battle characters to the screen
+                    elsaBattleTexture.render( Elsa.getX(), Elsa.getY(), NULL, Elsa.getDegs(), NULL, Elsa.getDir() );
+                    katBattleTexture.render( Kat.getX(), Kat.getY(), NULL, Kat.getDegs(), NULL, Kat.getDir() );
+                    jackBattleTexture.render( Jack.getX(), Jack.getY(), NULL, Jack.getDegs(), NULL, Jack.getDir() );
+                    albusBattleTexture.render( Albus.getX(), Albus.getY(), NULL, Albus.getDegs(), NULL, Albus.getDir() );
+                    
+                    //Bottom viewport
+                    SDL_Rect bottomViewport;
+                    bottomViewport.x = 0;
+                    bottomViewport.y = 0;
+                    bottomViewport.w = SCREEN_WIDTH;
+                    bottomViewport.h = SCREEN_HEIGHT / 3;
+                    SDL_RenderSetViewport( gRenderer, &bottomViewport );
+                    
+                    //Render battleStat boxes to the screen
+                    BViewTexture.render(0,0);
+                    
+                    if (activeCharacter==ELSA){
+                        elsaRotIterator++;
+                        Elsa.setDegs(Elsa.getDegs()+sin(elsaRotIterator));
+                    }
+                    else if (activeCharacter==ALBUS){
+                        albusRotIterator++;
+                        Albus.setDegs(Albus.getDegs()+sin(albusRotIterator));
+                    }
+                    else if (activeCharacter==JACK){
+                        jackRotIterator++;
+                        Jack.setDegs(Jack.getDegs()+sin(jackRotIterator));
+                    }
+                    else if (activeCharacter==KAT){
+                        katRotIterator++;
+                        Kat.setDegs(Kat.getDegs()+sin(katRotIterator));
+                    }
+                    
+                  
+                }
+                else if(layout == OPEN_LAYOUT){
+                    
+                    //Check for Rendering Dialogue Textures to the Screen
+                    if(activeCharacter==ELSA){
+                        elsaDialogueTexture.render( 10, 2*SCREEN_HEIGHT/3+50, NULL, NULL, NULL, Elsa.getDir() );
+                    }
+                    if(activeCharacter==KAT){
+                        katDialogueTexture.render( 0, 2*SCREEN_HEIGHT/3+40, NULL, NULL, NULL, Kat.getDir() );
+                    }
+                    if(activeCharacter==JACK){
+                        jackDialogueTexture.render( 10, 2*SCREEN_HEIGHT/3+60, NULL, NULL, NULL, Jack.getDir() );
+                    }
+                    if(activeCharacter==ALBUS){
+                        albusDialogueTexture.render( 20, 2*SCREEN_HEIGHT/3+50, NULL, NULL, NULL, Albus.getDir() );
+                    }
+                }
                 
                 //Update screen
                 SDL_RenderPresent( gRenderer );
+                SDL_Delay(20);
                 
-                SDL_Delay(30);
-                
-                //SDL_Delay(100);
-                
-                //                //Go to next frame
-                //				++frame;
-                //
-                //				//Cycle animation
-                //				if( frame / 4 >= WALKING_ANIMATION_FRAMES )
-                //				{
-                //					frame = 0;
-                //				}
-                
-                //}
                 
 			}
             
