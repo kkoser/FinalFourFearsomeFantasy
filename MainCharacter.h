@@ -10,18 +10,20 @@ private:
 	int standardPower;
 	int maxPP; //mana for moves
 	int standardPPRegen;
+	int standardArmor;
 
-	//these are augmented in battle and reset afterwords (except health)
-	int currentHealth;
+	int currentHealth; //current health in battle
+
+	//these are augmented in battle and reset afterwords
 	int currentPower;
 	int currentPP;
 	int currentPPRegen;
+	int currentArmor;
 
 	//these are not increased by level points
 	int level;
 	int exp;
 	int expToNext;
-	int armor;
 	int accuracy;
 
 	string name;
