@@ -1,6 +1,8 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 #include "SDL2_image/SDL_image.h"
+#include "SDL2_ttf/SDL_ttf.h"
+#include "SDL2_mixer/SDL_mixer.h"
 #include <stdio.h>
 #include <string>
 #include <cmath>
@@ -23,6 +25,9 @@ public:
     
     //Loads image at specified path
     bool loadFromFile( string path );
+    
+    //Creates image from font string
+    bool loadFromRenderedText( string textureText, SDL_Color textColor );
     
     //Deallocates texture
     void free();
@@ -117,6 +122,13 @@ SDL_Window* gWindow = NULL;
 //The window renderer
 SDL_Renderer* gRenderer = NULL;
 
+//Globally used font
+TTF_Font *gFont = NULL;
+
+//Text texture
+LTexture textCourierTexture;
+LTexture textAndaleTexture;
+
 //Scene textures
 //Battle Images
 LTexture elsaBattleTexture;
@@ -142,6 +154,19 @@ LTexture BViewTexture;
 
 //Scene Alpha texture
 LTexture gModulatedTexture;
+
+//The music that will be played
+Mix_Music *elsaMusic = NULL;
+Mix_Music *albusMusic = NULL;
+Mix_Music *katMusic = NULL;
+Mix_Music *jackMusic = NULL;
+
+//The sound effects that will be used
+Mix_Chunk *soundEffect1 = NULL;
+Mix_Chunk *albusSoundEffect = NULL;
+Mix_Chunk *elsaSoundEffect = NULL;
+Mix_Chunk *jackSoundEffect = NULL;
+Mix_Chunk *katSoundEffect = NULL;
 
 //Walking animation
 const int WALKING_ANIMATION_FRAMES = 4;
@@ -240,6 +265,40 @@ Character::Character(int x, int y){
     flipDir=SDL_FLIP_NONE;
 }
 //------------------------------------------------------------------------------
+bool LTexture::loadFromRenderedText( string textureText, SDL_Color textColor )
+{
+    //Get rid of preexisting texture
+    free();
+    
+    //Render text surface
+    SDL_Surface* textSurface = TTF_RenderText_Solid( gFont, textureText.c_str(), textColor );
+    if( textSurface == NULL )
+    {
+        printf( "Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError() );
+    }
+    else
+    {
+        //Create texture from surface pixels
+        mTexture = SDL_CreateTextureFromSurface( gRenderer, textSurface );
+        if( mTexture == NULL )
+        {
+            printf( "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError() );
+        }
+        else
+        {
+            //Get image dimensions
+            mWidth = textSurface->w;
+            mHeight = textSurface->h;
+        }
+        
+        //Get rid of old surface
+        SDL_FreeSurface( textSurface );
+    }
+    
+    //Return success
+    return mTexture != NULL;
+}
+//------------------------------------------------------------------------------
 bool LTexture::loadFromFile( string path )
 {
 	//Get rid of preexisting texture
@@ -324,11 +383,11 @@ bool init(){
 	bool success = true;
     
 	//Initialize SDL
-	if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
-	{
-		printf( "SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
-		success = false;
-	}
+    if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO ) < 0 )
+    {
+        printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
+        success = false;
+    }
 	else
 	{
 		//Set texture filtering to linear
@@ -366,11 +425,50 @@ bool init(){
 					success = false;
 				}
                 
+                //Initialize SDL_ttf
+                if( TTF_Init() == -1 )
+                {
+                    printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
+                    success = false;
+                }
+                
+                //Initialize SDL_mixer
+				if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
+				{
+					printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
+					success = false;
+				}
+                
 			}
         }
     }
     
 	return success;
+}
+//------------------------------------------------------------------------------
+bool getText(){
+    bool success = true;
+    
+    //Open the font
+    gFont = TTF_OpenFont( "AndaleMono.ttf", 16 );
+    if( gFont == NULL )
+    {
+        printf( "Failed to load andale mono font! SDL_ttf Error: %s\n", TTF_GetError() );
+        success = false;
+    }
+    else
+    {
+        //Render text
+        SDL_Color textColor = { 255, 255, 255 };
+        if( !textAndaleTexture.loadFromRenderedText( "5: Elsa's Theme", textColor ) )
+        {
+            printf( "Failed to render text texture!\n" );
+            success = false;
+        }
+    }
+
+    
+    return success;
 }
 //------------------------------------------------------------------------------
 bool loadMedia(){
@@ -424,7 +522,7 @@ bool loadMedia(){
 	//Load background textures
 	if( !NorthMountBGTexture.loadFromFile( "arendelle.jpg" ) )
 	{
-		printf( "Failed to load background texture image!\n" );
+		printf( "Failed to load north mountain background texture image!\n" );
 		success = false;
 	}
     
@@ -459,6 +557,65 @@ bool loadMedia(){
 		gSpriteClips[ 3 ].h = 205;
 	}
     
+    //Load music
+    elsaMusic = Mix_LoadMUS( "LetItGo.wav" );
+    if( elsaMusic == NULL )
+    {
+        printf( "Failed to load Elsa music! SDL_mixer Error: %s\n", Mix_GetError() );
+        success = false;
+    }
+    
+    //Load sound effects
+    jackMusic = Mix_LoadMUS( "WheelOfFortune.wav" );
+    if( jackMusic == NULL )
+    {
+        printf( "Failed to load Jack Music SDL_mixer Error: %s\n", Mix_GetError() );
+        success = false;
+    }
+    
+    katMusic = Mix_LoadMUS( "ArrowsAtTheSky.wav" );
+    if( katMusic == NULL )
+    {
+        printf( "Failed to load Kat music! SDL_mixer Error: %s\n", Mix_GetError() );
+        success = false;
+    }
+    
+    soundEffect1 = Mix_LoadWAV( "scratch.wav" );
+    if( katMusic == NULL )
+    {
+        printf( "Failed to load scratch sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
+        success = false;
+    }
+    
+    elsaSoundEffect = Mix_LoadWAV( "elsaSoundEffect.wav" );
+    if( katMusic == NULL )
+    {
+        printf( "Failed to load elsa sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
+        success = false;
+    }
+    
+    jackSoundEffect = Mix_LoadWAV( "jackSoundEffect.wav" );
+    if( katMusic == NULL )
+    {
+        printf( "Failed to load jack sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
+        success = false;
+    }
+    
+    katSoundEffect = Mix_LoadWAV( "katSoundEffect.wav" );
+    if( katMusic == NULL )
+    {
+        printf( "Failed to load kat sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
+        success = false;
+    }
+    
+    albusSoundEffect = Mix_LoadWAV( "albusSoundEffect.wav" );
+    if( katMusic == NULL )
+    {
+        printf( "Failed to load albus sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
+        success = false;
+    }
+    
+    
 	return success;
 }
 //------------------------------------------------------------------------------
@@ -467,6 +624,27 @@ void close(){
     //Free loaded images
 	elsaBattleTexture.free();
 	NorthMountBGTexture.free();
+    textAndaleTexture.free();
+    textCourierTexture.free();
+    
+    //Free the music
+    Mix_FreeMusic( elsaMusic );
+    Mix_FreeMusic( katMusic );
+    Mix_FreeMusic( jackMusic );
+    Mix_FreeMusic( albusMusic );
+    elsaMusic = NULL;
+    katMusic = NULL;
+    jackMusic = NULL;
+    albusMusic = NULL;
+    
+    //Free the sound effects
+    Mix_FreeChunk( soundEffect1 );
+    soundEffect1 = NULL;
+
+    
+    //Free global font
+    TTF_CloseFont( gFont );
+    gFont = NULL;
     
     //Free loaded images
 	gSpriteSheetTexture.free();
@@ -478,7 +656,9 @@ void close(){
 	gRenderer = NULL;
     
 	//Quit SDL subsystems
+    Mix_Quit();
 	IMG_Quit();
+    TTF_Quit();
 	SDL_Quit();
     
 }
@@ -517,16 +697,14 @@ int main( int argc, char* args[] )
             //initial active character
             MainCharacters activeCharacter=ELSA;
             
+            //Play the music
+            Mix_PlayMusic( elsaMusic, -1 ); //start playing Elsa's music
+            
             //Angle of rotation iterator for oscillating
             int elsaRotIterator=0;
             int jackRotIterator=0;
             int albusRotIterator=0;
             int katRotIterator=0;
-            
-            //Color Modulation components
-            Uint8 r = 255;
-            Uint8 g = 255;
-            Uint8 b = 255;
             
 			//While application is running
 			while( !quit )
@@ -534,6 +712,9 @@ int main( int argc, char* args[] )
 				//Handle events on queue
 				while( SDL_PollEvent( &e ) != 0 )
 				{
+                    
+                    getText(); //load in text
+
                     
 					//User requests quit
 					if( e.type == SDL_QUIT )
@@ -544,6 +725,7 @@ int main( int argc, char* args[] )
                     //Process User Input
 					else if( e.type == SDL_KEYDOWN )
 					{
+                        
 						switch( e.key.keysym.sym )
 						{
                             //move character up
@@ -601,25 +783,115 @@ int main( int argc, char* args[] )
                                     Albus.flipRight();
                                 }
                                 break;
+                                
+                            //Play high sound effect
+                            case SDLK_9:
+                                Mix_PlayChannel( -1, soundEffect1, 0 );
+                                break;
+                                
+                                
+                            case SDLK_5: //Elsa's Music
+                                //If there is no music playing
+                                if( Mix_PlayingMusic() == 0 )
+                                {
+                                    //Play the music
+                                    Mix_PlayMusic( elsaMusic, -1 );
+                                }
+                                //If music is being played
+                                else
+                                {
+                                    //If the music is paused
+                                    if( Mix_PausedMusic() == 1 )
+                                    {
+                                        //Resume the music
+                                        Mix_ResumeMusic();
+                                    }
+                                    //If the music is playing
+                                    else
+                                    {
+                                        //Pause the music
+                                        Mix_PauseMusic();
+                                    }
+                                }
+                                break;
+                            
+                            case SDLK_6: //Jack's Music
+                                //If there is no music playing
+                                if( Mix_PlayingMusic() == 0 )
+                                {
+                                    //Play the music
+                                    Mix_PlayMusic( jackMusic, -1 );
+                                }
+                                //If music is being played
+                                else
+                                {
+                                    //If the music is paused
+                                    if( Mix_PausedMusic() == 1 )
+                                    {
+                                        //Resume the music
+                                        Mix_ResumeMusic();
+                                    }
+                                    //If the music is playing
+                                    else
+                                    {
+                                        //Pause the music
+                                        Mix_PauseMusic();
+                                    }
+                                }
+                                break;
+                            
+                            case SDLK_7: //Kat's Music
+                                //If there is no music playing
+                                if( Mix_PlayingMusic() == 0 )
+                                {
+                                    //Play the music
+                                    Mix_PlayMusic( katMusic, -1 );
+                                }
+                                //If music is being played
+                                else
+                                {
+                                    //If the music is paused
+                                    if( Mix_PausedMusic() == 1 )
+                                    {
+                                        //Resume the music
+                                        Mix_ResumeMusic();
+                                    }
+                                    //If the music is playing
+                                    else
+                                    {
+                                        //Pause the music
+                                        Mix_PauseMusic();
+                                    }
+                                }
+                                break;
+                                
+                            case SDLK_8:
+                                //Stop the music
+                                Mix_HaltMusic();
+                                break;
                               
                             //set Albus as active
                             case SDLK_1:
                                 activeCharacter=ALBUS;
+                                Mix_PlayChannel( -1, albusSoundEffect, 0 );
                                 break;
                             
                             //set Elsa as active
                             case SDLK_2:
                                 activeCharacter=ELSA;
+                                Mix_PlayChannel( -1, elsaSoundEffect, 0 );
                                 break;
                                 
                             //set Jack as active
                             case SDLK_3:
                                 activeCharacter=JACK;
+                                Mix_PlayChannel( -1, jackSoundEffect, 0 );
                                 break;
                                 
                             //set Kat as active
                             case SDLK_4:
                                 activeCharacter=KAT;
+                                Mix_PlayChannel( -1, katSoundEffect, 0 );
                                 break;
                                 
                             //set open-world layout
@@ -653,7 +925,6 @@ int main( int argc, char* args[] )
                     SDL_RenderSetViewport( gRenderer, &topViewport );
                     
                     //Render background texture to screen
-                    NorthMountBGTexture.setColor(r,g,b);
                     NorthMountBGTexture.render(0,150);
                     
                     //Render battle characters to the screen
@@ -661,6 +932,20 @@ int main( int argc, char* args[] )
                     katBattleTexture.render( Kat.getX(), Kat.getY(), NULL, Kat.getDegs(), NULL, Kat.getDir() );
                     jackBattleTexture.render( Jack.getX(), Jack.getY(), NULL, Jack.getDegs(), NULL, Jack.getDir() );
                     albusBattleTexture.render( Albus.getX(), Albus.getY(), NULL, Albus.getDegs(), NULL, Albus.getDir() );
+                    
+                    //Check for Rendering Dialogue Textures to the Screen
+                    if(activeCharacter==ELSA){
+                        elsaDialogueTexture.render( 10, 2*SCREEN_HEIGHT/3+50, NULL, NULL, NULL, Elsa.getDir() );
+                    }
+                    if(activeCharacter==KAT){
+                        katDialogueTexture.render( 0, 2*SCREEN_HEIGHT/3+40, NULL, NULL, NULL, Kat.getDir() );
+                    }
+                    if(activeCharacter==JACK){
+                        jackDialogueTexture.render( 10, 2*SCREEN_HEIGHT/3+60, NULL, NULL, NULL, Jack.getDir() );
+                    }
+                    if(activeCharacter==ALBUS){
+                        albusDialogueTexture.render( 20, 2*SCREEN_HEIGHT/3+50, NULL, NULL, NULL, Albus.getDir() );
+                    }
                     
                     //Bottom viewport
                     SDL_Rect bottomViewport;
@@ -672,6 +957,31 @@ int main( int argc, char* args[] )
                     
                     //Render battleStat boxes to the screen
                     BViewTexture.render(0,0);
+                    
+                    //Render text (put into a class later to make it easier w/ functions and shit)
+                    textAndaleTexture.loadFromRenderedText( "1: Choose Albus", { 255, 255, 255 } );
+                    textAndaleTexture.render( 20, 20 );
+                    textAndaleTexture.loadFromRenderedText( "2: Choose Elsa", { 255, 255, 255 } );
+                    textAndaleTexture.render( 20, 45 );
+                    textAndaleTexture.loadFromRenderedText( "3: Choose Jack", { 255, 255, 255 } );
+                    textAndaleTexture.render( 20, 70 );
+                    textAndaleTexture.loadFromRenderedText( "4: Choose Kat", { 255, 255, 255 } );
+                    textAndaleTexture.render( 20, 95 );
+                    textAndaleTexture.loadFromRenderedText( "Arrow Keys: Move", { 255, 255, 255 } );
+                    textAndaleTexture.render( 20, 120 );
+                    
+                    
+                    textAndaleTexture.loadFromRenderedText( "5: Elsa's Theme", { 255, 255, 255 } );
+                    textAndaleTexture.render( 380, 20 );
+                    textAndaleTexture.loadFromRenderedText( "6: Jack's Theme", { 255, 255, 255 } );
+                    textAndaleTexture.render( 380, 45 );
+                    textAndaleTexture.loadFromRenderedText( "7: Kat's Theme", { 255, 255, 255 } );
+                    textAndaleTexture.render( 380, 70 );
+                    textAndaleTexture.loadFromRenderedText( "8: Stop Music (To Play Different Song)", { 255, 255, 255 } );
+                    textAndaleTexture.render( 380, 95 );
+                    textAndaleTexture.loadFromRenderedText( "9: Example Sound Effect", { 255, 255, 255 } );
+                    textAndaleTexture.render( 380, 120 );
+                    
                     
                     if (activeCharacter==ELSA){
                         elsaRotIterator++;
@@ -689,6 +999,8 @@ int main( int argc, char* args[] )
                         katRotIterator++;
                         Kat.setDegs(Kat.getDegs()+sin(katRotIterator));
                     }
+                    
+                    
                     
                   
                 }
