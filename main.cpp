@@ -935,16 +935,16 @@ int main( int argc, char* args[] )
                     
                     //Check for Rendering Dialogue Textures to the Screen
                     if(activeCharacter==ELSA){
-                        elsaDialogueTexture.render( 10, 2*SCREEN_HEIGHT/3+50, NULL, NULL, NULL, Elsa.getDir() );
+                        elsaDialogueTexture.render( 10, 2*SCREEN_HEIGHT/3+50, NULL, NULL, NULL, SDL_FLIP_NONE );
                     }
                     if(activeCharacter==KAT){
-                        katDialogueTexture.render( 0, 2*SCREEN_HEIGHT/3+40, NULL, NULL, NULL, Kat.getDir() );
+                        katDialogueTexture.render( 0, 2*SCREEN_HEIGHT/3+40, NULL, NULL, NULL, SDL_FLIP_NONE );
                     }
                     if(activeCharacter==JACK){
-                        jackDialogueTexture.render( 10, 2*SCREEN_HEIGHT/3+60, NULL, NULL, NULL, Jack.getDir() );
+                        jackDialogueTexture.render( 10, 2*SCREEN_HEIGHT/3+60, NULL, NULL, NULL, SDL_FLIP_NONE );
                     }
                     if(activeCharacter==ALBUS){
-                        albusDialogueTexture.render( 20, 2*SCREEN_HEIGHT/3+50, NULL, NULL, NULL, Albus.getDir() );
+                        albusDialogueTexture.render( 20, 2*SCREEN_HEIGHT/3+50, NULL, NULL, NULL, SDL_FLIP_NONE );
                     }
                     
                     //Bottom viewport
