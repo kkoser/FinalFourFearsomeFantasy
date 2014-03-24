@@ -41,6 +41,7 @@ private:
     
 public:
     Move(string filename); //constructor
+    bool needsTarget(); //returns isSingleTarget
     
 };
 

@@ -23,7 +23,7 @@ Move::Move(string filename) {
         getline(file, flavorText);
         
         //read in stats
-        string temp;
+        string temp; //stores line before converting to int (if necessary)
         getline(file, temp);
         power = atoi(temp.c_str());
 
@@ -46,7 +46,10 @@ Move::Move(string filename) {
         else if (temp == "INCAP") {
             statusToApply = INCAP;
         }
-        else cout << "Error reading status of move "<< filename <<endl;
+        else {
+            cout << "Error reading status of move "<< filename <<endl;
+            statusToApply = NOSTATUS;
+        }
         
         getline(file, temp);
         statusPower = atoi(temp.c_str());
@@ -67,11 +70,18 @@ Move::Move(string filename) {
         else if ( temp == "ARMOR") {
             attributeToAugment = ARMOR;
         }
-        else cout << "Error reading attribute of move "<< filename <<endl;
+        else {
+            cout << "Error reading attribute of move "<< filename <<endl;
+            attributeToAugment = NOATTRIBUTE;
+        }
 
         
         getline(file, temp);
         attributeMultiplier = atof(temp.c_str());
     }
 	
+}
+
+bool Move::needsTarget() {
+    return isSingleTarget;
 }

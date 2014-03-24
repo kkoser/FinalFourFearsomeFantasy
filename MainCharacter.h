@@ -1,41 +1,36 @@
+//
+//  MainCharacter.h
+//  tester
+//
+//  Created by Zach Waterson on 3/22/14.
+//  Copyright (c) 2014 Zach Waterson. All rights reserved.
+//
+
+#ifndef __tester__MainCharacter__
+#define __tester__MainCharacter__
+
+#include <iostream>
 #include <string>
 #include <vector>
+#include "BaseCharacter.h"
 
 using namespace std;
 
-class MainCharacter {
-private: 
-	//these can be upgraded using level points
-	int maxHealth;
-	int standardPower;
-	int maxPP; //mana for moves
-	int standardPPRegen;
-	int standardArmor;
-
-	int currentHealth; //current health in battle
-
-	//these are augmented in battle and reset afterwords
-	int currentPower;
-	int currentPP;
-	int currentPPRegen;
-	int currentArmor;
+class MainCharacter : public BaseCharacter {
+private:
 
 	//these are not increased by level points
 	int level;
 	int exp;
 	int expToNext;
-	int accuracy;
-
-	string name;
-    string file;
-	vector<Move> moves;
-	Move activeMoves[4];
-
-	string spriteName;
-
+    
+    string dialogueSpriteName;
+    
 public:
 	MainCharacter(string fileName);
-
-	void actOnCharacter(Character &ch, Move m);
+    
     void levelUp(int healthAdded, int powerAdded, int ppRegenAdded, int armorAdded);
 };
+
+
+#endif /* defined(__tester__MainCharacter__) */
