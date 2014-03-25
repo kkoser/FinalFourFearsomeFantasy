@@ -112,7 +112,6 @@ void Character::displayForMove(string str) {
     
 }
 
-
 //setters and getters
 int Character::getCurrentHealth() {
     return currentHealth;
@@ -126,4 +125,32 @@ void Character::setCurrentHealth(int health) {
         health = maxHealth;
     }
     currentHealth = health;
+}
+
+int Character::getCurrentPower() {
+    return currentPower;
+}
+
+void Character::setCurrentPower(int power) {
+    if (power < 0) {
+        power = 0;
+    }
+    else if (power > standardPower) {
+        power = standardPower;
+    }
+    currentPower = power;
+}
+
+int Character::getCurrentPP() {
+    return currentPP;
+}
+
+void Character::setCurrentPP(int PP) {
+    if (PP < 0) {
+        PP = 0;
+    }
+    else if (PP > maxPP) {
+        PP = maxPP;
+    }
+    currentPP = PP;
 }
