@@ -12,19 +12,20 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "BaseCharacter.h"
+#include "Character.h"
 
 using namespace std;
 
-class MainCharacter : public BaseCharacter {
+class MainCharacter : public Character {
 private:
 
 	//these are not increased by level points
-	int level;
 	int exp;
 	int expToNext;
     
     string dialogueSpriteName;
+    string movementSpriteName;
+    
     
 public:
 	MainCharacter(string fileName);
