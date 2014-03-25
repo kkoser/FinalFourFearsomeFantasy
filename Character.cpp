@@ -44,6 +44,8 @@ void Character::actMoveOnTarget(string moveName, vector<Character> targets) {
             }
             else if (word=="Health") {
                 getline(iss, word);
+                
+                
                 int val;
                 if (word=="MAX") {
                     val = ch.getCurrentHealth();

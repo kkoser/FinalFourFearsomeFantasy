@@ -70,7 +70,7 @@ public:
 private:
     
     void displayForMove(string str); //creates text to be displayed
-    void setStatForTarget(
+    void setStatForTarget();
     
 
 };
