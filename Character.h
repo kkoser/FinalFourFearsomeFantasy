@@ -62,10 +62,15 @@ public:
     
     int numTargetsForMove(string moveName);
     
+    //setters and getters, these adjust for <0 or >max inputs
+    int getCurrentHealth();
+    void setCurrentHealth(int health);
+    
     
 private:
     
     void displayForMove(string str); //creates text to be displayed
+    void setStatForTarget(
     
 
 };
