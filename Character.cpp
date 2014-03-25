@@ -45,7 +45,6 @@ void Character::actMoveOnTarget(string moveName, vector<Character> targets) {
             else if (word=="Health") {
                 getline(iss, word);
                 
-                
                 int val;
                 if (word=="MAX") {
                     val = ch.getCurrentHealth();
@@ -108,8 +107,37 @@ int Character::numTargetsForMove(string moveName) {
 
 }
 
-void Character::displayForMove(string str) {
+int Character::getValueForCommand(string com, int baseVal) {
+    int val = 0;
     
+    //first check what kind of change we're doing
+    char c = com.at(0);
+    com.erase(0,1);
+    switch (c) {
+        case '+':
+            val = baseVal + atoi(com.c_str());
+            break;
+        case '-':
+            val = baseVal - atoi(com.c_str());
+            break;
+        case '*':
+            val = (float)baseVal*atof(com.c_str());
+            break;
+        case '/':
+            val = (float)baseVal/atof(com.c_str());
+            break;
+        default:
+            val = 0;
+            break;
+    }
+    
+    return val;
+}
+
+string Character::displayForMove(string str) {
+    
+    
+    return NULL;
 }
 
 

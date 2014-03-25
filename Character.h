@@ -69,8 +69,9 @@ public:
     
 private:
     
-    void displayForMove(string str); //creates text to be displayed
+    string displayForMove(string str); //creates text to be displayed
     void setStatForTarget();
+    int getValueForCommand(string com, int baseVal);
     
 
 };
