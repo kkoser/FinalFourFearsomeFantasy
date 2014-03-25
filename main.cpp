@@ -107,6 +107,13 @@ enum MainCharacters{
     KAT
 };
 
+enum Direction{
+	UP,
+    DOWN,
+    LEFT,
+    RIGHT
+};
+
 //Starts up SDL and creates window
 bool init();
 
@@ -126,7 +133,6 @@ SDL_Renderer* gRenderer = NULL;
 TTF_Font *gFont = NULL;
 
 //Text texture
-LTexture textCourierTexture;
 LTexture textAndaleTexture;
 
 //Scene textures
@@ -140,17 +146,30 @@ LTexture elsaDialogueTexture;
 LTexture katDialogueTexture;
 LTexture jackDialogueTexture;
 LTexture albusDialogueTexture;
+
 //Sprite Sheets
-LTexture elsaSpriteTexture;
-LTexture katSpriteTexture;
-LTexture jackSpriteTexture;
-LTexture albusSpriteTexture;
+LTexture elsaSpriteSide;
+LTexture katSpriteSide;
+LTexture jackSpriteSide;
+LTexture albusSpriteSide;
+LTexture elsaSpriteFront;
+LTexture katSpriteFront;
+LTexture jackSpriteFront;
+LTexture albusSpriteFront;
+LTexture elsaSpriteBack;
+LTexture katSpriteBack;
+LTexture jackSpriteBack;
+LTexture albusSpriteBack;
+
 //Background Images
 LTexture NorthMountBGTexture;
 LTexture CaveBGTexture;
 LTexture IslandBGTexture;
 LTexture ForestBGTexture;
 LTexture BViewTexture;
+
+//Map Textures
+LTexture practiceMapTexture;
 
 //Scene Alpha texture
 LTexture gModulatedTexture;
@@ -167,11 +186,6 @@ Mix_Chunk *albusSoundEffect = NULL;
 Mix_Chunk *elsaSoundEffect = NULL;
 Mix_Chunk *jackSoundEffect = NULL;
 Mix_Chunk *katSoundEffect = NULL;
-
-//Walking animation
-const int WALKING_ANIMATION_FRAMES = 4;
-SDL_Rect gSpriteClips[ WALKING_ANIMATION_FRAMES ];
-LTexture gSpriteSheetTexture;
 
 //------------------------------------------------------------------------------
 void LTexture::setColor( Uint8 red, Uint8 green, Uint8 blue )
@@ -500,29 +514,102 @@ bool loadMedia(){
     //Load dialogue textures
 	if( !albusDialogueTexture.loadFromFile( "albusDialogue.png" ) )
 	{
-		printf( "Failed to load elsa' texture image!\n" );
+		printf( "Failed to load albus's texture image!\n" );
 		success = false;
 	}
     if( !katDialogueTexture.loadFromFile( "katDialogue.png" ) )
 	{
-		printf( "Failed to load elsa' texture image!\n" );
+		printf( "Failed to load kat's texture image!\n" );
 		success = false;
 	}
     if( !elsaDialogueTexture.loadFromFile( "elsaDialogue.png" ) )
 	{
-		printf( "Failed to load elsa' texture image!\n" );
+		printf( "Failed to load elsa's texture image!\n" );
 		success = false;
 	}
     if( !jackDialogueTexture.loadFromFile( "jackDialogue.png" ) )
 	{
-		printf( "Failed to load elsa' texture image!\n" );
+		printf( "Failed to load jack's texture image!\n" );
 		success = false;
 	}
+    
+    //Load Sprite Side Views
+    if( !katSpriteSide.loadFromFile( "katSpriteSide.png" ) )
+	{
+		printf( "Failed to load kat's sprite texture image!\n" );
+		success = false;
+	}
+//    if( !albusSpriteSide.loadFromFile( "albusSpriteSide.jpg" ) )
+//	{
+//		printf( "Failed to load kat's sprite texture image!\n" );
+//		success = false;
+//	}
+//    if( !elsaSpriteSide.loadFromFile( "elsaSpriteSide.jpg" ) )
+//	{
+//		printf( "Failed to load kat's sprite texture image!\n" );
+//		success = false;
+//	}
+//    if( !jackSpriteSide.loadFromFile( "jackSpriteSide.jpg" ) )
+//	{
+//		printf( "Failed to load kat's sprite texture image!\n" );
+//		success = false;
+//	}
+//    
+    //load Sprite Front Views
+    if( !katSpriteFront.loadFromFile( "katSpriteFront.png" ) )
+	{
+		printf( "Failed to load kat's sprite texture image!\n" );
+		success = false;
+	}
+//    if( !albusSpriteFront.loadFromFile( "albusSpriteFront.jpg" ) )
+//	{
+//		printf( "Failed to load kat's sprite texture image!\n" );
+//		success = false;
+//	}
+//    if( !elsaSpriteFront.loadFromFile( "elsaSpriteFront.jpg" ) )
+//	{
+//		printf( "Failed to load kat's sprite texture image!\n" );
+//		success = false;
+//	}
+//    if( !jackSpriteFront.loadFromFile( "jackSpriteFront.jpg" ) )
+//	{
+//		printf( "Failed to load kat's sprite texture image!\n" );
+//		success = false;
+//	}
+//    
+    //load sprite Back Views
+    if( !katSpriteBack.loadFromFile( "katSpriteBack.png" ) )
+	{
+		printf( "Failed to load kat's sprite texture image!\n" );
+		success = false;
+	}
+//    if( !albusSpriteBack.loadFromFile( "albusSpriteBack.jpg" ) )
+//	{
+//		printf( "Failed to load kat's sprite texture image!\n" );
+//		success = false;
+//	}
+//    if( !elsaSpriteBack.loadFromFile( "elsaSpriteBack.jpg" ) )
+//	{
+//		printf( "Failed to load kat's sprite texture image!\n" );
+//		success = false;
+//	}
+//    if( !jackSpriteBack.loadFromFile( "jackSpriteBack.jpg" ) )
+//	{
+//		printf( "Failed to load kat's sprite texture image!\n" );
+//		success = false;
+//	}
     
 	//Load background textures
 	if( !NorthMountBGTexture.loadFromFile( "arendelle.jpg" ) )
 	{
 		printf( "Failed to load north mountain background texture image!\n" );
+		success = false;
+	}
+    
+    //Load Maps
+    if( !practiceMapTexture.loadFromFile( "practiceMap.png" ) )
+	{
+		printf( "Failed to load practice map background texture image!\n" );
 		success = false;
 	}
     
@@ -533,30 +620,6 @@ bool loadMedia(){
 		success = false;
 	}
 
-	else
-	{
-		//Set sprite clips
-		gSpriteClips[ 0 ].x =   0;
-		gSpriteClips[ 0 ].y =   0;
-		gSpriteClips[ 0 ].w =  64;
-		gSpriteClips[ 0 ].h = 205;
-        
-		gSpriteClips[ 1 ].x =  64;
-		gSpriteClips[ 1 ].y =   0;
-		gSpriteClips[ 1 ].w =  64;
-		gSpriteClips[ 1 ].h = 205;
-		
-		gSpriteClips[ 2 ].x = 128;
-		gSpriteClips[ 2 ].y =   0;
-		gSpriteClips[ 2 ].w =  64;
-		gSpriteClips[ 2 ].h = 205;
-        
-		gSpriteClips[ 3 ].x = 196;
-		gSpriteClips[ 3 ].y =   0;
-		gSpriteClips[ 3 ].w =  64;
-		gSpriteClips[ 3 ].h = 205;
-	}
-    
     //Load music
     elsaMusic = Mix_LoadMUS( "LetItGo.wav" );
     if( elsaMusic == NULL )
@@ -565,7 +628,6 @@ bool loadMedia(){
         success = false;
     }
     
-    //Load sound effects
     jackMusic = Mix_LoadMUS( "WheelOfFortune.wav" );
     if( jackMusic == NULL )
     {
@@ -580,6 +642,7 @@ bool loadMedia(){
         success = false;
     }
     
+    //Load sound effects
     soundEffect1 = Mix_LoadWAV( "scratch.wav" );
     if( katMusic == NULL )
     {
@@ -615,17 +678,43 @@ bool loadMedia(){
         success = false;
     }
     
-    
 	return success;
 }
 //------------------------------------------------------------------------------
 void close(){
     
     //Free loaded images
+    
 	elsaBattleTexture.free();
-	NorthMountBGTexture.free();
+    katBattleTexture.free();
+    jackBattleTexture.free();
+    albusBattleTexture.free();
+    
+    elsaDialogueTexture.free();
+    katDialogueTexture.free();
+    jackDialogueTexture.free();
+    albusDialogueTexture.free();
+    
+    elsaSpriteSide.free();
+    katSpriteSide.free();
+    jackSpriteSide.free();
+    albusSpriteSide.free();
+    elsaSpriteFront.free();
+    katSpriteFront.free();
+    jackSpriteFront.free();
+    albusSpriteFront.free();
+    elsaSpriteBack.free();
+    katSpriteBack.free();
+    jackSpriteBack.free();
+    albusSpriteBack.free();
+    
+    NorthMountBGTexture.free();
+    CaveBGTexture.free();
+    IslandBGTexture.free();
+    ForestBGTexture.free();
+    BViewTexture.free();
+    
     textAndaleTexture.free();
-    textCourierTexture.free();
     
     //Free the music
     Mix_FreeMusic( elsaMusic );
@@ -640,14 +729,19 @@ void close(){
     //Free the sound effects
     Mix_FreeChunk( soundEffect1 );
     soundEffect1 = NULL;
+    Mix_FreeChunk( elsaSoundEffect );
+    elsaSoundEffect = NULL;
+    Mix_FreeChunk( jackSoundEffect );
+    jackSoundEffect = NULL;
+    Mix_FreeChunk( katSoundEffect );
+    katSoundEffect = NULL;
+    Mix_FreeChunk( albusSoundEffect );
+    albusSoundEffect = NULL;
 
     
     //Free global font
     TTF_CloseFont( gFont );
     gFont = NULL;
-    
-    //Free loaded images
-	gSpriteSheetTexture.free();
     
 	//Destroy window
 	SDL_DestroyRenderer( gRenderer );
@@ -697,18 +791,25 @@ int main( int argc, char* args[] )
             //initial active character
             MainCharacters activeCharacter=ELSA;
             
+            //initial Character Direction
+            Direction charDir=LEFT;
+            
             //Play the music
             Mix_PlayMusic( elsaMusic, -1 ); //start playing Elsa's music
             
             //Angle of rotation iterator for oscillating
-            int elsaRotIterator=0;
-            int jackRotIterator=0;
-            int albusRotIterator=0;
-            int katRotIterator=0;
+            float elsaRotIterator=0;
+            float jackRotIterator=0;
+            float albusRotIterator=0;
+            float katRotIterator=0;
             
 			//While application is running
 			while( !quit )
 			{
+                
+                
+                
+                
 				//Handle events on queue
 				while( SDL_PollEvent( &e ) != 0 )
 				{
@@ -734,6 +835,7 @@ int main( int argc, char* args[] )
                                 if(activeCharacter==KAT) Kat.moveRel(0,-15);
                                 if(activeCharacter==JACK) Jack.moveRel(0,-15);
                                 if(activeCharacter==ALBUS) Albus.moveRel(0,-15);
+                                charDir=UP;
                                 break;
                                 
                             //move character down
@@ -742,6 +844,7 @@ int main( int argc, char* args[] )
                                 if(activeCharacter==KAT) Kat.moveRel(0,15);
                                 if(activeCharacter==JACK) Jack.moveRel(0,15);
                                 if(activeCharacter==ALBUS) Albus.moveRel(0,15);
+                                charDir=DOWN;
                                 break;
                                 
                             //move character left
@@ -762,6 +865,7 @@ int main( int argc, char* args[] )
                                     Albus.moveRel(-15,0);
                                     Albus.flipLeft();
                                 }
+                                charDir=LEFT;
                                 break;
                                 
                             //move character right
@@ -782,6 +886,7 @@ int main( int argc, char* args[] )
                                     Albus.moveRel(15,0);
                                     Albus.flipRight();
                                 }
+                                charDir=RIGHT;
                                 break;
                                 
                             //Play high sound effect
@@ -946,7 +1051,7 @@ int main( int argc, char* args[] )
                     if(activeCharacter==ALBUS){
                         albusDialogueTexture.render( 20, 2*SCREEN_HEIGHT/3+50, NULL, NULL, NULL, SDL_FLIP_NONE );
                     }
-                    
+                   
                     //Bottom viewport
                     SDL_Rect bottomViewport;
                     bottomViewport.x = 0;
@@ -998,27 +1103,43 @@ int main( int argc, char* args[] )
                     else if (activeCharacter==KAT){
                         katRotIterator++;
                         Kat.setDegs(Kat.getDegs()+sin(katRotIterator));
-                    }
-                    
-                    
-                    
-                  
+                    } 
                 }
                 else if(layout == OPEN_LAYOUT){
                     
+                    
+                    //Top viewport
+                    SDL_Rect fullViewport;
+                    fullViewport.x = 0;
+                    fullViewport.y = 0;
+                    fullViewport.w = SCREEN_WIDTH;
+                    fullViewport.h = SCREEN_HEIGHT;
+                    SDL_RenderSetViewport( gRenderer, &fullViewport );
+                    
+                    //Render map texture to screen
+                    practiceMapTexture.render(0,0);
+                    
+                    //move Katniss around if she is selected
+                    if (charDir==UP) katSpriteBack.render( Kat.getX(), Kat.getY(), NULL, Kat.getDegs(), NULL, SDL_FLIP_NONE );
+                    else if (charDir==DOWN) katSpriteFront.render( Kat.getX(), Kat.getY(), NULL, Kat.getDegs(), NULL, SDL_FLIP_NONE );
+                    else if (charDir==LEFT || charDir==RIGHT) katSpriteSide.render( Kat.getX(), Kat.getY(), NULL, Kat.getDegs(), NULL, Kat.getDir() );
+                    
+                    
                     //Check for Rendering Dialogue Textures to the Screen
                     if(activeCharacter==ELSA){
-                        elsaDialogueTexture.render( 10, 2*SCREEN_HEIGHT/3+50, NULL, NULL, NULL, Elsa.getDir() );
+                        elsaDialogueTexture.render( 10, 2*SCREEN_HEIGHT/3+50, NULL, NULL, NULL, SDL_FLIP_NONE );
                     }
                     if(activeCharacter==KAT){
-                        katDialogueTexture.render( 0, 2*SCREEN_HEIGHT/3+40, NULL, NULL, NULL, Kat.getDir() );
+                        katDialogueTexture.render( 0, 2*SCREEN_HEIGHT/3+40, NULL, NULL, NULL, SDL_FLIP_NONE );
                     }
                     if(activeCharacter==JACK){
-                        jackDialogueTexture.render( 10, 2*SCREEN_HEIGHT/3+60, NULL, NULL, NULL, Jack.getDir() );
+                        jackDialogueTexture.render( 10, 2*SCREEN_HEIGHT/3+60, NULL, NULL, NULL, SDL_FLIP_NONE );
                     }
                     if(activeCharacter==ALBUS){
-                        albusDialogueTexture.render( 20, 2*SCREEN_HEIGHT/3+50, NULL, NULL, NULL, Albus.getDir() );
+                        albusDialogueTexture.render( 20, 2*SCREEN_HEIGHT/3+50, NULL, NULL, NULL, SDL_FLIP_NONE );
                     }
+                    
+                    
                 }
                 
                 //Update screen
