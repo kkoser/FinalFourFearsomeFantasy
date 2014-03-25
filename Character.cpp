@@ -116,18 +116,20 @@ int Character::getValueForCommand(string com, int baseVal) {
     //first check what kind of change we're doing
     char c = com.at(0);
     com.erase(0,1);
+    //int movePower truncates decimals
+    int movePower = this->getCurrentPower()*atof(com.c_str());
     switch (c) {
         case '+':
-            val = baseVal + atoi(com.c_str());
+            val = baseVal + movePower;
             break;
         case '-':
-            val = baseVal - atoi(com.c_str());
+            val = baseVal - movePower;
             break;
         case '*':
-            val = (float)baseVal*atof(com.c_str());
+            val = baseVal*movePower;
             break;
         case '/':
-            val = (float)baseVal/atof(com.c_str());
+            val = baseVal/movePower;
             break;
         default:
             val = 0;
