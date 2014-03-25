@@ -8,7 +8,6 @@
 
 /*
 This is the base character class of which other characters will inherit.
- It is an abstract class, as there will be no base character filetype to parse.
  */
 #ifndef __tester__Character__
 #define __tester__Character__
@@ -21,7 +20,7 @@ This is the base character class of which other characters will inherit.
 
 
 typedef enum {NOSTATUS, DPT, SHIELD, INCAP} Statuses; //these can be applied by the move
-typedef enum {NOATTRIBUTE, POWER, CURRENTPP, PPREGEN, ARMOR} Attributes; //certain moves multiply these
+//typedef enum {NOATTRIBUTE, POWER, CURRENTPP, PPREGEN, ARMOR} Attributes; //certain moves multiply these
 
 using namespace std;
 
@@ -65,13 +64,19 @@ public:
     //setters and getters, these adjust for <0 or >max inputs
     int getCurrentHealth();
     void setCurrentHealth(int health);
+    int getCurrentPower();
+    void setCurrentPower(int power);
+    int getCurrentPP();
+    void setCurrentPP(int power);
+    int getCurrentPPRegen();
+    void setCurrentPPRegen(int power);
     
     
 private:
     
     string displayForMove(string str); //creates text to be displayed
     void setStatForTarget();
-    int getValueForCommand(string com, int baseVal);
+    int getValueForCommand(string com, int baseVal); //baseval typically a char's stat
     
 
 };
