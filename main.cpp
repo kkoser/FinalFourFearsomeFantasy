@@ -628,7 +628,7 @@ bool loadMedia(){
         success = false;
     }
     
-    jackMusic = Mix_LoadMUS( "WheelOfFortune.wav" );
+    jackMusic = Mix_LoadMUS( "hesAPirate.wav" );
     if( jackMusic == NULL )
     {
         printf( "Failed to load Jack Music SDL_mixer Error: %s\n", Mix_GetError() );
@@ -642,18 +642,18 @@ bool loadMedia(){
         success = false;
     }
     
-    //Load sound effects
-    soundEffect1 = Mix_LoadWAV( "scratch.wav" );
+    albusMusic = Mix_LoadMUS( "hedwigsTheme.wav" );
     if( katMusic == NULL )
     {
-        printf( "Failed to load scratch sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
+        printf( "Failed to load Albus music! SDL_mixer Error: %s\n", Mix_GetError() );
         success = false;
     }
     
+    //Load sound effects
     elsaSoundEffect = Mix_LoadWAV( "elsaSoundEffect.wav" );
     if( katMusic == NULL )
     {
-        printf( "Failed to load elsa sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
+        printf( "Failed to load kat sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
         success = false;
     }
     
@@ -806,10 +806,7 @@ int main( int argc, char* args[] )
 			//While application is running
 			while( !quit )
 			{
-                
-                
-                
-                
+
 				//Handle events on queue
 				while( SDL_PollEvent( &e ) != 0 )
 				{
@@ -889,12 +886,6 @@ int main( int argc, char* args[] )
                                 charDir=RIGHT;
                                 break;
                                 
-                            //Play high sound effect
-                            case SDLK_9:
-                                Mix_PlayChannel( -1, soundEffect1, 0 );
-                                break;
-                                
-                                
                             case SDLK_5: //Elsa's Music
                                 //If there is no music playing
                                 if( Mix_PlayingMusic() == 0 )
@@ -970,7 +961,32 @@ int main( int argc, char* args[] )
                                 }
                                 break;
                                 
-                            case SDLK_8:
+                            case SDLK_8: //Kat's Music
+                                //If there is no music playing
+                                if( Mix_PlayingMusic() == 0 )
+                                {
+                                    //Play the music
+                                    Mix_PlayMusic( albusMusic, -1 );
+                                }
+                                //If music is being played
+                                else
+                                {
+                                    //If the music is paused
+                                    if( Mix_PausedMusic() == 1 )
+                                    {
+                                        //Resume the music
+                                        Mix_ResumeMusic();
+                                    }
+                                    //If the music is playing
+                                    else
+                                    {
+                                        //Pause the music
+                                        Mix_PauseMusic();
+                                    }
+                                }
+                                break;
+                                
+                            case SDLK_9:
                                 //Stop the music
                                 Mix_HaltMusic();
                                 break;
@@ -1082,9 +1098,9 @@ int main( int argc, char* args[] )
                     textAndaleTexture.render( 380, 45 );
                     textAndaleTexture.loadFromRenderedText( "7: Kat's Theme", { 255, 255, 255 } );
                     textAndaleTexture.render( 380, 70 );
-                    textAndaleTexture.loadFromRenderedText( "8: Stop Music (To Play Different Song)", { 255, 255, 255 } );
+                    textAndaleTexture.loadFromRenderedText( "8: Albus' Theme", { 255, 255, 255 } );
                     textAndaleTexture.render( 380, 95 );
-                    textAndaleTexture.loadFromRenderedText( "9: Example Sound Effect", { 255, 255, 255 } );
+                    textAndaleTexture.loadFromRenderedText( "9: Stop Music (To Play Different Song)", { 255, 255, 255 } );
                     textAndaleTexture.render( 380, 120 );
                     
                     
