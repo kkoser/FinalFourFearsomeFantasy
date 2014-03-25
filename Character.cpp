@@ -28,12 +28,19 @@ void Character::actMoveOnTarget(string moveName, vector<Character> targets) {
         
         Character &ch = *this;
         
+        int hasRun = 0;
+        
         //get each word from line
         istringstream iss(line);
         string word;
         while (getline(iss, word, ' ')) {
-            if (word=="Display") {
-                this->displayForMove(line);
+            if (word=="Once") {
+                if (hasRun == 1) {
+                    continue;
+                }
+            }
+            else if (word=="Display") {
+                this->displayStringForMove(line, targets[0]);
             }
             else if (word=="Target") {
                 ch = targets[0];
@@ -71,8 +78,9 @@ void Character::actMoveOnTarget(string moveName, vector<Character> targets) {
             else {
                 cout << "Error reading word " << word << endl;
             }
-            
         }
+        
+        hasRun = 1;
     }
     
 }
@@ -137,7 +145,35 @@ int Character::getValueForCommand(string com, int baseVal) {
     return val;
 }
 
-string Character::displayForMove(string str) {
+string Character::displayStringForMove(string com, Character target) {
+    string output;
+    
+    istringstream iss(com);
+    string word;
+    
+    int isFirst = 1;
+    while (getline(iss, word, ' ')) {
+        //skip the first line, becuase it is the keyword Display
+        if (isFirst == 1) {
+            isFirst = 0;
+            continue;
+        }
+        
+        //$ is the keyword indicating a word needs to be parsed
+        char c = word.at(0);
+        if (c != '$') {
+            output.append(word);
+        }
+        else {
+            if (word == "$ACTOR_NAME") {
+                output.append(this->getName());
+            }
+            else if (word == "$TARGET_NAME") {
+                output.append(target.getName());
+            }
+        }
+        
+    }
     
     
     return NULL;
@@ -198,4 +234,8 @@ void Character::setCurrentPPRegen(int PPRegen) {
         PPRegen = standardPPRegen;
     }
     currentPPRegen = PPRegen;
+}
+
+string Character::getName() {
+    return name;
 }

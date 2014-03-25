@@ -71,10 +71,12 @@ public:
     int getCurrentPPRegen();
     void setCurrentPPRegen(int power);
     
+    string getName();
+    
     
 private:
     
-    string displayForMove(string str); //creates text to be displayed
+    string displayStringForMove(string com, Character target); //creates text to be displayed
     void setStatForTarget();
     int getValueForCommand(string com, int baseVal); //baseval typically a char's stat
     
