@@ -45,28 +45,26 @@ void Character::actMoveOnTarget(string moveName, vector<Character> targets) {
             else if (word=="Health") {
                 getline(iss, word);
                 
-                /*
-                int val;
-                if (word=="MAX") {
-                    val = ch.getCurrentHealth();
-                }
-                else if (word=="HALF") {
-                    val = ch.getCurrentHealth()/2;
-                }
-                if (word=="-MAX") {
-                    val = -1*ch.getCurrentHealth();
-                }
-                else if (word=="-HALF") {
-                    val = -1*ch.getCurrentHealth()/2;
-                }
-                
-                else {
-                    val = atoi(word.c_str()); //replace with numeric value of word
-                }
-                 */
-                
                 int val = getValueForCommand(word, ch.getCurrentHealth());
                 ch.setCurrentHealth(val);
+            }
+            else if (word=="Power") {
+                getline(iss, word);
+                
+                int val = getValueForCommand(word, ch.getCurrentPower());
+                ch.setCurrentPower(val);
+            }
+            else if (word=="PP") {
+                getline(iss, word);
+                
+                int val = getValueForCommand(word, ch.getCurrentPP());
+                ch.setCurrentPP(val);
+            }
+            else if (word=="PPRegen") {
+                getline(iss, word);
+                
+                int val = getValueForCommand(word, ch.getCurrentPPRegen());
+                ch.setCurrentPPRegen(val);
             }
             
             
