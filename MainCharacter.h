@@ -1,6 +1,5 @@
 //
 //  MainCharacter.h
-<<<<<<< HEAD
 //  tester
 //
 //  Created by Zach Waterson on 3/22/14.
@@ -16,23 +15,11 @@
 #include "Character.h"
 
 using namespace std;
-
-class MainCharacter : public Character {
-private:
-=======
-//  FinalFourFearsomeFantasy
-//
-//  Created by Kyle Koser on 3/20/14.
-//  Copyright (c) 2014 Kyle Koser. All rights reserved.
-//
-
-#include <string>
-#include <vector>
-#include "Move.h"
+    
 
 using namespace std;
 
-class MainCharacter : public BaseCharacter {
+class MainCharacter : public Character {
 private: 
 	//these can be upgraded using level points
 	int maxHealth;
@@ -48,7 +35,6 @@ private:
 	int currentPP;
 	int currentPPRegen;
 	int currentArmor;
->>>>>>> FETCH_HEAD
 
 	//these are not increased by level points
 	int exp;
@@ -60,19 +46,13 @@ private:
     
 public:
 	MainCharacter(string fileName);
-<<<<<<< HEAD
+    ~MainCharacter();
     
     void levelUp(int healthAdded, int powerAdded, int ppRegenAdded, int armorAdded);
-};
 
 
-#endif /* defined(__tester__MainCharacter__) */
-=======
-    ~MainCharacter();
-
-	void actOnCharacter(MainCharacter &ch, Move m);
-    void levelUp(int healthAdded, int powerAdded, int ppRegenAdded, int armorAdded);
+	void actOnCharacter(Character &ch, string moveName);
     
     void writeToFile(string fileName);
 };
->>>>>>> FETCH_HEAD
+#endif /* defined(__tester__MainCharacter__) */

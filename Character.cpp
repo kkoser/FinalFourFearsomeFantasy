@@ -8,6 +8,10 @@
 
 #include "Character.h"
 
+Character::Character(string fileName) {
+    
+}
+
 void Character::actMoveOnTarget(string moveName, vector<Character> targets) {
     
     ifstream file(moveName.c_str());
