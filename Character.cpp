@@ -45,6 +45,7 @@ void Character::actMoveOnTarget(string moveName, vector<Character> targets) {
             else if (word=="Health") {
                 getline(iss, word);
                 
+                /*
                 int val;
                 if (word=="MAX") {
                     val = ch.getCurrentHealth();
@@ -62,8 +63,12 @@ void Character::actMoveOnTarget(string moveName, vector<Character> targets) {
                 else {
                     val = atoi(word.c_str()); //replace with numeric value of word
                 }
-                ch.setCurrentHealth(ch.getCurrentHealth()+val);
+                 */
+                
+                int val = getValueForCommand(word, ch.getCurrentHealth());
+                ch.setCurrentHealth(val);
             }
+            
             
             else {
                 cout << "Error reading word " << word << endl;
