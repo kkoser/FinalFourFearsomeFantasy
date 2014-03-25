@@ -1,5 +1,5 @@
 //
-//  BaseCharacter.h
+//  Character.h
 //  tester
 //
 //  Created by Zach Waterson on 3/22/14.
@@ -10,18 +10,23 @@
 This is the base character class of which other characters will inherit.
  It is an abstract class, as there will be no base character filetype to parse.
  */
-#ifndef __tester__BaseCharacter__
-#define __tester__BaseCharacter__
+#ifndef __tester__Character__
+#define __tester__Character__
 
 #include <iostream>
 #include <string>
 #include <vector>
-#include "Move.h"
+#include <fstream>
+
+
+typedef enum {NOSTATUS, DPT, SHIELD, INCAP} Statuses; //these can be applied by the move
+typedef enum {NOATTRIBUTE, POWER, CURRENTPP, PPREGEN, ARMOR} Attributes; //certain moves multiply these
 
 using namespace std;
 
-class BaseCharacter {
+class Character {
 protected:
+    
 	int maxHealth;
 	int standardPower;
 	int maxPP; //mana for moves
@@ -41,18 +46,27 @@ protected:
     
 	string name;
     string file;
-	vector<Move> moves;
-	Move activeMoves[4];
+	
+    vector<string> moves;
     
 	string spriteName;
         
 public:
-	BaseCharacter(string fileName);
-    
-	void actOnCharacter(BaseCharacter *ch, Move m);
+	Character(string fileName);
     
     //attribute setters for battle
     void setPower(int p);
+    
+    void actMoveOnTarget(string moveName, vector<Character> targets);
+    
+    int numTargetsForMove(string moveName);
+    
+    
+private:
+    
+    void displayForMove(string str);
+    
+
 };
 
-#endif /* defined(__tester__BaseCharacter__) */
+#endif /* defined(__tester__Character__) */
