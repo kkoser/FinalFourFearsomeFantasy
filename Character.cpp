@@ -21,7 +21,48 @@ void Character::actMoveOnTarget(string moveName, vector<Character> targets) {
     }
     
     string line;
-    while (file.good()) {
+    while (getline(file, line)) {
+        
+        Character &ch = *this;
+        
+        istringstream iss(line);
+        string word;
+        while (getline(iss, word, ' ')) {
+            if (word.compare("Display")) {
+                this->displayForMove(line);
+            }
+            else if (word.compare("Target")) {
+                ch = targets[0];
+                
+            }
+            else if (word.compare("Actor")) {
+                ch = *this;
+            }
+            else if (word.compare("Health")) {
+                getline(iss, word);
+                int val;
+                if (word.compare("MAX")) {
+                    val = ch.getHealth();
+                }
+                else if (word.compare("HALF")) {
+                    val = ch.getHealth()/2;
+                }
+                if (word.compare("-MAX")) {
+                    val = -1*ch.getHealth();
+                }
+                else if (word.compare("-HALF")) {
+                    val = -1*ch.getHealth()/2;
+                }
+                
+                else {
+                    val = atoi(word.c_str()); //replace with numeric value of word
+                }
+                ch.setHealth(ch.getHealth()+val);
+            }
+            else if
+            
+        }
+        
         //read line
         //tokenize into array of words
         //if statements for each keyword
@@ -45,4 +86,8 @@ int Character::numTargetsForMove(string moveName) {
     }
     
     return 1;
+}
+
+void Character::displayForMove(string str) {
+    
 }

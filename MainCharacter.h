@@ -15,9 +15,6 @@
 #include "Character.h"
 
 using namespace std;
-    
-
-using namespace std;
 
 class MainCharacter : public Character {
 private: 

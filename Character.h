@@ -17,6 +17,7 @@ This is the base character class of which other characters will inherit.
 #include <string>
 #include <vector>
 #include <fstream>
+#include <sstream>
 
 
 typedef enum {NOSTATUS, DPT, SHIELD, INCAP} Statuses; //these can be applied by the move
@@ -64,7 +65,7 @@ public:
     
 private:
     
-    void displayForMove(string str);
+    void displayForMove(string str); //creates text to be displayed
     
 
 };
