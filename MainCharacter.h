@@ -1,9 +1,18 @@
+//
+//  MainCharacter.h
+//  FinalFourFearsomeFantasy
+//
+//  Created by Kyle Koser on 3/20/14.
+//  Copyright (c) 2014 Kyle Koser. All rights reserved.
+//
+
 #include <string>
 #include <vector>
+#include "Move.h"
 
 using namespace std;
 
-class MainCharacter {
+class MainCharacter : public BaseCharacter {
 private: 
 	//these can be upgraded using level points
 	int maxHealth;
@@ -35,7 +44,10 @@ private:
 
 public:
 	MainCharacter(string fileName);
+    ~MainCharacter();
 
-	void actOnCharacter(Character &ch, Move m);
+	void actOnCharacter(MainCharacter &ch, Move m);
     void levelUp(int healthAdded, int powerAdded, int ppRegenAdded, int armorAdded);
+    
+    void writeToFile(string fileName);
 };
