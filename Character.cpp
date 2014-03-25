@@ -182,3 +182,17 @@ void Character::setCurrentPP(int PP) {
     }
     currentPP = PP;
 }
+
+int Character::getCurrentPPRegen() {
+    return currentPPRegen;
+}
+
+void Character::setCurrentPPRegen(int PPRegen) {
+    if (PPRegen < 0) {
+        PPRegen = 0;
+    }
+    else if (PPRegen > standardPPRegen) {
+        PPRegen = standardPPRegen;
+    }
+    currentPPRegen = PPRegen;
+}

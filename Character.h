@@ -76,7 +76,7 @@ private:
     
     string displayForMove(string str); //creates text to be displayed
     void setStatForTarget();
-    int getValueForCommand(string com, int baseVal);
+    int getValueForCommand(string com, int baseVal); //baseval typically a char's stat
     
 
 };
