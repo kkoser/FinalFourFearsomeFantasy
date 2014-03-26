@@ -31,7 +31,7 @@ protected:
 	int standardPower;
 	int maxPP; //mana for moves
 	int standardPPRegen;
-	int standardArmor;
+	//int standardArmor;
     
 	int currentHealth; //current health in/out battle
     
@@ -39,7 +39,7 @@ protected:
 	int currentPower;
 	int currentPP;
 	int currentPPRegen;
-	int currentArmor;
+	//int currentArmor;
     
 	//these are not increased by level points
 	int accuracy;
@@ -67,16 +67,16 @@ public:
     int getCurrentPower();
     void setCurrentPower(int power);
     int getCurrentPP();
-    void setCurrentPP(int power);
+    void setCurrentPP(int PP);
     int getCurrentPPRegen();
-    void setCurrentPPRegen(int power);
+    void setCurrentPPRegen(int PPRegen);
     
     
 private:
     
     string displayForMove(string str); //creates text to be displayed
     void setStatForTarget();
-    int getValueForCommand(string com, int baseVal); //baseval typically a char's stat
+    int getValueForCommand(string com, int baseVal, int power); //baseval typically a char's stat
     
 
 };

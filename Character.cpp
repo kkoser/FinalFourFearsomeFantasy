@@ -10,6 +10,17 @@
 
 Character::Character(string fileName) {
     
+    maxHealth = 100;
+    standardPower = 10;
+    maxPP = 10;
+    standardPPRegen = 1;
+    
+    currentPPRegen = 1;
+    currentPP = 10;
+    currentPower = 10;
+    currentHealth = 100;
+    
+    fileName = fileName;
 }
 
 void Character::actMoveOnTarget(string moveName, vector<Character> targets) {
@@ -33,7 +44,7 @@ void Character::actMoveOnTarget(string moveName, vector<Character> targets) {
         string word;
         while (getline(iss, word, ' ')) {
             if (word=="Display") {
-                this->displayForMove(line);
+                //this->displayForMove(line);
             }
             else if (word=="Target") {
                 ch = targets[0];
@@ -45,25 +56,25 @@ void Character::actMoveOnTarget(string moveName, vector<Character> targets) {
             else if (word=="Health") {
                 getline(iss, word);
                 
-                int val = getValueForCommand(word, ch.getCurrentHealth());
+                int val = getValueForCommand(word, ch.getCurrentHealth(), ch.getCurrentPower());
                 ch.setCurrentHealth(val);
             }
             else if (word=="Power") {
                 getline(iss, word);
                 
-                int val = getValueForCommand(word, ch.getCurrentPower());
+                int val = getValueForCommand(word, ch.getCurrentPower(), ch.getCurrentPower());
                 ch.setCurrentPower(val);
             }
             else if (word=="PP") {
                 getline(iss, word);
                 
-                int val = getValueForCommand(word, ch.getCurrentPP());
+                int val = getValueForCommand(word, ch.getCurrentPP(), 1);
                 ch.setCurrentPP(val);
             }
             else if (word=="PPRegen") {
                 getline(iss, word);
                 
-                int val = getValueForCommand(word, ch.getCurrentPPRegen());
+                int val = getValueForCommand(word, ch.getCurrentPPRegen(), ch.getCurrentPower());
                 ch.setCurrentPPRegen(val);
             }
             
@@ -71,10 +82,8 @@ void Character::actMoveOnTarget(string moveName, vector<Character> targets) {
             else {
                 cout << "Error reading word " << word << endl;
             }
-            
         }
     }
-    
 }
 
 int Character::numTargetsForMove(string moveName) {
@@ -110,14 +119,14 @@ int Character::numTargetsForMove(string moveName) {
 
 }
 
-int Character::getValueForCommand(string com, int baseVal) {
+int Character::getValueForCommand(string com, int baseVal, int power) {
     int val = 0;
     
     //first check what kind of change we're doing
     char c = com.at(0);
     com.erase(0,1);
     //int movePower truncates decimals
-    int movePower = this->getCurrentPower()*atof(com.c_str());
+    int movePower = power*atof(com.c_str());
     switch (c) {
         case '+':
             val = baseVal + movePower;
