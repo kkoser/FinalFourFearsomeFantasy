@@ -146,7 +146,7 @@ int Character::getValueForCommand(string com, int baseVal) {
 }
 
 string Character::displayStringForMove(string com, Character target) {
-    string output;
+    ostringstream output;
     
     istringstream iss(com);
     string word;
@@ -162,21 +162,28 @@ string Character::displayStringForMove(string com, Character target) {
         //$ is the keyword indicating a word needs to be parsed
         char c = word.at(0);
         if (c != '$') {
-            output.append(word);
+            output << word;
         }
         else {
             if (word == "$ACTOR_NAME") {
-                output.append(this->getName());
+                output << this->getName();
             }
             else if (word == "$TARGET_NAME") {
-                output.append(target.getName());
+                output << target.getName();
             }
+            else if (word == "$ACTOR_HEALTH") {
+                output << this->getCurrentHealth();
+            }
+            else if (word == "$TARGET_HEALTH") {
+                output << target.getCurrentHealth();
+            }
+            
         }
         
     }
     
     
-    return NULL;
+    return output.str();
 }
 
 //setters and getters
