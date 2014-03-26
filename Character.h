@@ -59,7 +59,7 @@ public:
     
     void actMoveOnTarget(string moveName, vector<Character> targets);
     
-    int numTargetsForMove(string moveName);
+    int numTargetsForMove(string moveName); //returns 0 if all
     
     //setters and getters, these adjust for <0 or >max inputs
     int getCurrentHealth();
@@ -76,9 +76,8 @@ public:
     
 private:
     
-    string displayStringForMove(string com, Character target); //creates text to be displayed
-    void setStatForTarget();
-    int getValueForCommand(string com, int baseVal, int power); //baseval typically a char's stat
+    string displayStringForMove(string command, Character target); //creates text to be displayed
+    int getValueForCommand(string command, int baseVal, int power); //baseval typically a char's stat
     
 
 };

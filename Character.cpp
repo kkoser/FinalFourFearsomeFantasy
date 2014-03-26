@@ -39,17 +39,20 @@ void Character::actMoveOnTarget(string moveName, vector<Character> targets) {
         
         Character &ch = *this;
         
-        int hasRun = 0;
+        int hasRun = 0; //for once keyword
         
-        //get each word from line
-        istringstream iss(line);
-        string word;
-        while (getline(iss, word, ' ')) {
-            if (word=="Display") {
-                //this->displayForMove(line);
+        //iterate through targets
+        typename vector<Character>::const_iterator currentTarget;
+        for (currentTarget = targets.begin(); currentTarget != targets.end(); ++currentTarget) {
+        
+            //get each word from line
+            istringstream iss(line);
+            string word;
+            
+            while (getline(iss, word, ' ')) {
                 if (word=="Once") {
                     if (hasRun == 1) {
-                        continue;
+                        continue; //skips whole line if prefaced with "Once" and it has already been done
                     }
                 }
                 else if (word=="Display") {
@@ -86,14 +89,15 @@ void Character::actMoveOnTarget(string moveName, vector<Character> targets) {
                     int val = getValueForCommand(word, ch.getCurrentPPRegen(), ch.getCurrentPower());
                     ch.setCurrentPPRegen(val);
                 }
-                
+                else if (word=="Status") {
+                    //apply status
+                }
                 
                 else {
                     cout << "Error reading word " << word << endl;
                 }
+                hasRun = 1;
             }
-            
-            hasRun = 1;
         }
     }
 }
@@ -138,20 +142,21 @@ int Character::getValueForCommand(string com, int baseVal, int power) {
     //first check what kind of change we're doing
     char c = com.at(0);
     com.erase(0,1);
-    //int movePower truncates decimals
-    int movePower = power*atof(com.c_str());
+    float movePower = atof(com.c_str()); //get move power
+    int totalPower = power*movePower; //int totalPower truncates decimals
+
     switch (c) {
         case '+':
-            val = baseVal + movePower;
+            val = baseVal + totalPower;
             break;
         case '-':
-            val = baseVal - movePower;
+            val = baseVal - totalPower;
             break;
         case '*':
-            val = baseVal*movePower;
+            val = baseVal*totalPower;
             break;
         case '/':
-            val = baseVal/movePower;
+            val = baseVal/totalPower;
             break;
         default:
             val = 0;
