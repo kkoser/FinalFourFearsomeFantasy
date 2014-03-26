@@ -45,58 +45,56 @@ void Character::actMoveOnTarget(string moveName, vector<Character> targets) {
         istringstream iss(line);
         string word;
         while (getline(iss, word, ' ')) {
-<<<<<<< HEAD
             if (word=="Display") {
                 //this->displayForMove(line);
-=======
-            if (word=="Once") {
-                if (hasRun == 1) {
-                    continue;
+                if (word=="Once") {
+                    if (hasRun == 1) {
+                        continue;
+                    }
+                }
+                else if (word=="Display") {
+                    this->displayStringForMove(line, targets[0]);
+                }
+                else if (word=="Target") {
+                    ch = targets[0];
+                    
+                }
+                else if (word=="Actor") {
+                    ch = *this;
+                }
+                else if (word=="Health") {
+                    getline(iss, word);
+                    
+                    int val = getValueForCommand(word, ch.getCurrentHealth(), ch.getCurrentPower());
+                    ch.setCurrentHealth(val);
+                }
+                else if (word=="Power") {
+                    getline(iss, word);
+                    
+                    int val = getValueForCommand(word, ch.getCurrentPower(), ch.getCurrentPower());
+                    ch.setCurrentPower(val);
+                }
+                else if (word=="PP") {
+                    getline(iss, word);
+                    
+                    int val = getValueForCommand(word, ch.getCurrentPP(), 1);
+                    ch.setCurrentPP(val);
+                }
+                else if (word=="PPRegen") {
+                    getline(iss, word);
+                    
+                    int val = getValueForCommand(word, ch.getCurrentPPRegen(), ch.getCurrentPower());
+                    ch.setCurrentPPRegen(val);
+                }
+                
+                
+                else {
+                    cout << "Error reading word " << word << endl;
                 }
             }
-            else if (word=="Display") {
-                this->displayStringForMove(line, targets[0]);
->>>>>>> FETCH_HEAD
-            }
-            else if (word=="Target") {
-                ch = targets[0];
-                
-            }
-            else if (word=="Actor") {
-                ch = *this;
-            }
-            else if (word=="Health") {
-                getline(iss, word);
-                
-                int val = getValueForCommand(word, ch.getCurrentHealth(), ch.getCurrentPower());
-                ch.setCurrentHealth(val);
-            }
-            else if (word=="Power") {
-                getline(iss, word);
-                
-                int val = getValueForCommand(word, ch.getCurrentPower(), ch.getCurrentPower());
-                ch.setCurrentPower(val);
-            }
-            else if (word=="PP") {
-                getline(iss, word);
-                
-                int val = getValueForCommand(word, ch.getCurrentPP(), 1);
-                ch.setCurrentPP(val);
-            }
-            else if (word=="PPRegen") {
-                getline(iss, word);
-                
-                int val = getValueForCommand(word, ch.getCurrentPPRegen(), ch.getCurrentPower());
-                ch.setCurrentPPRegen(val);
-            }
             
-            
-            else {
-                cout << "Error reading word " << word << endl;
-            }
+            hasRun = 1;
         }
-        
-        hasRun = 1;
     }
 }
 
@@ -130,9 +128,10 @@ int Character::numTargetsForMove(string moveName) {
     }
     
     return 1;   //defaults to 1 if can't find target
-
+    
 }
-
+    
+    
 int Character::getValueForCommand(string com, int baseVal, int power) {
     int val = 0;
     
