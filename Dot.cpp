@@ -44,6 +44,17 @@ Dot::Dot()
     mVelY = 0;
 }
 //------------------------------------------------------------------------------
+Dot::Dot(int PosX, int PosY)
+{
+    //Initialize the offsets
+    mPosX = PosX;
+    mPosY = PosY;
+    
+    //Initialize the velocity
+    mVelX = 0;
+    mVelY = 0;
+}
+//------------------------------------------------------------------------------
 void Dot::handleEvent( SDL_Event& e )
 {
     //If a key was pressed
@@ -118,16 +129,21 @@ void Dot::moveRel() //MODIFY LATER FOR OBSTACLE AVOIDANCE!!!
     }
 }
 //------------------------------------------------------------------------------
+void Dot::moveAbs(int x, int y){
+    mPosX=x;
+    mPosY=y;
+}
+//------------------------------------------------------------------------------
 void Dot::render(SDL_Renderer * gRenderer, LTexture gDotTexture)
 {
     //Show the dot
 	gDotTexture.render( gRenderer, mPosX, mPosY );
 }
 //------------------------------------------------------------------------------
-void Dot::renderRel( SDL_Renderer * gRenderer, int camX, int camY, LTexture gDotTexture )
+void Dot::renderRel( SDL_Renderer * gRenderer, int camX, int camY, LTexture * gDotTexture, SDL_RendererFlip flipType )
 {
     //Show the dot relative to the camera
-	gDotTexture.render( gRenderer, mPosX - camX, mPosY - camY );
+	gDotTexture->render( gRenderer, mPosX - camX, mPosY - camY, NULL, NULL, NULL, flipType );
 }
 //------------------------------------------------------------------------------
 int Dot::getPosX()

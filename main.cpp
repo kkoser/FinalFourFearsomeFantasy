@@ -72,30 +72,30 @@ bool loadMedia();
 void close();
 
 //The window we'll be rendering to
-SDL_Window* gWindow = NULL;
+SDL_Window * gWindow = NULL;
 
 //The window renderer
-SDL_Renderer* gRenderer = NULL;
+SDL_Renderer * gRenderer = NULL;
 
 //Globally used font
-TTF_Font *gFont = NULL;
+TTF_Font * gFont = NULL;
 
 //Text texture
 LTexture textAndaleTexture;
 
-//Scene textures
 //Battle Images
 LTexture elsaBattleTexture;
 LTexture katBattleTexture;
 LTexture jackBattleTexture;
 LTexture albusBattleTexture;
+
 //Dialogue Images
 LTexture elsaDialogueTexture;
 LTexture katDialogueTexture;
 LTexture jackDialogueTexture;
 LTexture albusDialogueTexture;
 
-//Sprite Sheets
+//Sprites
 LTexture elsaSpriteSide;
 LTexture katSpriteSide;
 LTexture jackSpriteSide;
@@ -114,13 +114,10 @@ LTexture NorthMountBGTexture;
 LTexture CaveBGTexture;
 LTexture IslandBGTexture;
 LTexture ForestBGTexture;
-LTexture BViewTexture;
+LTexture BViewTexture; //bottom viewport boxes
 
 //Map Textures
 LTexture practiceMapTexture;
-
-//Scene Alpha texture
-LTexture gModulatedTexture;
 
 //The music that will be played
 Mix_Music *elsaMusic = NULL;
@@ -135,9 +132,8 @@ Mix_Chunk *elsaSoundEffect = NULL;
 Mix_Chunk *jackSoundEffect = NULL;
 Mix_Chunk *katSoundEffect = NULL;
 
-//Dot textures
+//Dot (character) textures for exploration mode
 LTexture gDotTexture;
-LTexture gBGTexture;
 
 //------------------------------------------------------------------------------
 //              RUN INITIALIZATION FUNCTION
@@ -439,13 +435,6 @@ bool loadMedia(){
 		success = false;
 	}
     
-	//Load background texture
-	if( !gBGTexture.loadFromFile( "practiceMap.png", gRenderer ) )
-	{
-		printf( "Failed to load background texture!\n" );
-		success = false;
-	}
-    
 	return success;
 }
 //------------------------------------------------------------------------------
@@ -554,20 +543,22 @@ int main( int argc, char* args[] )
             CharacterView Jack(650,430);
             CharacterView Kat(850,430);
             
+            
 			//Event handler
 			SDL_Event e;
             
+            //Play the music
+            Mix_PlayMusic( elsaMusic, -1 ); //start playing Elsa's music
+            
             //initial layout
             WindowLayouts layout=BATTLE_LAYOUT;
+            int layoutReset=0;
             
             //initial active character
             MainCharacters activeCharacter=ELSA;
             
             //initial Character Direction
             Direction charDir=LEFT;
-            
-            //Play the music
-            Mix_PlayMusic( elsaMusic, -1 ); //start playing Elsa's music
             
             //Angle of rotation iterator for oscillating
             float elsaRotIterator=0;
@@ -592,7 +583,7 @@ int main( int argc, char* args[] )
             cout<<diaLine<<endl;
             
             //the dot to move around the screen
-            Dot dot;
+            Dot dot(550,480);
             
             //The camera area
 			SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
@@ -683,103 +674,24 @@ int main( int argc, char* args[] )
                                 break;
                                 
                             case SDLK_5: //Elsa's Music
-                                //If there is no music playing
-                                if( Mix_PlayingMusic() == 0 )
-                                {
-                                    //Play the music
-                                    Mix_PlayMusic( elsaMusic, -1 );
-                                }
-                                //If music is being played
-                                else
-                                {
-                                    //If the music is paused
-                                    if( Mix_PausedMusic() == 1 )
-                                    {
-                                        //Resume the music
-                                        Mix_ResumeMusic();
-                                    }
-                                    //If the music is playing
-                                    else
-                                    {
-                                        //Pause the music
-                                        Mix_PauseMusic();
-                                    }
-                                }
+                                Mix_HaltMusic();
+                                Mix_PlayMusic( elsaMusic, -1 );
                                 break;
                             
                             case SDLK_6: //Jack's Music
-                                //If there is no music playing
-                                if( Mix_PlayingMusic() == 0 )
-                                {
-                                    //Play the music
-                                    Mix_PlayMusic( jackMusic, -1 );
-                                }
-                                //If music is being played
-                                else
-                                {
-                                    //If the music is paused
-                                    if( Mix_PausedMusic() == 1 )
-                                    {
-                                        //Resume the music
-                                        Mix_ResumeMusic();
-                                    }
-                                    //If the music is playing
-                                    else
-                                    {
-                                        //Pause the music
-                                        Mix_PauseMusic();
-                                    }
-                                }
+                                Mix_HaltMusic();
+                                Mix_PlayMusic( jackMusic, -1 );
+                                break;
                                 break;
                             
                             case SDLK_7: //Kat's Music
-                                //If there is no music playing
-                                if( Mix_PlayingMusic() == 0 )
-                                {
-                                    //Play the music
-                                    Mix_PlayMusic( katMusic, -1 );
-                                }
-                                //If music is being played
-                                else
-                                {
-                                    //If the music is paused
-                                    if( Mix_PausedMusic() == 1 )
-                                    {
-                                        //Resume the music
-                                        Mix_ResumeMusic();
-                                    }
-                                    //If the music is playing
-                                    else
-                                    {
-                                        //Pause the music
-                                        Mix_PauseMusic();
-                                    }
-                                }
+                                Mix_HaltMusic();
+                                Mix_PlayMusic( katMusic, -1 );
                                 break;
                                 
-                            case SDLK_8: //Kat's Music
-                                //If there is no music playing
-                                if( Mix_PlayingMusic() == 0 )
-                                {
-                                    //Play the music
-                                    Mix_PlayMusic( albusMusic, -1 );
-                                }
-                                //If music is being played
-                                else
-                                {
-                                    //If the music is paused
-                                    if( Mix_PausedMusic() == 1 )
-                                    {
-                                        //Resume the music
-                                        Mix_ResumeMusic();
-                                    }
-                                    //If the music is playing
-                                    else
-                                    {
-                                        //Pause the music
-                                        Mix_PauseMusic();
-                                    }
-                                }
+                            case SDLK_8: //Albus's Music
+                                Mix_HaltMusic();
+                                Mix_PlayMusic( albusMusic, -1 );
                                 break;
                                 
                             case SDLK_9:
@@ -819,11 +731,13 @@ int main( int argc, char* args[] )
                             //set open-world layout
                             case SDLK_o:
                                 layout=OPEN_LAYOUT;
+                                layoutReset=1;
                                 break;
                                 
                             //set battle layout
                             case SDLK_b:
                                 layout=BATTLE_LAYOUT;
+                                layoutReset=1;
                                 break;
                                 
                             default:
@@ -868,7 +782,32 @@ int main( int argc, char* args[] )
                 SDL_RenderClear( gRenderer );
                 
                 if(layout == BATTLE_LAYOUT){
+                    
+                    if( Mix_PlayingMusic() == 0 )
+                    {
+                        //Play the music
+                        Mix_PlayMusic( elsaMusic, -1 );
+                    }
                 
+                    if(layoutReset){
+                        //reset positions
+                        Elsa.moveAbs(720,500);
+                        Albus.moveAbs(750, 350);
+                        Jack.moveAbs(650, 430);
+                        Kat.moveAbs(850, 430);
+                        Elsa.flipLeft();
+                        Albus.flipLeft();
+                        Jack.flipLeft();
+                        Kat.flipLeft();
+                        
+                        activeCharacter=ELSA;
+                        layoutReset=0;
+                    }
+                    
+                
+                    
+                    
+                    
                     //Top viewport
                     SDL_Rect topViewport;
                     topViewport.x = 0;
@@ -908,6 +847,7 @@ int main( int argc, char* args[] )
                     bottomViewport.h = SCREEN_HEIGHT / 3;
                     SDL_RenderSetViewport( gRenderer, &bottomViewport );
                     
+                    
                     //Render battleStat boxes to the screen
                     BViewTexture.render(gRenderer, 0,0);
                     
@@ -932,7 +872,7 @@ int main( int argc, char* args[] )
                     textAndaleTexture.render( gRenderer, 380, 70 );
                     textAndaleTexture.loadFromRenderedText( "8: Albus' Theme", { 255, 255, 255 }, gRenderer, gFont );
                     textAndaleTexture.render( gRenderer, 380, 95 );
-                    textAndaleTexture.loadFromRenderedText( "dialogue", { 255, 255, 255 }, gRenderer, gFont );
+                    textAndaleTexture.loadFromRenderedText( "o: (the letter) Exploration Mode", { 255, 255, 255 }, gRenderer, gFont );
                     textAndaleTexture.render( gRenderer, 380, 120 );
                     
                     
@@ -956,6 +896,7 @@ int main( int argc, char* args[] )
                 
                 else if(layout == OPEN_LAYOUT){
                     
+                    Mix_HaltMusic();
                     
                     //Top viewport
                     SDL_Rect fullViewport;
@@ -966,14 +907,28 @@ int main( int argc, char* args[] )
                     SDL_RenderSetViewport( gRenderer, &fullViewport );
                     
                     
-//                    //move Katniss around if she is selected
-//                    if (charDir==UP) katSpriteBack.render( gRenderer, Kat.getX(), Kat.getY(), NULL, Kat.getDegs(), NULL, SDL_FLIP_NONE );
-//                    else if (charDir==DOWN) katSpriteFront.render( gRenderer, Kat.getX(), Kat.getY(), NULL, Kat.getDegs(), NULL, SDL_FLIP_NONE );
-//                    else if (charDir==LEFT || charDir==RIGHT) katSpriteSide.render( gRenderer, Kat.getX(), Kat.getY(), NULL, Kat.getDegs(), NULL, Kat.getDir() );
+                    if(layoutReset){
+                        //reset positions
+                        Elsa.moveAbs(720,500);
+                        Albus.moveAbs(750, 350);
+                        Jack.moveAbs(650, 430);
+                        Kat.moveAbs(850, 430);
+                        Elsa.flipLeft();
+                        Albus.flipLeft();
+                        Jack.flipLeft();
+                        Kat.flipLeft();
+                        
+                        activeCharacter=KAT;
+                        
+                        dot.moveAbs(550, 480);
+                        charDir=DOWN;
+                        
+                        layoutReset=0;
+                    }
                     
                     
                     //Render background
-                    gBGTexture.render( gRenderer, 0, 0, &camera );
+                    practiceMapTexture.render( gRenderer, 0, 0, &camera );
                     
                     //Check for Rendering Dialogue Textures to the Screen
                     if(activeCharacter==ELSA){
@@ -989,9 +944,11 @@ int main( int argc, char* args[] )
                         albusDialogueTexture.render( gRenderer, 20, 2*SCREEN_HEIGHT/3+50, NULL, NULL, NULL, SDL_FLIP_NONE );
                     }
                 
-                    
-                    //Render objects
-                    dot.renderRel( gRenderer, camera.x, camera.y, gDotTexture );
+                    //move Katniss around if she is selected
+                    if (charDir==UP) dot.renderRel( gRenderer, camera.x, camera.y, &katSpriteBack, Kat.getDir() );
+                    else if (charDir==DOWN) dot.renderRel( gRenderer, camera.x, camera.y, &katSpriteFront, Kat.getDir() );
+                    else if (charDir==LEFT) dot.renderRel( gRenderer, camera.x, camera.y, &katSpriteSide, Kat.getDir() );
+                    else if (charDir==RIGHT) dot.renderRel( gRenderer, camera.x, camera.y, &katSpriteSide, Kat.getDir() );
                     
                 }
                 

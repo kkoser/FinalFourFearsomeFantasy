@@ -13,6 +13,8 @@
 
 #include <SDL2/SDL.h>
 #include "LTexture.h"
+#include "SDL2_image/SDL_image.h"
+
 
 #ifndef FFFF_Dot_h
 #define FFFF_Dot_h
@@ -26,10 +28,11 @@ public:
     static const int DOT_HEIGHT = 20;
     
     //Maximum axis velocity of the dot
-    static const int DOT_VEL = 10;
+    static const int DOT_VEL = 5;
     
     //Initializes the variables
     Dot();
+    Dot(int PosX, int PosY);
     
     //Takes key presses and adjusts the dot's velocity
     void handleEvent( SDL_Event& e );
@@ -44,11 +47,12 @@ public:
     void render(SDL_Renderer * gRenderer, LTexture gDotTexture);
     
     //Shows the dot on the screen relative to the camera
-    void renderRel( SDL_Renderer * gRenderer, int camX, int camY, LTexture gDotTexture );
+    void renderRel( SDL_Renderer * gRenderer, int camX, int camY, LTexture * gDotTexture, SDL_RendererFlip flipType );
     
     //Position accessors
     int getPosX();
     int getPosY();
+    void moveAbs(int x, int y);
     
 private:
     //The X and Y offsets of the dot
