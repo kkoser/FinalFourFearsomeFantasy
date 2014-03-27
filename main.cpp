@@ -1,88 +1,36 @@
+//
+//  main.cpp
+//  FFFF
+//
+//  Created by Casey Hanley on 3/27/14.
+//  Copyright (c) 2014 Casey Hanley. All rights reserved.
+//
+
 #include <iostream>
 #include <SDL2/SDL.h>
 #include "SDL2_image/SDL_image.h"
 #include "SDL2_ttf/SDL_ttf.h"
 #include "SDL2_mixer/SDL_mixer.h"
 #include <stdio.h>
+#include <fstream>
+#include <sstream>
 #include <string>
 #include <cmath>
+#include "Dot.h"
+#include "LTexture.h"
+#include "CharacterView.h"
 using namespace std;
 
-//Screen dimension constants
+//The dimensions of the level (if you change this, change it in Dot.cpp, too)
+const int LEVEL_WIDTH = 1380;
+const int LEVEL_HEIGHT = 960;
+
+//Screen dimension constants (if you change this, change it in Dot.cpp, too)
 const int SCREEN_WIDTH = 1200;
 const int SCREEN_HEIGHT = 650;
 
 //------------------------------------------------------------------------------
-//Texture wrapper class
-class LTexture
-{
-public:
-    //Initializes variables
-    LTexture();
-    
-    //Deallocates memory
-    ~LTexture();
-    
-    //Loads image at specified path
-    bool loadFromFile( string path );
-    
-    //Creates image from font string
-    bool loadFromRenderedText( string textureText, SDL_Color textColor );
-    
-    //Deallocates texture
-    void free();
-    
-    //Set color modulation
-    void setColor( Uint8 red, Uint8 green, Uint8 blue );
-    
-    //Set blending
-    void setBlendMode( SDL_BlendMode blending );
-    
-    //Set alpha modulation
-    void setAlpha( Uint8 alpha );
-    
-    //Renders texture at given point
-    void render( int x, int y, SDL_Rect* clip = NULL, double angle = 0.0, SDL_Point* center = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE );
-    
-    //Gets image dimensions
-    int getWidth();
-    int getHeight();
-    
-private:
-    //The actual hardware texture
-    SDL_Texture* mTexture;
-    
-    //Image dimensions
-    int mWidth;
-    int mHeight;
-};
-//------------------------------------------------------------------------------
-class Character{
-public:
-    Character(); //constructor
-    Character(int x, int y); //non-default constructor
-    int getX();
-    int getY();
-    double getDegs();
-    SDL_RendererFlip getDir();
-    void setDegs(double value);
-    void setDir(int direction);
-    void moveRel(int x, int y); //move relative to current pos.
-    void moveAbs(int x, int y); //move to absolute location in window
-    SDL_RendererFlip flipRight();
-    SDL_RendererFlip flipLeft();
-private:
-    int xLoc;
-    int yLoc;
-    double degs; //degrees of rotation
-    int faceDir; //direction they are facing (1=up, 2=down, 3=left, 4=right)
-    SDL_RendererFlip flipDir;
-    
-    
-    
-};
-
-
+//              INITIALIZE VARIABLES/FUNCTIONS
 //------------------------------------------------------------------------------
 
 //Key press surfaces constants
@@ -187,210 +135,12 @@ Mix_Chunk *elsaSoundEffect = NULL;
 Mix_Chunk *jackSoundEffect = NULL;
 Mix_Chunk *katSoundEffect = NULL;
 
+//Dot textures
+LTexture gDotTexture;
+LTexture gBGTexture;
+
 //------------------------------------------------------------------------------
-void LTexture::setColor( Uint8 red, Uint8 green, Uint8 blue )
-{
-    //Modulate texture
-    SDL_SetTextureColorMod( mTexture, red, green, blue );
-}
-//------------------------------------------------------------------------------
-void LTexture::setBlendMode( SDL_BlendMode blending )
-{
-    //Set blending function
-    SDL_SetTextureBlendMode( mTexture, blending );
-}
-//------------------------------------------------------------------------------
-void LTexture::setAlpha( Uint8 alpha )
-{
-    //Modulate texture alpha
-    SDL_SetTextureAlphaMod( mTexture, alpha );
-}
-//------------------------------------------------------------------------------
-LTexture::LTexture()
-{
-	//Initialize
-	mTexture = NULL;
-	mWidth = 0;
-	mHeight = 0;
-}
-//------------------------------------------------------------------------------
-LTexture::~LTexture()
-{
-	free();
-}
-//------------------------------------------------------------------------------
-int Character::getX(){
-    return xLoc;
-}
-//------------------------------------------------------------------------------
-int Character::getY(){
-    return yLoc;
-}
-//------------------------------------------------------------------------------
-void Character::moveRel(int x, int y){
-    xLoc=getX()+x;
-    yLoc=getY()+y;
-}
-//------------------------------------------------------------------------------
-void Character::moveAbs(int x, int y){
-    xLoc=x;
-    yLoc=y;
-}
-//------------------------------------------------------------------------------
-void Character::setDegs(double value){
-    degs=value;
-}
-//------------------------------------------------------------------------------
-double Character::getDegs(){
-    return degs;
-}
-//------------------------------------------------------------------------------
-void Character::setDir(int direction){
-    faceDir=direction;
-}
-//------------------------------------------------------------------------------
-SDL_RendererFlip Character::getDir(){
-    return flipDir;
-}
-//------------------------------------------------------------------------------
-SDL_RendererFlip Character::flipLeft(){
-    flipDir=SDL_FLIP_NONE;
-    return flipDir;
-}
-//------------------------------------------------------------------------------
-SDL_RendererFlip Character::flipRight(){
-    flipDir=SDL_FLIP_HORIZONTAL;
-    return flipDir;
-}
-//------------------------------------------------------------------------------
-Character::Character(){
-    //initialize stuff
-    xLoc=0;
-    yLoc=0;
-    degs=0;
-    flipDir=SDL_FLIP_NONE;
-}
-//------------------------------------------------------------------------------
-Character::Character(int x, int y){
-    //initialize stuff
-    xLoc=x;
-    yLoc=y;
-    degs=0;
-    flipDir=SDL_FLIP_NONE;
-}
-//------------------------------------------------------------------------------
-bool LTexture::loadFromRenderedText( string textureText, SDL_Color textColor )
-{
-    //Get rid of preexisting texture
-    free();
-    
-    //Render text surface
-    SDL_Surface* textSurface = TTF_RenderText_Solid( gFont, textureText.c_str(), textColor );
-    if( textSurface == NULL )
-    {
-        printf( "Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError() );
-    }
-    else
-    {
-        //Create texture from surface pixels
-        mTexture = SDL_CreateTextureFromSurface( gRenderer, textSurface );
-        if( mTexture == NULL )
-        {
-            printf( "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError() );
-        }
-        else
-        {
-            //Get image dimensions
-            mWidth = textSurface->w;
-            mHeight = textSurface->h;
-        }
-        
-        //Get rid of old surface
-        SDL_FreeSurface( textSurface );
-    }
-    
-    //Return success
-    return mTexture != NULL;
-}
-//------------------------------------------------------------------------------
-bool LTexture::loadFromFile( string path )
-{
-	//Get rid of preexisting texture
-	free();
-    
-	//The final texture
-	SDL_Texture* newTexture = NULL;
-    
-	//Load image from specified path
-	SDL_Surface* loadedSurface = IMG_Load( path.c_str() );
-	if( loadedSurface == NULL )
-	{
-		printf( "Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError() );
-	}
-	else
-	{
-		//Color key image
-		SDL_SetColorKey( loadedSurface, SDL_TRUE, SDL_MapRGB( loadedSurface->format, 0, 0xFF, 0xFF ) );
-        
-		//Create texture from surface pixels
-        newTexture = SDL_CreateTextureFromSurface( gRenderer, loadedSurface );
-		if( newTexture == NULL )
-		{
-			printf( "Unable to create texture from %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
-		}
-		else
-		{
-			//Get image dimensions
-			mWidth = loadedSurface->w;
-			mHeight = loadedSurface->h;
-		}
-        
-		//Get rid of old loaded surface
-		SDL_FreeSurface( loadedSurface );
-	}
-    
-	//Return success
-	mTexture = newTexture;
-	return mTexture != NULL;
-}
-//------------------------------------------------------------------------------
-void LTexture::free()
-{
-	//Free texture if it exists
-	if( mTexture != NULL )
-	{
-		SDL_DestroyTexture( mTexture );
-		mTexture = NULL;
-		mWidth = 0;
-		mHeight = 0;
-	}
-}
-//------------------------------------------------------------------------------
-void LTexture::render( int x, int y, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip )
-{
-    //Set rendering space and render to screen
-    SDL_Rect renderQuad = { x, y, mWidth, mHeight };
-    
-    //Set clip rendering dimensions
-    if( clip != NULL )
-    {
-        renderQuad.w = clip->w;
-        renderQuad.h = clip->h;
-    }
-    
-    //Render to screen
-    SDL_RenderCopyEx( gRenderer, mTexture, clip, &renderQuad, angle, center, flip );
-}
-//------------------------------------------------------------------------------
-int LTexture::getWidth()
-{
-	return mWidth;
-}
-//------------------------------------------------------------------------------
-int LTexture::getHeight()
-{
-	return mHeight;
-}
+//              RUN INITIALIZATION FUNCTION
 //------------------------------------------------------------------------------
 bool init(){
 	//Initialization flag
@@ -460,6 +210,8 @@ bool init(){
 	return success;
 }
 //------------------------------------------------------------------------------
+//              START OF A DYNAMIC TEXT DISPLAY FUNCTION
+//------------------------------------------------------------------------------
 bool getText(){
     bool success = true;
     
@@ -474,7 +226,7 @@ bool getText(){
     {
         //Render text
         SDL_Color textColor = { 255, 255, 255 };
-        if( !textAndaleTexture.loadFromRenderedText( "5: Elsa's Theme", textColor ) )
+        if( !textAndaleTexture.loadFromRenderedText( "5: Elsa's Theme", textColor, gRenderer, gFont ) )
         {
             printf( "Failed to render text texture!\n" );
             success = false;
@@ -485,136 +237,138 @@ bool getText(){
     return success;
 }
 //------------------------------------------------------------------------------
+//              LOAD ALL IMAGES/SPRITES/MUSIC FILES
+//------------------------------------------------------------------------------
 bool loadMedia(){
 	//Loading success flag
 	bool success = true;
     
     //Load battle textures
-	if( !elsaBattleTexture.loadFromFile( "elsaBattle.png" ) )
+	if( !elsaBattleTexture.loadFromFile( "elsaBattle.png", gRenderer ) )
 	{
 		printf( "Failed to load elsa' texture image!\n" );
 		success = false;
 	}
-    if( !katBattleTexture.loadFromFile( "katBattle.png" ) )
+    if( !katBattleTexture.loadFromFile( "katBattle.png", gRenderer ) )
 	{
 		printf( "Failed to load elsa' texture image!\n" );
 		success = false;
 	}
-    if( !jackBattleTexture.loadFromFile( "jackBattle.png" ) )
+    if( !jackBattleTexture.loadFromFile( "jackBattle.png", gRenderer ) )
 	{
 		printf( "Failed to load elsa' texture image!\n" );
 		success = false;
 	}
-    if( !albusBattleTexture.loadFromFile( "albusBattle.png" ) )
+    if( !albusBattleTexture.loadFromFile( "albusBattle.png", gRenderer ) )
 	{
 		printf( "Failed to load elsa' texture image!\n" );
 		success = false;
 	}
     
     //Load dialogue textures
-	if( !albusDialogueTexture.loadFromFile( "albusDialogue.png" ) )
+	if( !albusDialogueTexture.loadFromFile( "albusDialogue.png", gRenderer ) )
 	{
 		printf( "Failed to load albus's texture image!\n" );
 		success = false;
 	}
-    if( !katDialogueTexture.loadFromFile( "katDialogue.png" ) )
+    if( !katDialogueTexture.loadFromFile( "katDialogue.png", gRenderer ) )
 	{
 		printf( "Failed to load kat's texture image!\n" );
 		success = false;
 	}
-    if( !elsaDialogueTexture.loadFromFile( "elsaDialogue.png" ) )
+    if( !elsaDialogueTexture.loadFromFile( "elsaDialogue.png", gRenderer ) )
 	{
 		printf( "Failed to load elsa's texture image!\n" );
 		success = false;
 	}
-    if( !jackDialogueTexture.loadFromFile( "jackDialogue.png" ) )
+    if( !jackDialogueTexture.loadFromFile( "jackDialogue.png", gRenderer ) )
 	{
 		printf( "Failed to load jack's texture image!\n" );
 		success = false;
 	}
     
     //Load Sprite Side Views
-    if( !katSpriteSide.loadFromFile( "katSpriteSide.png" ) )
+    if( !katSpriteSide.loadFromFile( "katSpriteSide.png", gRenderer ) )
 	{
 		printf( "Failed to load kat's sprite texture image!\n" );
 		success = false;
 	}
-//    if( !albusSpriteSide.loadFromFile( "albusSpriteSide.jpg" ) )
+//    if( !albusSpriteSide.loadFromFile( "albusSpriteSide.jpg", gRenderer ) )
 //	{
 //		printf( "Failed to load kat's sprite texture image!\n" );
 //		success = false;
 //	}
-//    if( !elsaSpriteSide.loadFromFile( "elsaSpriteSide.jpg" ) )
+//    if( !elsaSpriteSide.loadFromFile( "elsaSpriteSide.jpg", gRenderer ) )
 //	{
 //		printf( "Failed to load kat's sprite texture image!\n" );
 //		success = false;
 //	}
-//    if( !jackSpriteSide.loadFromFile( "jackSpriteSide.jpg" ) )
+//    if( !jackSpriteSide.loadFromFile( "jackSpriteSide.jpg", gRenderer ) )
 //	{
 //		printf( "Failed to load kat's sprite texture image!\n" );
 //		success = false;
 //	}
 //    
     //load Sprite Front Views
-    if( !katSpriteFront.loadFromFile( "katSpriteFront.png" ) )
+    if( !katSpriteFront.loadFromFile( "katSpriteFront.png", gRenderer ) )
 	{
 		printf( "Failed to load kat's sprite texture image!\n" );
 		success = false;
 	}
-//    if( !albusSpriteFront.loadFromFile( "albusSpriteFront.jpg" ) )
+//    if( !albusSpriteFront.loadFromFile( "albusSpriteFront.jpg", gRenderer ) )
 //	{
 //		printf( "Failed to load kat's sprite texture image!\n" );
 //		success = false;
 //	}
-//    if( !elsaSpriteFront.loadFromFile( "elsaSpriteFront.jpg" ) )
+//    if( !elsaSpriteFront.loadFromFile( "elsaSpriteFront.jpg", gRenderer ) )
 //	{
-//		printf( "Failed to load kat's sprite texture image!\n" );
+//		printf( "Failed to load kat's sprite texture image!\n", gRenderer );
 //		success = false;
 //	}
-//    if( !jackSpriteFront.loadFromFile( "jackSpriteFront.jpg" ) )
+//    if( !jackSpriteFront.loadFromFile( "jackSpriteFront.jpg", gRenderer ) )
 //	{
-//		printf( "Failed to load kat's sprite texture image!\n" );
+//		printf( "Failed to load kat's sprite texture image!\n", gRenderer );
 //		success = false;
 //	}
 //    
     //load sprite Back Views
-    if( !katSpriteBack.loadFromFile( "katSpriteBack.png" ) )
+    if( !katSpriteBack.loadFromFile( "katSpriteBack.png", gRenderer ) )
 	{
 		printf( "Failed to load kat's sprite texture image!\n" );
 		success = false;
 	}
-//    if( !albusSpriteBack.loadFromFile( "albusSpriteBack.jpg" ) )
+//    if( !albusSpriteBack.loadFromFile( "albusSpriteBack.jpg", gRenderer ) )
 //	{
 //		printf( "Failed to load kat's sprite texture image!\n" );
 //		success = false;
 //	}
-//    if( !elsaSpriteBack.loadFromFile( "elsaSpriteBack.jpg" ) )
+//    if( !elsaSpriteBack.loadFromFile( "elsaSpriteBack.jpg", gRenderer ) )
 //	{
 //		printf( "Failed to load kat's sprite texture image!\n" );
 //		success = false;
 //	}
-//    if( !jackSpriteBack.loadFromFile( "jackSpriteBack.jpg" ) )
+//    if( !jackSpriteBack.loadFromFile( "jackSpriteBack.jpg", gRenderer ) )
 //	{
 //		printf( "Failed to load kat's sprite texture image!\n" );
 //		success = false;
 //	}
     
 	//Load background textures
-	if( !NorthMountBGTexture.loadFromFile( "arendelle.jpg" ) )
+	if( !NorthMountBGTexture.loadFromFile( "arendelle.jpg", gRenderer ) )
 	{
 		printf( "Failed to load north mountain background texture image!\n" );
 		success = false;
 	}
     
     //Load Maps
-    if( !practiceMapTexture.loadFromFile( "practiceMap.png" ) )
+    if( !practiceMapTexture.loadFromFile( "practiceMap.png", gRenderer ) )
 	{
 		printf( "Failed to load practice map background texture image!\n" );
 		success = false;
 	}
     
     //Load bottom viewport texture
-	if( !BViewTexture.loadFromFile( "BattleStats.jpg" ) )
+	if( !BViewTexture.loadFromFile( "BattleStats.jpg", gRenderer ) )
 	{
 		printf( "Failed to load bottom viewport texture image!\n" );
 		success = false;
@@ -678,8 +432,24 @@ bool loadMedia(){
         success = false;
     }
     
+    //Load dot texture
+	if( !gDotTexture.loadFromFile( "katSpriteFront.png", gRenderer ) )
+	{
+		printf( "Failed to load dot texture!\n" );
+		success = false;
+	}
+    
+	//Load background texture
+	if( !gBGTexture.loadFromFile( "practiceMap.png", gRenderer ) )
+	{
+		printf( "Failed to load background texture!\n" );
+		success = false;
+	}
+    
 	return success;
 }
+//------------------------------------------------------------------------------
+//              FREE SOME MEMORY
 //------------------------------------------------------------------------------
 void close(){
     
@@ -757,6 +527,8 @@ void close(){
     
 }
 //------------------------------------------------------------------------------
+//              PLAY THE GAME WITH USER INPUT
+//------------------------------------------------------------------------------
 int main( int argc, char* args[] )
 {
 	//Start up SDL and create window
@@ -777,10 +549,10 @@ int main( int argc, char* args[] )
 			bool quit = false;
             
             //Characters
-            Character Elsa(720,500);
-            Character Albus(750,350);
-            Character Jack(650,430);
-            Character Kat(850,430);
+            CharacterView Elsa(720,500);
+            CharacterView Albus(750,350);
+            CharacterView Jack(650,430);
+            CharacterView Kat(850,430);
             
 			//Event handler
 			SDL_Event e;
@@ -803,6 +575,28 @@ int main( int argc, char* args[] )
             float albusRotIterator=0;
             float katRotIterator=0;
             
+            //open dialogue file
+            string filename="SampleScript.dialogue";
+            ifstream file(filename.c_str());
+            //check for open
+            if (!file) {
+                cout<<"File "<<filename<<" failed to open"<<endl;
+            }
+            
+            //declare dialogue line
+            string diaLine;
+            
+            //read from file
+            getline(file,diaLine);
+            
+            cout<<diaLine<<endl;
+            
+            //the dot to move around the screen
+            Dot dot;
+            
+            //The camera area
+			SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+            
 			//While application is running
 			while( !quit )
 			{
@@ -819,6 +613,8 @@ int main( int argc, char* args[] )
 					{
 						quit = true;
 					}
+                    
+                    
                     
                     //Process User Input
 					else if( e.type == SDL_KEYDOWN )
@@ -991,6 +787,11 @@ int main( int argc, char* args[] )
                                 Mix_HaltMusic();
                                 break;
                               
+                            //cycle through dialogue
+                            case SDLK_RETURN:
+                                getline(file,diaLine);
+                                break;
+                                
                             //set Albus as active
                             case SDLK_1:
                                 activeCharacter=ALBUS;
@@ -1028,8 +829,39 @@ int main( int argc, char* args[] )
                             default:
                                 break;
 						}
+                        
+                
 					}
+                    
+                    //Handle input for the dot
+					dot.handleEvent( e );
+                    
                 }
+                
+                //Move the dot
+				dot.moveRel();
+                
+                //Center the camera over the dot
+				camera.x = ( dot.getPosX() + Dot::DOT_WIDTH / 2 ) - SCREEN_WIDTH / 2;
+				camera.y = ( dot.getPosY() + Dot::DOT_HEIGHT / 2 ) - SCREEN_HEIGHT / 2;
+                
+				//Keep the camera in bounds
+				if( camera.x < 0 )
+				{
+					camera.x = 0;
+				}
+				if( camera.y < 0 )
+				{
+					camera.y = 0;
+				}
+				if( camera.x > LEVEL_WIDTH - camera.w )
+				{
+					camera.x = LEVEL_WIDTH - camera.w;
+				}
+				if( camera.y > LEVEL_HEIGHT - camera.h )
+				{
+					camera.y = LEVEL_HEIGHT - camera.h;
+				}
                 
                 //Clear screen
                 SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
@@ -1046,26 +878,26 @@ int main( int argc, char* args[] )
                     SDL_RenderSetViewport( gRenderer, &topViewport );
                     
                     //Render background texture to screen
-                    NorthMountBGTexture.render(0,150);
+                    NorthMountBGTexture.render(gRenderer, 0,150);
                     
                     //Render battle characters to the screen
-                    elsaBattleTexture.render( Elsa.getX(), Elsa.getY(), NULL, Elsa.getDegs(), NULL, Elsa.getDir() );
-                    katBattleTexture.render( Kat.getX(), Kat.getY(), NULL, Kat.getDegs(), NULL, Kat.getDir() );
-                    jackBattleTexture.render( Jack.getX(), Jack.getY(), NULL, Jack.getDegs(), NULL, Jack.getDir() );
-                    albusBattleTexture.render( Albus.getX(), Albus.getY(), NULL, Albus.getDegs(), NULL, Albus.getDir() );
+                    elsaBattleTexture.render( gRenderer, Elsa.getX(), Elsa.getY(), NULL, Elsa.getDegs(), NULL, Elsa.getDir() );
+                    katBattleTexture.render( gRenderer, Kat.getX(), Kat.getY(), NULL, Kat.getDegs(), NULL, Kat.getDir() );
+                    jackBattleTexture.render( gRenderer, Jack.getX(), Jack.getY(), NULL, Jack.getDegs(), NULL, Jack.getDir() );
+                    albusBattleTexture.render( gRenderer, Albus.getX(), Albus.getY(), NULL, Albus.getDegs(), NULL, Albus.getDir() );
                     
                     //Check for Rendering Dialogue Textures to the Screen
                     if(activeCharacter==ELSA){
-                        elsaDialogueTexture.render( 10, 2*SCREEN_HEIGHT/3+50, NULL, NULL, NULL, SDL_FLIP_NONE );
+                        elsaDialogueTexture.render( gRenderer, 10, 2*SCREEN_HEIGHT/3+50, NULL, NULL, NULL, SDL_FLIP_NONE );
                     }
                     if(activeCharacter==KAT){
-                        katDialogueTexture.render( 0, 2*SCREEN_HEIGHT/3+40, NULL, NULL, NULL, SDL_FLIP_NONE );
+                        katDialogueTexture.render( gRenderer, 0, 2*SCREEN_HEIGHT/3+40, NULL, NULL, NULL, SDL_FLIP_NONE );
                     }
                     if(activeCharacter==JACK){
-                        jackDialogueTexture.render( 10, 2*SCREEN_HEIGHT/3+60, NULL, NULL, NULL, SDL_FLIP_NONE );
+                        jackDialogueTexture.render( gRenderer, 10, 2*SCREEN_HEIGHT/3+60, NULL, NULL, NULL, SDL_FLIP_NONE );
                     }
                     if(activeCharacter==ALBUS){
-                        albusDialogueTexture.render( 20, 2*SCREEN_HEIGHT/3+50, NULL, NULL, NULL, SDL_FLIP_NONE );
+                        albusDialogueTexture.render( gRenderer, 20, 2*SCREEN_HEIGHT/3+50, NULL, NULL, NULL, SDL_FLIP_NONE );
                     }
                    
                     //Bottom viewport
@@ -1077,31 +909,31 @@ int main( int argc, char* args[] )
                     SDL_RenderSetViewport( gRenderer, &bottomViewport );
                     
                     //Render battleStat boxes to the screen
-                    BViewTexture.render(0,0);
+                    BViewTexture.render(gRenderer, 0,0);
                     
                     //Render text (put into a class later to make it easier w/ functions and shit)
-                    textAndaleTexture.loadFromRenderedText( "1: Choose Albus", { 255, 255, 255 } );
-                    textAndaleTexture.render( 20, 20 );
-                    textAndaleTexture.loadFromRenderedText( "2: Choose Elsa", { 255, 255, 255 } );
-                    textAndaleTexture.render( 20, 45 );
-                    textAndaleTexture.loadFromRenderedText( "3: Choose Jack", { 255, 255, 255 } );
-                    textAndaleTexture.render( 20, 70 );
-                    textAndaleTexture.loadFromRenderedText( "4: Choose Kat", { 255, 255, 255 } );
-                    textAndaleTexture.render( 20, 95 );
-                    textAndaleTexture.loadFromRenderedText( "Arrow Keys: Move", { 255, 255, 255 } );
-                    textAndaleTexture.render( 20, 120 );
+                    textAndaleTexture.loadFromRenderedText( "1: Choose Albus", { 255, 255, 255 }, gRenderer, gFont );
+                    textAndaleTexture.render( gRenderer, 20, 20 );
+                    textAndaleTexture.loadFromRenderedText( "2: Choose Elsa", { 255, 255, 255 }, gRenderer, gFont );
+                    textAndaleTexture.render( gRenderer, 20, 45 );
+                    textAndaleTexture.loadFromRenderedText( "3: Choose Jack", { 255, 255, 255 }, gRenderer, gFont );
+                    textAndaleTexture.render( gRenderer, 20, 70 );
+                    textAndaleTexture.loadFromRenderedText( "4: Choose Kat", { 255, 255, 255 }, gRenderer, gFont );
+                    textAndaleTexture.render( gRenderer, 20, 95 );
+                    textAndaleTexture.loadFromRenderedText( "Arrow Keys: Move", { 255, 255, 255 }, gRenderer, gFont );
+                    textAndaleTexture.render( gRenderer, 20, 120 );
                     
                     
-                    textAndaleTexture.loadFromRenderedText( "5: Elsa's Theme", { 255, 255, 255 } );
-                    textAndaleTexture.render( 380, 20 );
-                    textAndaleTexture.loadFromRenderedText( "6: Jack's Theme", { 255, 255, 255 } );
-                    textAndaleTexture.render( 380, 45 );
-                    textAndaleTexture.loadFromRenderedText( "7: Kat's Theme", { 255, 255, 255 } );
-                    textAndaleTexture.render( 380, 70 );
-                    textAndaleTexture.loadFromRenderedText( "8: Albus' Theme", { 255, 255, 255 } );
-                    textAndaleTexture.render( 380, 95 );
-                    textAndaleTexture.loadFromRenderedText( "9: Stop Music (To Play Different Song)", { 255, 255, 255 } );
-                    textAndaleTexture.render( 380, 120 );
+                    textAndaleTexture.loadFromRenderedText( "5: Elsa's Theme", { 255, 255, 255 }, gRenderer, gFont );
+                    textAndaleTexture.render( gRenderer, 380, 20 );
+                    textAndaleTexture.loadFromRenderedText( "6: Jack's Theme", { 255, 255, 255 }, gRenderer, gFont );
+                    textAndaleTexture.render( gRenderer, 380, 45 );
+                    textAndaleTexture.loadFromRenderedText( "7: Kat's Theme", { 255, 255, 255 }, gRenderer, gFont );
+                    textAndaleTexture.render( gRenderer, 380, 70 );
+                    textAndaleTexture.loadFromRenderedText( "8: Albus' Theme", { 255, 255, 255 }, gRenderer, gFont );
+                    textAndaleTexture.render( gRenderer, 380, 95 );
+                    textAndaleTexture.loadFromRenderedText( "dialogue", { 255, 255, 255 }, gRenderer, gFont );
+                    textAndaleTexture.render( gRenderer, 380, 120 );
                     
                     
                     if (activeCharacter==ELSA){
@@ -1121,6 +953,7 @@ int main( int argc, char* args[] )
                         Kat.setDegs(Kat.getDegs()+sin(katRotIterator));
                     } 
                 }
+                
                 else if(layout == OPEN_LAYOUT){
                     
                     
@@ -1132,29 +965,33 @@ int main( int argc, char* args[] )
                     fullViewport.h = SCREEN_HEIGHT;
                     SDL_RenderSetViewport( gRenderer, &fullViewport );
                     
-                    //Render map texture to screen
-                    practiceMapTexture.render(0,0);
                     
-                    //move Katniss around if she is selected
-                    if (charDir==UP) katSpriteBack.render( Kat.getX(), Kat.getY(), NULL, Kat.getDegs(), NULL, SDL_FLIP_NONE );
-                    else if (charDir==DOWN) katSpriteFront.render( Kat.getX(), Kat.getY(), NULL, Kat.getDegs(), NULL, SDL_FLIP_NONE );
-                    else if (charDir==LEFT || charDir==RIGHT) katSpriteSide.render( Kat.getX(), Kat.getY(), NULL, Kat.getDegs(), NULL, Kat.getDir() );
+//                    //move Katniss around if she is selected
+//                    if (charDir==UP) katSpriteBack.render( gRenderer, Kat.getX(), Kat.getY(), NULL, Kat.getDegs(), NULL, SDL_FLIP_NONE );
+//                    else if (charDir==DOWN) katSpriteFront.render( gRenderer, Kat.getX(), Kat.getY(), NULL, Kat.getDegs(), NULL, SDL_FLIP_NONE );
+//                    else if (charDir==LEFT || charDir==RIGHT) katSpriteSide.render( gRenderer, Kat.getX(), Kat.getY(), NULL, Kat.getDegs(), NULL, Kat.getDir() );
                     
+                    
+                    //Render background
+                    gBGTexture.render( gRenderer, 0, 0, &camera );
                     
                     //Check for Rendering Dialogue Textures to the Screen
                     if(activeCharacter==ELSA){
-                        elsaDialogueTexture.render( 10, 2*SCREEN_HEIGHT/3+50, NULL, NULL, NULL, SDL_FLIP_NONE );
+                        elsaDialogueTexture.render( gRenderer, 10, 2*SCREEN_HEIGHT/3+50, NULL, NULL, NULL, SDL_FLIP_NONE );
                     }
                     if(activeCharacter==KAT){
-                        katDialogueTexture.render( 0, 2*SCREEN_HEIGHT/3+40, NULL, NULL, NULL, SDL_FLIP_NONE );
+                        katDialogueTexture.render( gRenderer, 0, 2*SCREEN_HEIGHT/3+40, NULL, NULL, NULL, SDL_FLIP_NONE );
                     }
                     if(activeCharacter==JACK){
-                        jackDialogueTexture.render( 10, 2*SCREEN_HEIGHT/3+60, NULL, NULL, NULL, SDL_FLIP_NONE );
+                        jackDialogueTexture.render( gRenderer, 10, 2*SCREEN_HEIGHT/3+60, NULL, NULL, NULL, SDL_FLIP_NONE );
                     }
                     if(activeCharacter==ALBUS){
-                        albusDialogueTexture.render( 20, 2*SCREEN_HEIGHT/3+50, NULL, NULL, NULL, SDL_FLIP_NONE );
+                        albusDialogueTexture.render( gRenderer, 20, 2*SCREEN_HEIGHT/3+50, NULL, NULL, NULL, SDL_FLIP_NONE );
                     }
+                
                     
+                    //Render objects
+                    dot.renderRel( gRenderer, camera.x, camera.y, gDotTexture );
                     
                 }
                 
