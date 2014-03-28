@@ -580,6 +580,8 @@ int main( int argc, char* args[] )
             //read from file
             getline(file,diaLine);
             
+            int stepCount=0;
+            
             cout<<diaLine<<endl;
             
             //the dot to move around the screen
@@ -620,6 +622,8 @@ int main( int argc, char* args[] )
                                 if(activeCharacter==JACK) Jack.moveRel(0,-15);
                                 if(activeCharacter==ALBUS) Albus.moveRel(0,-15);
                                 charDir=UP;
+                                stepCount++;
+                                if(layout==OPEN_LAYOUT) cout<<"Steps: "<<stepCount<<endl;
                                 break;
                                 
                             //move character down
@@ -629,6 +633,8 @@ int main( int argc, char* args[] )
                                 if(activeCharacter==JACK) Jack.moveRel(0,15);
                                 if(activeCharacter==ALBUS) Albus.moveRel(0,15);
                                 charDir=DOWN;
+                                stepCount++;
+                                if(layout==OPEN_LAYOUT) cout<<"Steps: "<<stepCount<<endl;
                                 break;
                                 
                             //move character left
@@ -650,6 +656,8 @@ int main( int argc, char* args[] )
                                     Albus.flipLeft();
                                 }
                                 charDir=LEFT;
+                                stepCount++;
+                                if(layout==OPEN_LAYOUT) cout<<"Steps: "<<stepCount<<endl;
                                 break;
                                 
                             //move character right
@@ -671,6 +679,8 @@ int main( int argc, char* args[] )
                                     Albus.flipRight();
                                 }
                                 charDir=RIGHT;
+                                stepCount++;
+                                if(layout==OPEN_LAYOUT) cout<<"Steps: "<<stepCount<<endl;
                                 break;
                                 
                             case SDLK_5: //Elsa's Music
@@ -753,7 +763,7 @@ int main( int argc, char* args[] )
                 }
                 
                 //Move the dot
-				dot.moveRel();
+                dot.moveRel();
                 
                 //Center the camera over the dot
 				camera.x = ( dot.getPosX() + Dot::DOT_WIDTH / 2 ) - SCREEN_WIDTH / 2;
@@ -919,6 +929,8 @@ int main( int argc, char* args[] )
                         Kat.flipLeft();
                         
                         activeCharacter=KAT;
+                        
+                        stepCount=0;
                         
                         dot.moveAbs(550, 480);
                         charDir=DOWN;

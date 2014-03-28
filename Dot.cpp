@@ -108,6 +108,10 @@ void Dot::move()
 //------------------------------------------------------------------------------
 void Dot::moveRel() //MODIFY LATER FOR OBSTACLE AVOIDANCE!!!
 {
+    //static int stepCount=0;
+    //stepCount++;
+    
+    
     //Move the dot left or right
     mPosX += mVelX;
     
@@ -127,6 +131,7 @@ void Dot::moveRel() //MODIFY LATER FOR OBSTACLE AVOIDANCE!!!
         //Move back
         mPosY -= mVelY;
     }
+    //return stepCount;
 }
 //------------------------------------------------------------------------------
 void Dot::moveAbs(int x, int y){
