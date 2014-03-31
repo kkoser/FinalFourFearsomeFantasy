@@ -22,8 +22,8 @@
 using namespace std;
 
 //The dimensions of the level (if you change this, change it in Dot.cpp, too)
-const int LEVEL_WIDTH = 1380;
-const int LEVEL_HEIGHT = 960;
+const int LEVEL_WIDTH = 1312;
+const int LEVEL_HEIGHT = 2400;
 
 //Screen dimension constants (if you change this, change it in Dot.cpp, too)
 const int SCREEN_WIDTH = 1200;
@@ -110,7 +110,8 @@ LTexture jackSpriteBack;
 LTexture albusSpriteBack;
 
 //Background Images
-LTexture NorthMountBGTexture;
+LTexture map2Texture;
+LTexture ArendelleTexture;
 LTexture CaveBGTexture;
 LTexture IslandBGTexture;
 LTexture ForestBGTexture;
@@ -350,16 +351,16 @@ bool loadMedia(){
 //	}
     
 	//Load background textures
-	if( !NorthMountBGTexture.loadFromFile( "arendelle.jpg", gRenderer ) )
+	if( !ArendelleTexture.loadFromFile( "arendelle.jpg", gRenderer ) )
 	{
 		printf( "Failed to load north mountain background texture image!\n" );
 		success = false;
 	}
     
     //Load Maps
-    if( !practiceMapTexture.loadFromFile( "practiceMap.png", gRenderer ) )
+    if( !map2Texture.loadFromFile( "map2.png", gRenderer ) )
 	{
-		printf( "Failed to load practice map background texture image!\n" );
+		printf( "Failed to load map2 background texture image!\n" );
 		success = false;
 	}
     
@@ -467,7 +468,8 @@ void close(){
     jackSpriteBack.free();
     albusSpriteBack.free();
     
-    NorthMountBGTexture.free();
+    ArendelleTexture.free();
+    map2Texture.free();
     CaveBGTexture.free();
     IslandBGTexture.free();
     ForestBGTexture.free();
@@ -585,10 +587,17 @@ int main( int argc, char* args[] )
             cout<<diaLine<<endl;
             
             //the dot to move around the screen
-            Dot dot(550,480);
+            Dot dot(640,0);
             
             //The camera area
 			SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+            
+            //initialize map
+            Dot map2;
+            map2.initializeMap();
+
+            
+            int zone=9;
             
 			//While application is running
 			while( !quit )
@@ -624,6 +633,16 @@ int main( int argc, char* args[] )
                                 charDir=UP;
                                 stepCount++;
                                 if(layout==OPEN_LAYOUT) cout<<"Steps: "<<stepCount<<endl;
+                                
+                                map2.moveRel(0,-16); //move scout into desired position
+                                zone = map2.checkZone(); //determine the zone (map array index)
+                                dot.moveRel2(0,-16,zone); //move character into new position
+                                                            //if zone is valid
+                                map2.moveBack(0,-16); //move scout back to original position
+                                map2.moveRel2(0,-16,zone); //move scout scount into new position
+                                                            //if zone is valid
+                                
+                                
                                 break;
                                 
                             //move character down
@@ -635,6 +654,14 @@ int main( int argc, char* args[] )
                                 charDir=DOWN;
                                 stepCount++;
                                 if(layout==OPEN_LAYOUT) cout<<"Steps: "<<stepCount<<endl;
+                                
+                                
+                                map2.moveRel(0,16);
+                                zone = map2.checkZone();
+                                dot.moveRel2(0,16,zone);
+                                map2.moveBack(0,16);
+                                map2.moveRel2(0,16,zone);
+                                
                                 break;
                                 
                             //move character left
@@ -658,6 +685,15 @@ int main( int argc, char* args[] )
                                 charDir=LEFT;
                                 stepCount++;
                                 if(layout==OPEN_LAYOUT) cout<<"Steps: "<<stepCount<<endl;
+                                
+                                
+                                map2.moveRel(-16,0);
+                                zone = map2.checkZone();
+                                dot.moveRel2(-16,0,zone);
+                                map2.moveBack(-16,0);
+                                map2.moveRel2(-16,0,zone);
+                                
+                                
                                 break;
                                 
                             //move character right
@@ -681,6 +717,15 @@ int main( int argc, char* args[] )
                                 charDir=RIGHT;
                                 stepCount++;
                                 if(layout==OPEN_LAYOUT) cout<<"Steps: "<<stepCount<<endl;
+                                
+                                
+                                
+                                map2.moveRel(16,0);
+                                zone = map2.checkZone();
+                                dot.moveRel2(16,0,zone);
+                                map2.moveBack(16,0);
+                                map2.moveRel2(16,0,zone);
+                                
                                 break;
                                 
                             case SDLK_5: //Elsa's Music
@@ -758,12 +803,12 @@ int main( int argc, char* args[] )
 					}
                     
                     //Handle input for the dot
-					dot.handleEvent( e );
+					//dot.handleEvent( e );
                     
                 }
                 
                 //Move the dot
-                dot.moveRel();
+                //dot.move();
                 
                 //Center the camera over the dot
 				camera.x = ( dot.getPosX() + Dot::DOT_WIDTH / 2 ) - SCREEN_WIDTH / 2;
@@ -827,7 +872,7 @@ int main( int argc, char* args[] )
                     SDL_RenderSetViewport( gRenderer, &topViewport );
                     
                     //Render background texture to screen
-                    NorthMountBGTexture.render(gRenderer, 0,150);
+                    ArendelleTexture.render(gRenderer, 0,150);
                     
                     //Render battle characters to the screen
                     elsaBattleTexture.render( gRenderer, Elsa.getX(), Elsa.getY(), NULL, Elsa.getDegs(), NULL, Elsa.getDir() );
@@ -932,15 +977,16 @@ int main( int argc, char* args[] )
                         
                         stepCount=0;
                         
-                        dot.moveAbs(550, 480);
-                        charDir=DOWN;
+                        dot.moveAbs(544, 2352);
+                        map2.moveAbs(544, 2352);
+                        charDir=UP;
                         
                         layoutReset=0;
                     }
                     
                     
                     //Render background
-                    practiceMapTexture.render( gRenderer, 0, 0, &camera );
+                    map2Texture.render( gRenderer, 0, 0, &camera );
                     
                     //Check for Rendering Dialogue Textures to the Screen
                     if(activeCharacter==ELSA){
@@ -966,7 +1012,7 @@ int main( int argc, char* args[] )
                 
                 //Update screen
                 SDL_RenderPresent( gRenderer );
-                SDL_Delay(20);
+                SDL_Delay(10);
                 
                 
 			}

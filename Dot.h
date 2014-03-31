@@ -24,11 +24,11 @@ class Dot
 {
 public:
     //The dimensions of the dot
-    static const int DOT_WIDTH = 20;
-    static const int DOT_HEIGHT = 20;
+    static const int DOT_WIDTH = 17;
+    static const int DOT_HEIGHT = 31;
     
     //Maximum axis velocity of the dot
-    static const int DOT_VEL = 5;
+    static const int DOT_VEL = 4;
     
     //Initializes the variables
     Dot();
@@ -41,7 +41,9 @@ public:
     void move();
     
     //Moves the dot with a moving background ("Rel"ative to background)
-    void moveRel();
+    void moveRel(int mChangeX, int mChangeY); //for scouting
+    void moveRel2(int mChangeX, int mChangeY, int zone); //only move if zone is valid
+    void moveBack(int mChangeX, int mChangeY); //to move the scout back with main character
     
     //Shows the dot on the screen
     void render(SDL_Renderer * gRenderer, LTexture gDotTexture);
@@ -54,12 +56,26 @@ public:
     int getPosY();
     void moveAbs(int x, int y);
     
+
+    
+    //populate the map array (take this out if can figure out map class)
+    void initializeMap();
+    
+    int checkZone();
+    
 private:
     //The X and Y offsets of the dot
     int mPosX, mPosY;
     
     //The velocity of the dot
     int mVelX, mVelY;
+    
+    //map stuff (take this out if can figure out map class)
+    static const int mapWidth = 82;
+    static const int mapHeight = 150;
+    int mapArray[mapHeight][mapWidth];
+  
+
 };
 
 
