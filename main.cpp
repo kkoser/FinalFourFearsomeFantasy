@@ -22,8 +22,8 @@
 using namespace std;
 
 //The dimensions of the level (if you change this, change it in Dot.cpp, too)
-const int LEVEL_WIDTH = 1312;
-const int LEVEL_HEIGHT = 2400;
+const int LEVEL_WIDTH[8] = {1200,1312,1312,1792,1344,1312,1312,1312};
+const int LEVEL_HEIGHT[8] = {656,880,2400,704,1248,2400,2400,2400};
 
 //Screen dimension constants (if you change this, change it in Dot.cpp, too)
 const int SCREEN_WIDTH = 1200;
@@ -110,7 +110,7 @@ LTexture jackSpriteBack;
 LTexture albusSpriteBack;
 
 //Background Images
-LTexture map2Texture;
+
 LTexture ArendelleTexture;
 LTexture CaveBGTexture;
 LTexture IslandBGTexture;
@@ -118,7 +118,7 @@ LTexture ForestBGTexture;
 LTexture BViewTexture; //bottom viewport boxes
 
 //Map Textures
-LTexture practiceMapTexture;
+LTexture mapTexture[8];
 
 //The music that will be played
 Mix_Music *elsaMusic = NULL;
@@ -134,7 +134,7 @@ Mix_Chunk *jackSoundEffect = NULL;
 Mix_Chunk *katSoundEffect = NULL;
 
 //Dot (character) textures for exploration mode
-LTexture gDotTexture;
+//LTexture gDotTexture;
 
 //------------------------------------------------------------------------------
 //              RUN INITIALIZATION FUNCTION
@@ -358,11 +358,46 @@ bool loadMedia(){
 	}
     
     //Load Maps
-    if( !map2Texture.loadFromFile( "map2.png", gRenderer ) )
+    if( !mapTexture[0].loadFromFile( "map0.png", gRenderer ) )
+	{
+		printf( "Failed to load map0 background texture image!\n" );
+		success = false;
+	}
+   if( !mapTexture[1].loadFromFile( "map1.png", gRenderer ) )
+	{
+		printf( "Failed to load map1 background texture image!\n" );
+		success = false;
+	}
+    if( !mapTexture[2].loadFromFile( "map2.png", gRenderer ) )
 	{
 		printf( "Failed to load map2 background texture image!\n" );
 		success = false;
 	}
+    if( !mapTexture[3].loadFromFile( "map3.png", gRenderer ) )
+	{
+		printf( "Failed to load map3 background texture image!\n" );
+		success = false;
+	}
+    if( !mapTexture[4].loadFromFile( "map4.png", gRenderer ) )
+	{
+		printf( "Failed to load map4 background texture image!\n" );
+		success = false;
+	}
+//    if( !mapTexture[5].loadFromFile( "map5.png", gRenderer ) )
+//	{
+//		printf( "Failed to load map5 background texture image!\n" );
+//		success = false;
+//	}
+//    if( !mapTexture[6].loadFromFile( "map6.png", gRenderer ) )
+//	{
+//		printf( "Failed to load map6 background texture image!\n" );
+//		success = false;
+//	}
+//    if( !mapTexture[7].loadFromFile( "map7.png", gRenderer ) )
+//	{
+//		printf( "Failed to load map7 background texture image!\n" );
+//		success = false;
+//	}
     
     //Load bottom viewport texture
 	if( !BViewTexture.loadFromFile( "BattleStats.jpg", gRenderer ) )
@@ -429,13 +464,6 @@ bool loadMedia(){
         success = false;
     }
     
-    //Load dot texture
-	if( !gDotTexture.loadFromFile( "katSpriteFront.png", gRenderer ) )
-	{
-		printf( "Failed to load dot texture!\n" );
-		success = false;
-	}
-    
 	return success;
 }
 //------------------------------------------------------------------------------
@@ -469,7 +497,8 @@ void close(){
     albusSpriteBack.free();
     
     ArendelleTexture.free();
-    map2Texture.free();
+    mapTexture[1].free();
+    mapTexture[2].free();
     CaveBGTexture.free();
     IslandBGTexture.free();
     ForestBGTexture.free();
@@ -539,6 +568,9 @@ int main( int argc, char* args[] )
 			//Main loop flag
 			bool quit = false;
             
+//------------------------------------------------------------------------------
+//              INITIALIZE VARIABLES
+//------------------------------------------------------------------------------
             //Characters
             CharacterView Elsa(720,500);
             CharacterView Albus(750,350);
@@ -560,7 +592,7 @@ int main( int argc, char* args[] )
             MainCharacters activeCharacter=ELSA;
             
             //initial Character Direction
-            Direction charDir=LEFT;
+            Direction charDir=UP;
             
             //Angle of rotation iterator for oscillating
             float elsaRotIterator=0;
@@ -569,7 +601,7 @@ int main( int argc, char* args[] )
             float katRotIterator=0;
             
             //open dialogue file
-            string filename="SampleScript.dialogue";
+            string filename="/Users/caseyhanley/Desktop/gitFFFF/Dialogue/SampleScript.dialogue";
             ifstream file(filename.c_str());
             //check for open
             if (!file) {
@@ -582,22 +614,31 @@ int main( int argc, char* args[] )
             //read from file
             getline(file,diaLine);
             
+            //initialize step counter for battles
             int stepCount=0;
             
-            cout<<diaLine<<endl;
-            
             //the dot to move around the screen
-            Dot dot(640,0);
+            Dot leader[8];
             
             //The camera area
-			SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+			SDL_Rect camera[8];
+            for(int q=0;q<8;q++) camera[q]= { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
             
-            //initialize map
-            Dot map2;
-            map2.initializeMap();
+            //initialize map number
+            int mapNumber=2;
+            
+            //initialize character direction
+            int charDirTemp=1;
 
-            
+            //initialize zone as valid
             int zone=9;
+            
+            Dot mapScout[8];
+            
+            int startPosX[8]; //= {544};
+            for(int q=0; q<8; q++) startPosX[q]=544;
+            int startPosY[8]; //= {2352};
+            for(int q=0; q<8; q++) startPosY[q]=2352;
             
 			//While application is running
 			while( !quit )
@@ -616,7 +657,9 @@ int main( int argc, char* args[] )
 						quit = true;
 					}
                     
-                    
+//------------------------------------------------------------------------------
+//              HANDLE KEYPRESSES
+//------------------------------------------------------------------------------
                     
                     //Process User Input
 					else if( e.type == SDL_KEYDOWN )
@@ -630,19 +673,8 @@ int main( int argc, char* args[] )
                                 if(activeCharacter==KAT) Kat.moveRel(0,-15);
                                 if(activeCharacter==JACK) Jack.moveRel(0,-15);
                                 if(activeCharacter==ALBUS) Albus.moveRel(0,-15);
-                                charDir=UP;
                                 stepCount++;
                                 if(layout==OPEN_LAYOUT) cout<<"Steps: "<<stepCount<<endl;
-                                
-                                map2.moveRel(0,-16); //move scout into desired position
-                                zone = map2.checkZone(); //determine the zone (map array index)
-                                dot.moveRel2(0,-16,zone); //move character into new position
-                                                            //if zone is valid
-                                map2.moveBack(0,-16); //move scout back to original position
-                                map2.moveRel2(0,-16,zone); //move scout scount into new position
-                                                            //if zone is valid
-                                
-                                
                                 break;
                                 
                             //move character down
@@ -651,17 +683,8 @@ int main( int argc, char* args[] )
                                 if(activeCharacter==KAT) Kat.moveRel(0,15);
                                 if(activeCharacter==JACK) Jack.moveRel(0,15);
                                 if(activeCharacter==ALBUS) Albus.moveRel(0,15);
-                                charDir=DOWN;
                                 stepCount++;
                                 if(layout==OPEN_LAYOUT) cout<<"Steps: "<<stepCount<<endl;
-                                
-                                
-                                map2.moveRel(0,16);
-                                zone = map2.checkZone();
-                                dot.moveRel2(0,16,zone);
-                                map2.moveBack(0,16);
-                                map2.moveRel2(0,16,zone);
-                                
                                 break;
                                 
                             //move character left
@@ -682,18 +705,8 @@ int main( int argc, char* args[] )
                                     Albus.moveRel(-15,0);
                                     Albus.flipLeft();
                                 }
-                                charDir=LEFT;
                                 stepCount++;
                                 if(layout==OPEN_LAYOUT) cout<<"Steps: "<<stepCount<<endl;
-                                
-                                
-                                map2.moveRel(-16,0);
-                                zone = map2.checkZone();
-                                dot.moveRel2(-16,0,zone);
-                                map2.moveBack(-16,0);
-                                map2.moveRel2(-16,0,zone);
-                                
-                                
                                 break;
                                 
                             //move character right
@@ -714,18 +727,8 @@ int main( int argc, char* args[] )
                                     Albus.moveRel(15,0);
                                     Albus.flipRight();
                                 }
-                                charDir=RIGHT;
                                 stepCount++;
                                 if(layout==OPEN_LAYOUT) cout<<"Steps: "<<stepCount<<endl;
-                                
-                                
-                                
-                                map2.moveRel(16,0);
-                                zone = map2.checkZone();
-                                dot.moveRel2(16,0,zone);
-                                map2.moveBack(16,0);
-                                map2.moveRel2(16,0,zone);
-                                
                                 break;
                                 
                             case SDLK_5: //Elsa's Music
@@ -736,7 +739,6 @@ int main( int argc, char* args[] )
                             case SDLK_6: //Jack's Music
                                 Mix_HaltMusic();
                                 Mix_PlayMusic( jackMusic, -1 );
-                                break;
                                 break;
                             
                             case SDLK_7: //Kat's Music
@@ -783,16 +785,84 @@ int main( int argc, char* args[] )
                                 Mix_PlayChannel( -1, katSoundEffect, 0 );
                                 break;
                                 
-                            //set open-world layout
-                            case SDLK_o:
-                                layout=OPEN_LAYOUT;
-                                layoutReset=1;
-                                break;
                                 
                             //set battle layout
                             case SDLK_b:
                                 layout=BATTLE_LAYOUT;
                                 layoutReset=1;
+                                Mix_HaltMusic();
+                                break;
+                                
+                            //set map0 layout
+                            case SDLK_z:
+                                layout=OPEN_LAYOUT;
+                                mapNumber=0;
+                                layoutReset=1;
+                                mapScout[0].initializeMap(0);
+                                Mix_HaltMusic();
+                                break;
+                                
+                            //set map1 layout
+                            case SDLK_x:
+                                layout=OPEN_LAYOUT;
+                                mapNumber=1;
+                                layoutReset=1;
+                                mapScout[1].initializeMap(1);
+                                Mix_HaltMusic();
+                                break;
+                                
+                            //set map2 layout
+                            case SDLK_c:
+                                layout=OPEN_LAYOUT;
+                                mapNumber=2;
+                                layoutReset=1;
+                                mapScout[2].initializeMap(2);
+                                Mix_HaltMusic();
+                                break;
+                                
+                            //set map3 layout
+                            case SDLK_v:
+                                layout=OPEN_LAYOUT;
+                                mapNumber=3;
+                                layoutReset=1;
+                                mapScout[3].initializeMap(3);
+                                Mix_HaltMusic();
+                                break;
+                                
+                            //set map4 layout
+                            case SDLK_n:
+                                layout=OPEN_LAYOUT;
+                                mapNumber=4;
+                                layoutReset=1;
+                                mapScout[4].initializeMap(4);
+                                Mix_HaltMusic();
+                                break;
+                                
+                            //set map5 layout
+                            case SDLK_m:
+                                layout=OPEN_LAYOUT;
+                                mapNumber=5;
+                                layoutReset=1;
+                                mapScout[5].initializeMap(5);
+                                Mix_HaltMusic();
+                                break;
+                                
+                            //set map6 layout
+                            case SDLK_k:
+                                layout=OPEN_LAYOUT;
+                                mapNumber=6;
+                                layoutReset=1;
+                                mapScout[6].initializeMap(6);
+                                Mix_HaltMusic();
+                                break;
+                                
+                            //set map7 layout
+                            case SDLK_l:
+                                layout=OPEN_LAYOUT;
+                                mapNumber=7;
+                                layoutReset=1;
+                                mapScout[7].initializeMap(7);
+                                Mix_HaltMusic();
                                 break;
                                 
                             default:
@@ -803,210 +873,266 @@ int main( int argc, char* args[] )
 					}
                     
                     //Handle input for the dot
-					//dot.handleEvent( e );
+					leader[mapNumber].handleEvent( e );
+                    mapScout[mapNumber].handleEvent( e );
+                    
                     
                 }
                 
-                //Move the dot
-                //dot.move();
                 
+//------------------------------------------------------------------------------
+//              MOVE THE CHARACTERS AND CAMERA
+//------------------------------------------------------------------------------
+                //Move the dot
+                mapScout[mapNumber].moveSmoothUnrestricted(mapNumber); //move scout ahead
+                zone = mapScout[mapNumber].checkZone(mapNumber); //determine the zone
+                
+                //switch character direction
+                charDirTemp = leader[mapNumber].getCharDir( mapScout[mapNumber].getPosX(), mapScout[mapNumber].getPosY(), charDirTemp );
+                switch(charDirTemp){
+                    case 0: charDir = UP; break;
+                    case 1: charDir = DOWN; break;
+                    case 2: charDir = LEFT; break;
+                    case 3: charDir = RIGHT; break;
+                }
+                mapScout[mapNumber].moveBackSmooth(mapNumber); //move scout back
+                leader[mapNumber].moveSmooth(zone,mapNumber); //move character ahead
+                mapScout[mapNumber].moveSmooth(zone,mapNumber); //move scout ahead, too
+
                 //Center the camera over the dot
-				camera.x = ( dot.getPosX() + Dot::DOT_WIDTH / 2 ) - SCREEN_WIDTH / 2;
-				camera.y = ( dot.getPosY() + Dot::DOT_HEIGHT / 2 ) - SCREEN_HEIGHT / 2;
+				camera[mapNumber].x = ( leader[mapNumber].getPosX() + Dot::DOT_WIDTH / 2 ) - SCREEN_WIDTH / 2;
+				camera[mapNumber].y = ( leader[mapNumber].getPosY() + Dot::DOT_HEIGHT / 2 ) - SCREEN_HEIGHT / 2;
                 
 				//Keep the camera in bounds
-				if( camera.x < 0 )
+				if( camera[mapNumber].x < 0 )
 				{
-					camera.x = 0;
+					camera[mapNumber].x = 0;
 				}
-				if( camera.y < 0 )
+				if( camera[mapNumber].y < 0 )
 				{
-					camera.y = 0;
+					camera[mapNumber].y = 0;
 				}
-				if( camera.x > LEVEL_WIDTH - camera.w )
+				if( camera[mapNumber].x > LEVEL_WIDTH[mapNumber] - camera[mapNumber].w )
 				{
-					camera.x = LEVEL_WIDTH - camera.w;
+					camera[mapNumber].x = LEVEL_WIDTH[mapNumber] - camera[mapNumber].w;
 				}
-				if( camera.y > LEVEL_HEIGHT - camera.h )
+				if( camera[mapNumber].y > LEVEL_HEIGHT[mapNumber] - camera[mapNumber].h )
 				{
-					camera.y = LEVEL_HEIGHT - camera.h;
+					camera[mapNumber].y = LEVEL_HEIGHT[mapNumber] - camera[mapNumber].h;
 				}
                 
                 //Clear screen
                 SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
                 SDL_RenderClear( gRenderer );
                 
-                if(layout == BATTLE_LAYOUT){
-                    
-                    if( Mix_PlayingMusic() == 0 )
-                    {
-                        //Play the music
-                        Mix_PlayMusic( elsaMusic, -1 );
-                    }
+                //declare viewports
+                SDL_Rect fullViewport;
+                SDL_Rect topViewport;
+                SDL_Rect bottomViewport;
                 
-                    if(layoutReset){
-                        //reset positions
-                        Elsa.moveAbs(720,500);
-                        Albus.moveAbs(750, 350);
-                        Jack.moveAbs(650, 430);
-                        Kat.moveAbs(850, 430);
-                        Elsa.flipLeft();
-                        Albus.flipLeft();
-                        Jack.flipLeft();
-                        Kat.flipLeft();
-                        
-                        activeCharacter=ELSA;
-                        layoutReset=0;
-                    }
+//------------------------------------------------------------------------------
+//              BATTLE LAYOUT
+//------------------------------------------------------------------------------
+                switch(layout){
+                    case BATTLE_LAYOUT:
                     
+                        if( Mix_PlayingMusic() == 0 )
+                        {
+                            //Play the music
+                            Mix_PlayMusic( elsaMusic, -1 );
+                        }
+                    
+                        if(layoutReset){
+                            //reset positions
+                            Elsa.moveAbs(720,500);
+                            Albus.moveAbs(750, 350);
+                            Jack.moveAbs(650, 430);
+                            Kat.moveAbs(850, 430);
+                            Elsa.flipLeft();
+                            Albus.flipLeft();
+                            Jack.flipLeft();
+                            Kat.flipLeft();
+                            
+                            activeCharacter=ELSA;
+                            layoutReset=0;
+                        }
+      
+                        //Top viewport
+                        topViewport.x = 0;
+                        topViewport.y = SCREEN_HEIGHT / 3;
+                        topViewport.w = SCREEN_WIDTH;
+                        topViewport.h = SCREEN_HEIGHT;
+                        SDL_RenderSetViewport( gRenderer, &topViewport );
+                        
+                        //Render background texture to screen
+                        ArendelleTexture.render(gRenderer, 0,150);
+                        
+                        //Render battle characters to the screen
+                        elsaBattleTexture.render( gRenderer, Elsa.getX(), Elsa.getY(), NULL, Elsa.getDegs(), NULL, Elsa.getDir() );
+                        katBattleTexture.render( gRenderer, Kat.getX(), Kat.getY(), NULL, Kat.getDegs(), NULL, Kat.getDir() );
+                        jackBattleTexture.render( gRenderer, Jack.getX(), Jack.getY(), NULL, Jack.getDegs(), NULL, Jack.getDir() );
+                        albusBattleTexture.render( gRenderer, Albus.getX(), Albus.getY(), NULL, Albus.getDegs(), NULL, Albus.getDir() );
+                        
+                        //Check for Rendering Dialogue Textures to the Screen
+                        if(activeCharacter==ELSA){
+                            elsaDialogueTexture.render( gRenderer, 10, 2*SCREEN_HEIGHT/3+50, NULL, NULL, NULL, SDL_FLIP_NONE );
+                        }
+                        if(activeCharacter==KAT){
+                            katDialogueTexture.render( gRenderer, 0, 2*SCREEN_HEIGHT/3+40, NULL, NULL, NULL, SDL_FLIP_NONE );
+                        }
+                        if(activeCharacter==JACK){
+                            jackDialogueTexture.render( gRenderer, 10, 2*SCREEN_HEIGHT/3+60, NULL, NULL, NULL, SDL_FLIP_NONE );
+                        }
+                        if(activeCharacter==ALBUS){
+                            albusDialogueTexture.render( gRenderer, 20, 2*SCREEN_HEIGHT/3+50, NULL, NULL, NULL, SDL_FLIP_NONE );
+                        }
+                       
+                        //Bottom viewport
+                        bottomViewport.x = 0;
+                        bottomViewport.y = 0;
+                        bottomViewport.w = SCREEN_WIDTH;
+                        bottomViewport.h = SCREEN_HEIGHT / 3;
+                        SDL_RenderSetViewport( gRenderer, &bottomViewport );
+                        
+                        
+                        //Render battleStat boxes to the screen
+                        BViewTexture.render(gRenderer, 0,0);
+                        
+                        //Render text (put into a class later to make it easier w/ functions and shit)
+                        textAndaleTexture.loadFromRenderedText( "1: Choose Albus", { 255, 255, 255 }, gRenderer, gFont );
+                        textAndaleTexture.render( gRenderer, 20, 20 );
+                        textAndaleTexture.loadFromRenderedText( "2: Choose Elsa", { 255, 255, 255 }, gRenderer, gFont );
+                        textAndaleTexture.render( gRenderer, 20, 45 );
+                        textAndaleTexture.loadFromRenderedText( "3: Choose Jack", { 255, 255, 255 }, gRenderer, gFont );
+                        textAndaleTexture.render( gRenderer, 20, 70 );
+                        textAndaleTexture.loadFromRenderedText( "4: Choose Kat", { 255, 255, 255 }, gRenderer, gFont );
+                        textAndaleTexture.render( gRenderer, 20, 95 );
+                        textAndaleTexture.loadFromRenderedText( "Arrow Keys: Move", { 255, 255, 255 }, gRenderer, gFont );
+                        textAndaleTexture.render( gRenderer, 20, 120 );
+                        
+                        
+                        textAndaleTexture.loadFromRenderedText( "5: Elsa's Theme", { 255, 255, 255 }, gRenderer, gFont );
+                        textAndaleTexture.render( gRenderer, 380, 20 );
+                        textAndaleTexture.loadFromRenderedText( "6: Jack's Theme", { 255, 255, 255 }, gRenderer, gFont );
+                        textAndaleTexture.render( gRenderer, 380, 45 );
+                        textAndaleTexture.loadFromRenderedText( "7: Kat's Theme", { 255, 255, 255 }, gRenderer, gFont );
+                        textAndaleTexture.render( gRenderer, 380, 70 );
+                        textAndaleTexture.loadFromRenderedText( "8: Albus' Theme", { 255, 255, 255 }, gRenderer, gFont );
+                        textAndaleTexture.render( gRenderer, 380, 95 );
+                        textAndaleTexture.loadFromRenderedText( diaLine, { 255, 255, 255 }, gRenderer, gFont );
+                        textAndaleTexture.render( gRenderer, 380, 120 );
+                        
+                        
+                        if (activeCharacter==ELSA){
+                            elsaRotIterator++;
+                            Elsa.setDegs(Elsa.getDegs()+sin(elsaRotIterator));
+                        }
+                        else if (activeCharacter==ALBUS){
+                            albusRotIterator++;
+                            Albus.setDegs(Albus.getDegs()+sin(albusRotIterator));
+                        }
+                        else if (activeCharacter==JACK){
+                            jackRotIterator++;
+                            Jack.setDegs(Jack.getDegs()+sin(jackRotIterator));
+                        }
+                        else if (activeCharacter==KAT){
+                            katRotIterator++;
+                            Kat.setDegs(Kat.getDegs()+sin(katRotIterator));
+                        } 
+                    
+                        break;
                 
-                    
-                    
-                    
-                    //Top viewport
-                    SDL_Rect topViewport;
-                    topViewport.x = 0;
-                    topViewport.y = SCREEN_HEIGHT / 3;
-                    topViewport.w = SCREEN_WIDTH;
-                    topViewport.h = SCREEN_HEIGHT;
-                    SDL_RenderSetViewport( gRenderer, &topViewport );
-                    
-                    //Render background texture to screen
-                    ArendelleTexture.render(gRenderer, 0,150);
-                    
-                    //Render battle characters to the screen
-                    elsaBattleTexture.render( gRenderer, Elsa.getX(), Elsa.getY(), NULL, Elsa.getDegs(), NULL, Elsa.getDir() );
-                    katBattleTexture.render( gRenderer, Kat.getX(), Kat.getY(), NULL, Kat.getDegs(), NULL, Kat.getDir() );
-                    jackBattleTexture.render( gRenderer, Jack.getX(), Jack.getY(), NULL, Jack.getDegs(), NULL, Jack.getDir() );
-                    albusBattleTexture.render( gRenderer, Albus.getX(), Albus.getY(), NULL, Albus.getDegs(), NULL, Albus.getDir() );
-                    
-                    //Check for Rendering Dialogue Textures to the Screen
-                    if(activeCharacter==ELSA){
-                        elsaDialogueTexture.render( gRenderer, 10, 2*SCREEN_HEIGHT/3+50, NULL, NULL, NULL, SDL_FLIP_NONE );
-                    }
-                    if(activeCharacter==KAT){
-                        katDialogueTexture.render( gRenderer, 0, 2*SCREEN_HEIGHT/3+40, NULL, NULL, NULL, SDL_FLIP_NONE );
-                    }
-                    if(activeCharacter==JACK){
-                        jackDialogueTexture.render( gRenderer, 10, 2*SCREEN_HEIGHT/3+60, NULL, NULL, NULL, SDL_FLIP_NONE );
-                    }
-                    if(activeCharacter==ALBUS){
-                        albusDialogueTexture.render( gRenderer, 20, 2*SCREEN_HEIGHT/3+50, NULL, NULL, NULL, SDL_FLIP_NONE );
-                    }
-                   
-                    //Bottom viewport
-                    SDL_Rect bottomViewport;
-                    bottomViewport.x = 0;
-                    bottomViewport.y = 0;
-                    bottomViewport.w = SCREEN_WIDTH;
-                    bottomViewport.h = SCREEN_HEIGHT / 3;
-                    SDL_RenderSetViewport( gRenderer, &bottomViewport );
-                    
-                    
-                    //Render battleStat boxes to the screen
-                    BViewTexture.render(gRenderer, 0,0);
-                    
-                    //Render text (put into a class later to make it easier w/ functions and shit)
-                    textAndaleTexture.loadFromRenderedText( "1: Choose Albus", { 255, 255, 255 }, gRenderer, gFont );
-                    textAndaleTexture.render( gRenderer, 20, 20 );
-                    textAndaleTexture.loadFromRenderedText( "2: Choose Elsa", { 255, 255, 255 }, gRenderer, gFont );
-                    textAndaleTexture.render( gRenderer, 20, 45 );
-                    textAndaleTexture.loadFromRenderedText( "3: Choose Jack", { 255, 255, 255 }, gRenderer, gFont );
-                    textAndaleTexture.render( gRenderer, 20, 70 );
-                    textAndaleTexture.loadFromRenderedText( "4: Choose Kat", { 255, 255, 255 }, gRenderer, gFont );
-                    textAndaleTexture.render( gRenderer, 20, 95 );
-                    textAndaleTexture.loadFromRenderedText( "Arrow Keys: Move", { 255, 255, 255 }, gRenderer, gFont );
-                    textAndaleTexture.render( gRenderer, 20, 120 );
-                    
-                    
-                    textAndaleTexture.loadFromRenderedText( "5: Elsa's Theme", { 255, 255, 255 }, gRenderer, gFont );
-                    textAndaleTexture.render( gRenderer, 380, 20 );
-                    textAndaleTexture.loadFromRenderedText( "6: Jack's Theme", { 255, 255, 255 }, gRenderer, gFont );
-                    textAndaleTexture.render( gRenderer, 380, 45 );
-                    textAndaleTexture.loadFromRenderedText( "7: Kat's Theme", { 255, 255, 255 }, gRenderer, gFont );
-                    textAndaleTexture.render( gRenderer, 380, 70 );
-                    textAndaleTexture.loadFromRenderedText( "8: Albus' Theme", { 255, 255, 255 }, gRenderer, gFont );
-                    textAndaleTexture.render( gRenderer, 380, 95 );
-                    textAndaleTexture.loadFromRenderedText( "o: (the letter) Exploration Mode", { 255, 255, 255 }, gRenderer, gFont );
-                    textAndaleTexture.render( gRenderer, 380, 120 );
-                    
-                    
-                    if (activeCharacter==ELSA){
-                        elsaRotIterator++;
-                        Elsa.setDegs(Elsa.getDegs()+sin(elsaRotIterator));
-                    }
-                    else if (activeCharacter==ALBUS){
-                        albusRotIterator++;
-                        Albus.setDegs(Albus.getDegs()+sin(albusRotIterator));
-                    }
-                    else if (activeCharacter==JACK){
-                        jackRotIterator++;
-                        Jack.setDegs(Jack.getDegs()+sin(jackRotIterator));
-                    }
-                    else if (activeCharacter==KAT){
-                        katRotIterator++;
-                        Kat.setDegs(Kat.getDegs()+sin(katRotIterator));
-                    } 
-                }
-                
-                else if(layout == OPEN_LAYOUT){
-                    
-                    Mix_HaltMusic();
-                    
-                    //Top viewport
-                    SDL_Rect fullViewport;
-                    fullViewport.x = 0;
-                    fullViewport.y = 0;
-                    fullViewport.w = SCREEN_WIDTH;
-                    fullViewport.h = SCREEN_HEIGHT;
-                    SDL_RenderSetViewport( gRenderer, &fullViewport );
-                    
-                    
-                    if(layoutReset){
-                        //reset positions
-                        Elsa.moveAbs(720,500);
-                        Albus.moveAbs(750, 350);
-                        Jack.moveAbs(650, 430);
-                        Kat.moveAbs(850, 430);
-                        Elsa.flipLeft();
-                        Albus.flipLeft();
-                        Jack.flipLeft();
-                        Kat.flipLeft();
+//------------------------------------------------------------------------------
+//              OPEN LAYOUT
+//------------------------------------------------------------------------------
+                    case OPEN_LAYOUT:
                         
-                        activeCharacter=KAT;
+                        if( Mix_PlayingMusic() == 0 )
+                        {
+                            switch(mapNumber){
+                                case 2:
+                                    //Play the music
+                                    Mix_PlayMusic( elsaMusic, -1 );
+                                    break;
+                                case 3:
+                                    Mix_PlayMusic( katMusic, -1 );
+                                    break;
+                                case 4:
+                                    Mix_PlayMusic( albusMusic, -1 );
+                                    break;
+                                case 5:
+                                    Mix_PlayMusic( jackMusic, -1 );
+                                    break;
+                            }
+                        }
                         
-                        stepCount=0;
+                        //Top viewport
+                        topViewport.x = 0;
+                        topViewport.y = SCREEN_HEIGHT / 4;
+                        topViewport.w = SCREEN_WIDTH;
+                        topViewport.h = SCREEN_HEIGHT;
                         
-                        dot.moveAbs(544, 2352);
-                        map2.moveAbs(544, 2352);
-                        charDir=UP;
+                        //Bottom viewport
+                        bottomViewport.x = 0;
+                        bottomViewport.y = 0;
+                        bottomViewport.w = SCREEN_WIDTH;
+                        bottomViewport.h = SCREEN_HEIGHT / 4;
                         
-                        layoutReset=0;
-                    }
-                    
-                    
-                    //Render background
-                    map2Texture.render( gRenderer, 0, 0, &camera );
-                    
-                    //Check for Rendering Dialogue Textures to the Screen
-                    if(activeCharacter==ELSA){
-                        elsaDialogueTexture.render( gRenderer, 10, 2*SCREEN_HEIGHT/3+50, NULL, NULL, NULL, SDL_FLIP_NONE );
-                    }
-                    if(activeCharacter==KAT){
-                        katDialogueTexture.render( gRenderer, 0, 2*SCREEN_HEIGHT/3+40, NULL, NULL, NULL, SDL_FLIP_NONE );
-                    }
-                    if(activeCharacter==JACK){
-                        jackDialogueTexture.render( gRenderer, 10, 2*SCREEN_HEIGHT/3+60, NULL, NULL, NULL, SDL_FLIP_NONE );
-                    }
-                    if(activeCharacter==ALBUS){
-                        albusDialogueTexture.render( gRenderer, 20, 2*SCREEN_HEIGHT/3+50, NULL, NULL, NULL, SDL_FLIP_NONE );
-                    }
-                
-                    //move Katniss around if she is selected
-                    if (charDir==UP) dot.renderRel( gRenderer, camera.x, camera.y, &katSpriteBack, Kat.getDir() );
-                    else if (charDir==DOWN) dot.renderRel( gRenderer, camera.x, camera.y, &katSpriteFront, Kat.getDir() );
-                    else if (charDir==LEFT) dot.renderRel( gRenderer, camera.x, camera.y, &katSpriteSide, Kat.getDir() );
-                    else if (charDir==RIGHT) dot.renderRel( gRenderer, camera.x, camera.y, &katSpriteSide, Kat.getDir() );
+                        //fullViewport
+                        fullViewport.x = 0;
+                        fullViewport.y = 0;
+                        fullViewport.w = SCREEN_WIDTH;
+                        fullViewport.h = SCREEN_HEIGHT;
+                        SDL_RenderSetViewport( gRenderer, &fullViewport );
+                        
+                        
+                        if(layoutReset){
+                            
+                            activeCharacter=KAT;
+                            
+                            stepCount=0;
+                            //mapNumber=0;
+                            leader[mapNumber].moveAbs(startPosX[mapNumber], startPosY[mapNumber]);
+                            mapScout[mapNumber].moveAbs(startPosX[mapNumber], startPosY[mapNumber]);
+                            charDir=UP;
+                            
+                            layoutReset=0;
+                        }
+                        
+                        //Render background
+                        mapTexture[mapNumber].render( gRenderer, 0, 0, &camera[mapNumber] );
+                        
+                        //move Katniss around if she is selected
+                        if (charDir==UP) leader[mapNumber].renderRel( gRenderer, camera[mapNumber].x, camera[mapNumber].y, &katSpriteBack, Kat.getDir() );
+                        else if (charDir==DOWN) leader[mapNumber].renderRel( gRenderer, camera[mapNumber].x, camera[mapNumber].y, &katSpriteFront, Kat.getDir() );
+                        else if (charDir==LEFT) leader[mapNumber].renderRel( gRenderer, camera[mapNumber].x, camera[mapNumber].y, &katSpriteSide, Kat.getDir() );
+                        else if (charDir==RIGHT) leader[mapNumber].renderRel( gRenderer, camera[mapNumber].x, camera[mapNumber].y, &katSpriteSide, Kat.getDir() );
+                        
+                        
+                        //SDL_RenderSetViewport( gRenderer, &bottomViewport );
+                        
+                        
+                        //Render battleStat boxes to the screen
+                        //BViewTexture.render(gRenderer, 0,0);
+                        
+//                        //Check for Rendering Dialogue Textures to the Screen
+//                        if(activeCharacter==ELSA){
+//                            elsaDialogueTexture.render( gRenderer, 10, 0, NULL, NULL, NULL, SDL_FLIP_NONE );
+//                        }
+//                        if(activeCharacter==KAT){
+//                            katDialogueTexture.render( gRenderer, 0, 0, NULL, NULL, NULL, SDL_FLIP_NONE );
+//                        }
+//                        if(activeCharacter==JACK){
+//                            jackDialogueTexture.render( gRenderer, 10, 0, NULL, NULL, NULL, SDL_FLIP_NONE );
+//                        }
+//                        if(activeCharacter==ALBUS){
+//                            albusDialogueTexture.render( gRenderer, 20, 0, NULL, NULL, NULL, SDL_FLIP_NONE );
+//                        }
+                        
+                        break;
+                        
+                    default:
+                        cout<<"NO LAYOUT SELECTED!"<<endl; break;
                     
                 }
                 

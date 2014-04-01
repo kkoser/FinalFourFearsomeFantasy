@@ -38,12 +38,16 @@ public:
     void handleEvent( SDL_Event& e );
     
     //Moves the dot
-    void move();
+   
     
     //Moves the dot with a moving background ("Rel"ative to background)
     void moveRel(int mChangeX, int mChangeY); //for scouting
     void moveRel2(int mChangeX, int mChangeY, int zone); //only move if zone is valid
     void moveBack(int mChangeX, int mChangeY); //to move the scout back with main character
+    
+    void moveSmooth(int zone,int mapNumber); //move smoothly with zone restrictions
+    void moveBackSmooth(int mapNumber); //move scout back
+    void moveSmoothUnrestricted(int mapNumber); //move scout ahead without zone restrictions
     
     //Shows the dot on the screen
     void render(SDL_Renderer * gRenderer, LTexture gDotTexture);
@@ -56,12 +60,14 @@ public:
     int getPosY();
     void moveAbs(int x, int y);
     
-
-    
     //populate the map array (take this out if can figure out map class)
-    void initializeMap();
+    void initializeMap(int mapNumber);
     
-    int checkZone();
+    //determine the zone of the current location
+    int checkZone(int mapNumber);
+    
+    //get leader direction
+    int getCharDir(int scoutX, int scoutY, int currentDir);
     
 private:
     //The X and Y offsets of the dot
@@ -71,10 +77,13 @@ private:
     int mVelX, mVelY;
     
     //map stuff (take this out if can figure out map class)
-    static const int mapWidth = 82;
-    static const int mapHeight = 150;
-    int mapArray[mapHeight][mapWidth];
-  
+    int mapWidth[8];
+    int mapHeight[8];
+    
+    int mapArray[150][150]; //maximum
+    
+    int keyPressed;
+    
 
 };
 
