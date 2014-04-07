@@ -42,7 +42,7 @@ void Character::actMoveOnTarget(string moveName, vector<Character> targets) {
         int hasRun = 0; //for once keyword
         
         //iterate through targets
-        typename vector<Character>::const_iterator currentTarget;
+        typename vector<Character>::iterator currentTarget;
         for (currentTarget = targets.begin(); currentTarget != targets.end(); ++currentTarget) {
         
             //get each word from line
@@ -59,7 +59,7 @@ void Character::actMoveOnTarget(string moveName, vector<Character> targets) {
                     this->displayStringForMove(line, targets[0]);
                 }
                 else if (word=="Target") {
-                    ch = targets[0];
+                    ch = *currentTarget;
                     
                 }
                 else if (word=="Actor") {
@@ -90,7 +90,8 @@ void Character::actMoveOnTarget(string moveName, vector<Character> targets) {
                     ch.setCurrentPPRegen(val);
                 }
                 else if (word=="Status") {
-                    //apply status
+                    getline(iss, word);
+                    ch.applyStatus(word, getCurrentPower()); //pass in power of caster
                 }
                 
                 else {
@@ -100,6 +101,65 @@ void Character::actMoveOnTarget(string moveName, vector<Character> targets) {
             }
         }
     }
+}
+
+void Character::applyStatus(string line, int casterPower) {
+    
+    istringstream issline(line);
+    string word;
+    
+    Status thisStatus;
+    
+    while (getline(issline, word, ' ')) {
+        if (word=="DPT") {
+            getline(issline, word, ' ');
+            thisStatus.damagePerTurn = casterPower*atof(word.c_str());
+        }
+        else if (word=="Incap") {
+            getline(issline, word, ' ');
+            if (word=="YES") {
+                thisStatus.causesIncap = 1;
+            }
+            else {
+                thisStatus.causesIncap = 0;
+            }
+        }
+        else if (word=="Length") {
+            getline(issline, word, ' ');
+            thisStatus.turnsUntilGone = atof(word.c_str());
+        }
+        else thisStatus.turnsUntilGone = 1; //default to single turn status
+    }
+    statuses.push_back(thisStatus); //save status to array
+    
+}
+
+void Character::updateStatuses() {
+    
+    int shouldBeIncap = 0; //statuses will update this if char should be incap
+    
+    typename vector<Status>::iterator currentStatus;
+    for (currentStatus = statuses.begin(); currentStatus != statuses.end(); ++currentStatus) {
+        
+        //check if status expires
+        if (currentStatus->turnsUntilGone==0) {
+            
+            currentStatus = statuses.erase(currentStatus); //erase any statuses that need to go
+            if (currentStatus == statuses.end()) {
+                break; //check to see if had removed last status
+            }
+        }
+        
+        //update status and character
+        currentStatus->turnsUntilGone = currentStatus->turnsUntilGone - 1; //decrement turns left
+        setCurrentHealth(getCurrentHealth() - currentStatus->damagePerTurn); //do damage
+        if (currentStatus->causesIncap) {
+            shouldBeIncap = 1;
+        }
+        
+    }
+    
+    isIncap = shouldBeIncap;
 }
 
 int Character::numTargetsForMove(string moveName) {
@@ -141,7 +201,7 @@ int Character::getValueForCommand(string com, int baseVal, int power) {
     
     //first check what kind of change we're doing
     char c = com.at(0);
-    com.erase(0,1);
+    com.erase(0,1); //get rid of sign
     float movePower = atof(com.c_str()); //get move power
     int totalPower = power*movePower; //int totalPower truncates decimals
 
@@ -230,10 +290,9 @@ void Character::setCurrentPower(int power) {
     if (power < 0) {
         power = 0;
     }
-    else if (power > standardPower) {
-        power = standardPower;
+    else {
+        currentPower = power;
     }
-    currentPower = power;
 }
 
 int Character::getCurrentPP() {
@@ -244,10 +303,11 @@ void Character::setCurrentPP(int PP) {
     if (PP < 0) {
         PP = 0;
     }
-    else if (PP > maxPP) {
+    else if (PP > maxPP){
         PP = maxPP;
     }
     currentPP = PP;
+
 }
 
 int Character::getCurrentPPRegen() {
@@ -258,10 +318,9 @@ void Character::setCurrentPPRegen(int PPRegen) {
     if (PPRegen < 0) {
         PPRegen = 0;
     }
-    else if (PPRegen > standardPPRegen) {
-        PPRegen = standardPPRegen;
+    else {
+        currentPPRegen = PPRegen;
     }
-    currentPPRegen = PPRegen;
 }
 
 string Character::getName() {

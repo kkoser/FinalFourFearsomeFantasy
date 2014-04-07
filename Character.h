@@ -25,8 +25,8 @@ using namespace std;
 
 typedef struct {
     int turnsUntilGone; //when zero, status is removed
-    bool isIncap; //when 1, status incapacitates character
-    int damagePowerPerTurn; //amount of damage to be dealt per turn
+    bool causesIncap; //when 1, status incapacitates character
+    int damagePerTurn; //amount of damage to be dealt per turn
     
     
 } Status;
@@ -51,18 +51,18 @@ protected:
 	//these are not increased by level points
 	int accuracy;
     
+    int isIncap;
+    
 	string name;
     string file;
 	
     vector<string> moves;
+    vector<Status> statuses;
     
 	string spriteName;
         
 public:
 	Character(string fileName);
-    
-    //attribute setters for battle
-    void setPower(int p);
     
     void actMoveOnTarget(string moveName, vector<Character> targets);
     
@@ -79,6 +79,10 @@ public:
     void setCurrentPPRegen(int PPRegen);
     
     string getName();
+    
+    void applyStatus(string line, int casterPower); //applies status to self
+    
+    void updateStatuses(); //updates each status (to be done at beginning of turn)
     
     
 private:
