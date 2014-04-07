@@ -23,15 +23,6 @@
 using namespace std;
 
 
-//The dimensions of the level (should be larger than window size for movement freedom)
-//(if you change this, change it in main.cpp, too)
-//const int LEVEL_WIDTH = 1312;
-//const int LEVEL_HEIGHT = 2400;
-
-//Screen dimension constants (if you change this, change it in main.cpp, too)
-//const int SCREEN_WIDTH = 1200;
-//const int SCREEN_HEIGHT = 650;
-
 //------------------------------------------------------------------------------
 Dot::Dot()
 {
@@ -43,14 +34,14 @@ Dot::Dot()
     mVelX = 0;
     mVelY = 0;
     
-    mapHeight[0]=41;
-    mapWidth[0]=75;
+    mapHeight[0]=41+2;
+    mapWidth[0]=75+2;
     
-    mapHeight[1]=55;
-    mapWidth[1]=82;
+    mapHeight[1]=55+2;
+    mapWidth[1]=82+2;
     
-    mapHeight[2]=150;
-    mapWidth[2]=82;
+    mapHeight[2]=150+2;
+    mapWidth[2]=82+2;
     
     mapHeight[3]=44;
     mapWidth[3]=112;
@@ -81,14 +72,14 @@ Dot::Dot(int PosX, int PosY)
     mVelX = 0;
     mVelY = 0;
     
-    mapHeight[0]=150;
-    mapWidth[0]=82;
+    mapHeight[0]=41+2;
+    mapWidth[0]=75+2;
     
-    mapHeight[1]=55;
-    mapWidth[1]=82;
+    mapHeight[1]=55+2;
+    mapWidth[1]=82+2;
     
-    mapHeight[2]=150;
-    mapWidth[2]=82;
+    mapHeight[2]=150+2;
+    mapWidth[2]=82+2;
     
     mapHeight[3]=150;
     mapWidth[3]=82;
@@ -119,13 +110,13 @@ void Dot::handleEvent( SDL_Event& e )
         //Adjust the velocity
         switch( e.key.keysym.sym )
         {
-            case SDLK_UP: mVelY -= DOT_VEL; keyPressed=1; //mVelX=0;
+            case SDLK_UP: mVelY -= DOT_VEL; keyPressed=1;
                 break;
-            case SDLK_DOWN: mVelY += DOT_VEL; keyPressed=1; //mVelX=0;
+            case SDLK_DOWN: mVelY += DOT_VEL; keyPressed=1;
                 break;
-            case SDLK_LEFT: mVelX -= DOT_VEL; keyPressed=1; //mVelY=0;
+            case SDLK_LEFT: mVelX -= DOT_VEL; keyPressed=1;
                 break;
-            case SDLK_RIGHT: mVelX += DOT_VEL; keyPressed=1; //mVelY=0;
+            case SDLK_RIGHT: mVelX += DOT_VEL; keyPressed=1;
                 break;
         }
     }
@@ -135,13 +126,13 @@ void Dot::handleEvent( SDL_Event& e )
         //Adjust the velocity
         switch( e.key.keysym.sym )
         {
-            case SDLK_UP: mVelY += DOT_VEL; keyPressed=1; //mVelX=0;
+            case SDLK_UP: mVelY += DOT_VEL; keyPressed=1;
                 break;
-            case SDLK_DOWN: mVelY -= DOT_VEL; keyPressed=1; //mVelX=0;
+            case SDLK_DOWN: mVelY -= DOT_VEL; keyPressed=1;
                 break;
-            case SDLK_LEFT: mVelX += DOT_VEL; keyPressed=1; //mVelY=0;
+            case SDLK_LEFT: mVelX += DOT_VEL; keyPressed=1;
                 break;
-            case SDLK_RIGHT: mVelX -= DOT_VEL; keyPressed=1; //mVelY=0;
+            case SDLK_RIGHT: mVelX -= DOT_VEL; keyPressed=1;
                 break;
         }
     }
@@ -178,9 +169,6 @@ void Dot::moveSmoothUnrestricted(int mapNumber) //with velocity
         mPosY += mVelY;
     }
     
-    //cout<<"X: "<<(mPosX+8)/16<<endl;
-    //cout<<"Y: "<<(mPosY+25)/16<<endl;
-    
 }
 //------------------------------------------------------------------------------
 void Dot::moveSmooth(int zone,int mapNumber) //with velocity
@@ -188,6 +176,8 @@ void Dot::moveSmooth(int zone,int mapNumber) //with velocity
     if(zone!=8){
         mPosX += mVelX;
     }
+    
+    
     //Move the dot left or right
     
     
@@ -414,7 +404,7 @@ void Dot::moveRel2(int mChangeX, int mChangeY,int zone) //MODIFY LATER FOR OBSTA
 int Dot::checkZone(int mapNumber){
     int zone;
     
-    zone = mapArray[(mPosY+25)/16][(mPosX+8)/16];
+    zone = mapArray[(mPosY+25)/16 +1][(mPosX+8)/16 +1];
     //cout<<"Zone: "<<zone<<endl;
     
     return zone;
@@ -487,28 +477,35 @@ void Dot::initializeMap(int mapNumber){
     string filename;
     switch(mapNumber){
         case 0:
-            filename="/Users/caseyhanley/Desktop/gitFFFF/MapFiles/map2.csv";
+<<<<<<< HEAD
+            filename="/Users/caseyhanley/Desktop/gitFFFF/MapFiles/map0.csv";
             break;
         case 1:
-            filename="/Users/caseyhanley/Desktop/gitFFFF/MapFiles/map2.csv";
+            filename="/Users/caseyhanley/Desktop/gitFFFF/MapFiles/map1.csv";
+=======
+            filename="/Users/Zach/Documents/14th School/2nd Semester/Fund Comp II/Final Project/FinalFourFearsomeFantasy/MapFiles/map2.csv";
+            break;
+        case 1:
+            filename="/Users/Zach/Documents/14th School/2nd Semester/Fund Comp II/Final Project/FinalFourFearsomeFantasy/MapFiles/map2.csv";
+>>>>>>> FETCH_HEAD
             break;
         case 2:
-            filename="/Users/caseyhanley/Desktop/gitFFFF/MapFiles/map2.csv";
+            filename="/Users/Zach/Documents/14th School/2nd Semester/Fund Comp II/Final Project/FinalFourFearsomeFantasy/MapFiles/map2.csv";
             break;
         case 3:
-            filename="/Users/caseyhanley/Desktop/gitFFFF/MapFiles/map2.csv";
+            filename="/Users/Zach/Documents/14th School/2nd Semester/Fund Comp II/Final Project/FinalFourFearsomeFantasy/MapFiles/map2.csv";
             break;
         case 4:
-            filename="/Users/caseyhanley/Desktop/gitFFFF/MapFiles/map2.csv";
+            filename="/Users/Zach/Documents/14th School/2nd Semester/Fund Comp II/Final Project/FinalFourFearsomeFantasy/MapFiles/map2.csv";
             break;
         case 5:
-            filename="/Users/caseyhanley/Desktop/gitFFFF/MapFiles/map2.csv";
+            filename="/Users/Zach/Documents/14th School/2nd Semester/Fund Comp II/Final Project/FinalFourFearsomeFantasy/MapFiles/map2.csv";
             break;
         case 6:
-            filename="/Users/caseyhanley/Desktop/gitFFFF/MapFiles/map2.csv";
+            filename="/Users/Zach/Documents/14th School/2nd Semester/Fund Comp II/Final Project/FinalFourFearsomeFantasy/MapFiles/map2.csv";
             break;
         case 7:
-            filename="/Users/caseyhanley/Desktop/gitFFFF/MapFiles/map2.csv";
+            filename="/Users/Zach/Documents/14th School/2nd Semester/Fund Comp II/Final Project/FinalFourFearsomeFantasy/MapFiles/map2.csv";
             break;
     }
     
@@ -524,7 +521,7 @@ void Dot::initializeMap(int mapNumber){
                 zoneInt = atoi(zone.c_str());
                 mapArray[y][x] = zoneInt;
                 //cout<<mapArray[y][x];
-                //if(x<mapWidth[2]-1) cout<<",";
+                //if(x<mapWidth[mapNumber]-1) cout<<",";
             }
             //cout<<endl;
         }

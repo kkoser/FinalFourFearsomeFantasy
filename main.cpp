@@ -582,14 +582,14 @@ int main( int argc, char* args[] )
 			SDL_Event e;
             
             //Play the music
-            Mix_PlayMusic( elsaMusic, -1 ); //start playing Elsa's music
+            //Mix_PlayMusic( elsaMusic, -1 ); //start playing Elsa's music
             
             //initial layout
-            WindowLayouts layout=BATTLE_LAYOUT;
-            int layoutReset=0;
+            WindowLayouts layout=OPEN_LAYOUT;
+            int layoutReset=1;
             
             //initial active character
-            MainCharacters activeCharacter=ELSA;
+            MainCharacters activeCharacter=KAT;
             
             //initial Character Direction
             Direction charDir=UP;
@@ -601,7 +601,7 @@ int main( int argc, char* args[] )
             float katRotIterator=0;
             
             //open dialogue file
-            string filename="/Users/caseyhanley/Desktop/gitFFFF/Dialogue/SampleScript.dialogue";
+            string filename="/Users/Zach/Documents/14th School/2nd Semester/Fund Comp II/Final Project/FinalFourFearsomeFantasy/Dialogue/SampleScript.dialogue";
             ifstream file(filename.c_str());
             //check for open
             if (!file) {
@@ -618,14 +618,14 @@ int main( int argc, char* args[] )
             int stepCount=0;
             
             //the dot to move around the screen
-            Dot leader[8];
+            Dot leader;
             
             //The camera area
 			SDL_Rect camera[8];
             for(int q=0;q<8;q++) camera[q]= { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
             
             //initialize map number
-            int mapNumber=2;
+            int mapNumber=0;
             
             //initialize character direction
             int charDirTemp=1;
@@ -635,10 +635,18 @@ int main( int argc, char* args[] )
             
             Dot mapScout[8];
             
-            int startPosX[8]; //= {544};
-            for(int q=0; q<8; q++) startPosX[q]=544;
-            int startPosY[8]; //= {2352};
-            for(int q=0; q<8; q++) startPosY[q]=2352;
+            int startPosX[8];
+            for(int q=0; q<8; q++) startPosX[q]=50;
+            int startPosY[8];
+            for(int q=0; q<8; q++) startPosY[q]=50;
+            
+            startPosX[0]=752;
+            startPosY[0]=176;
+            startPosX[2]=544;
+            startPosY[2]=2352;
+            startPosX[1]=80;
+            startPosY[1]=784;
+            
             
 			//While application is running
 			while( !quit )
@@ -865,6 +873,7 @@ int main( int argc, char* args[] )
                                 Mix_HaltMusic();
                                 break;
                                 
+
                             default:
                                 break;
 						}
@@ -872,9 +881,65 @@ int main( int argc, char* args[] )
                 
 					}
                     
-                    //Handle input for the dot
-					leader[mapNumber].handleEvent( e );
+                    //Handle input for the character and scout
+					leader.handleEvent( e );
                     mapScout[mapNumber].handleEvent( e );
+                    
+                    //check for layout switch
+                    if(zone != 9 && layout==OPEN_LAYOUT){
+                        
+                        switch(zone){
+                            case 0:
+                                mapNumber=0;
+                                layoutReset=1;
+                                mapScout[0].initializeMap(0);
+                                Mix_HaltMusic();
+                                break;
+                            case 1:
+                                mapNumber=1;
+                                layoutReset=1;
+                                mapScout[1].initializeMap(1);
+                                Mix_HaltMusic();
+                                break;
+                            case 2:
+                                mapNumber=2;
+                                layoutReset=1;
+                                mapScout[2].initializeMap(2);
+                                Mix_HaltMusic();
+                                break;
+                            case 3:
+                                mapNumber=3;
+                                layoutReset=1;
+                                mapScout[3].initializeMap(3);
+                                Mix_HaltMusic();
+                                break;
+                            case 4:
+                                mapNumber=4;
+                                layoutReset=1;
+                                mapScout[4].initializeMap(4);
+                                Mix_HaltMusic();
+                                break;
+                            case 5:
+                                mapNumber=5;
+                                layoutReset=1;
+                                mapScout[5].initializeMap(5);
+                                Mix_HaltMusic();
+                                break;
+                            case 10:
+                                layout=BATTLE_LAYOUT;
+                                layoutReset=1;
+                                Mix_HaltMusic();
+                                break;
+                            case 11:
+                                mapNumber=0;
+                                layoutReset=1;
+                                mapScout[0].initializeMap(0);
+                                Mix_HaltMusic();
+                                break;
+                                
+                            default: break;
+                        }
+                    }
                     
                     
                 }
@@ -883,43 +948,48 @@ int main( int argc, char* args[] )
 //------------------------------------------------------------------------------
 //              MOVE THE CHARACTERS AND CAMERA
 //------------------------------------------------------------------------------
-                //Move the dot
-                mapScout[mapNumber].moveSmoothUnrestricted(mapNumber); //move scout ahead
-                zone = mapScout[mapNumber].checkZone(mapNumber); //determine the zone
-                
-                //switch character direction
-                charDirTemp = leader[mapNumber].getCharDir( mapScout[mapNumber].getPosX(), mapScout[mapNumber].getPosY(), charDirTemp );
-                switch(charDirTemp){
-                    case 0: charDir = UP; break;
-                    case 1: charDir = DOWN; break;
-                    case 2: charDir = LEFT; break;
-                    case 3: charDir = RIGHT; break;
+                //Move the character
+                if(!layoutReset && layout==OPEN_LAYOUT){
+                    
+                    mapScout[mapNumber].moveSmoothUnrestricted(mapNumber); //move scout ahead
+                    zone = mapScout[mapNumber].checkZone(mapNumber); //determine the zone
+
+                    //switch character direction
+                    charDirTemp = leader.getCharDir( mapScout[mapNumber].getPosX(), mapScout[mapNumber].getPosY(), charDirTemp );
+                    switch(charDirTemp){
+                        case 0: charDir = UP; break;
+                        case 1: charDir = DOWN; break;
+                        case 2: charDir = LEFT; break;
+                        case 3: charDir = RIGHT; break;
+                    }
+                    mapScout[mapNumber].moveBackSmooth(mapNumber); //move scout back
+                    leader.moveSmooth(zone,mapNumber); //move character ahead
+                    mapScout[mapNumber].moveSmooth(zone,mapNumber); //move scout ahead, too
+                    
                 }
-                mapScout[mapNumber].moveBackSmooth(mapNumber); //move scout back
-                leader[mapNumber].moveSmooth(zone,mapNumber); //move character ahead
-                mapScout[mapNumber].moveSmooth(zone,mapNumber); //move scout ahead, too
 
                 //Center the camera over the dot
-				camera[mapNumber].x = ( leader[mapNumber].getPosX() + Dot::DOT_WIDTH / 2 ) - SCREEN_WIDTH / 2;
-				camera[mapNumber].y = ( leader[mapNumber].getPosY() + Dot::DOT_HEIGHT / 2 ) - SCREEN_HEIGHT / 2;
+                camera[mapNumber].x = ( leader.getPosX() + Dot::DOT_WIDTH / 2 ) - SCREEN_WIDTH / 2;
+                camera[mapNumber].y = ( leader.getPosY() + Dot::DOT_HEIGHT / 2 ) - SCREEN_HEIGHT / 2;
                 
-				//Keep the camera in bounds
-				if( camera[mapNumber].x < 0 )
-				{
-					camera[mapNumber].x = 0;
-				}
-				if( camera[mapNumber].y < 0 )
-				{
-					camera[mapNumber].y = 0;
-				}
-				if( camera[mapNumber].x > LEVEL_WIDTH[mapNumber] - camera[mapNumber].w )
-				{
-					camera[mapNumber].x = LEVEL_WIDTH[mapNumber] - camera[mapNumber].w;
-				}
-				if( camera[mapNumber].y > LEVEL_HEIGHT[mapNumber] - camera[mapNumber].h )
-				{
-					camera[mapNumber].y = LEVEL_HEIGHT[mapNumber] - camera[mapNumber].h;
-				}
+                //Keep the camera in bounds
+                if( camera[mapNumber].x < 0 )
+                {
+                    camera[mapNumber].x = 0;
+                }
+                if( camera[mapNumber].y < 0 )
+                {
+                    camera[mapNumber].y = 0;
+                }
+                if( camera[mapNumber].x > LEVEL_WIDTH[mapNumber] - camera[mapNumber].w )
+                {
+                    camera[mapNumber].x = LEVEL_WIDTH[mapNumber] - camera[mapNumber].w;
+                }
+                if( camera[mapNumber].y > LEVEL_HEIGHT[mapNumber] - camera[mapNumber].h )
+                {
+                    camera[mapNumber].y = LEVEL_HEIGHT[mapNumber] - camera[mapNumber].h;
+                }
+                
                 
                 //Clear screen
                 SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
@@ -1091,22 +1161,22 @@ int main( int argc, char* args[] )
                             activeCharacter=KAT;
                             
                             stepCount=0;
-                            //mapNumber=0;
-                            leader[mapNumber].moveAbs(startPosX[mapNumber], startPosY[mapNumber]);
+                            leader.moveAbs(startPosX[mapNumber], startPosY[mapNumber]);
                             mapScout[mapNumber].moveAbs(startPosX[mapNumber], startPosY[mapNumber]);
                             charDir=UP;
                             
                             layoutReset=0;
+                            
                         }
                         
                         //Render background
                         mapTexture[mapNumber].render( gRenderer, 0, 0, &camera[mapNumber] );
                         
                         //move Katniss around if she is selected
-                        if (charDir==UP) leader[mapNumber].renderRel( gRenderer, camera[mapNumber].x, camera[mapNumber].y, &katSpriteBack, Kat.getDir() );
-                        else if (charDir==DOWN) leader[mapNumber].renderRel( gRenderer, camera[mapNumber].x, camera[mapNumber].y, &katSpriteFront, Kat.getDir() );
-                        else if (charDir==LEFT) leader[mapNumber].renderRel( gRenderer, camera[mapNumber].x, camera[mapNumber].y, &katSpriteSide, Kat.getDir() );
-                        else if (charDir==RIGHT) leader[mapNumber].renderRel( gRenderer, camera[mapNumber].x, camera[mapNumber].y, &katSpriteSide, Kat.getDir() );
+                        if (charDir==UP) leader.renderRel( gRenderer, camera[mapNumber].x, camera[mapNumber].y, &katSpriteBack, Kat.getDir() );
+                        else if (charDir==DOWN) leader.renderRel( gRenderer, camera[mapNumber].x, camera[mapNumber].y, &katSpriteFront, Kat.getDir() );
+                        else if (charDir==LEFT) leader.renderRel( gRenderer, camera[mapNumber].x, camera[mapNumber].y, &katSpriteSide, Kat.getDir() );
+                        else if (charDir==RIGHT) leader.renderRel( gRenderer, camera[mapNumber].x, camera[mapNumber].y, &katSpriteSide, Kat.getDir() );
                         
                         
                         //SDL_RenderSetViewport( gRenderer, &bottomViewport );
@@ -1138,8 +1208,8 @@ int main( int argc, char* args[] )
                 
                 //Update screen
                 SDL_RenderPresent( gRenderer );
-                SDL_Delay(10);
-                
+                SDL_Delay(30);
+
                 
 			}
             
