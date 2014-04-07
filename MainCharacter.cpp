@@ -1,23 +1,9 @@
-<<<<<<< HEAD
 //  FinalFourFearsomeFantasy
 //
 //  Created by Kyle Koser on 3/20/14.
 //  Copyright (c) 2014 Kyle Koser. All rights reserved.
 //
 #include "MainCharacter.h"
-=======
-//
-//  MainCharacter.cpp
-
-//  tester
-//
-//  Created by Zach Waterson on 3/22/14.
-//  Copyright (c) 2014 Zach Waterson. All rights reserved.
-//
-
-#include "MainCharacter.h"
-
->>>>>>> FETCH_HEAD
 
 MainCharacter::MainCharacter(string fileName) : Character(fileName) {
     file = fileName;

@@ -477,7 +477,6 @@ void Dot::initializeMap(int mapNumber){
     string filename;
     switch(mapNumber){
         case 0:
-<<<<<<< HEAD
             filename="/Users/caseyhanley/Desktop/gitFFFF/MapFiles/map0.csv";
             break;
         case 1:
