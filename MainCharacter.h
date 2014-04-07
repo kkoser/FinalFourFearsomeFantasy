@@ -17,7 +17,8 @@
 using namespace std;
 
 class MainCharacter : public Character {
-private: 
+private:
+    /*
 	//these can be upgraded using level points
 	int maxHealth;
 	int standardPower;
@@ -32,6 +33,7 @@ private:
 	int currentPP;
 	int currentPPRegen;
 	int currentArmor;
+     */
 
 	//these are not increased by level points
 	int exp;

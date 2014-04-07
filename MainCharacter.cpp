@@ -1,13 +1,3 @@
-//
-//  MainCharacter.cpp
-
-//  tester
-//
-//  Created by Zach Waterson on 3/22/14.
-//  Copyright (c) 2014 Zach Waterson. All rights reserved.
-//
-
-#include "MainCharacter.h"
 //  FinalFourFearsomeFantasy
 //
 //  Created by Kyle Koser on 3/20/14.
@@ -25,5 +15,8 @@ MainCharacter::~MainCharacter() {
 }
 
 void MainCharacter::writeToFile(string fileName) {
+    ofstream file;
+    file.open(fileName.c_str());
+    
     
 }

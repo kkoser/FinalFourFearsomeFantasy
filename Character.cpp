@@ -10,6 +10,38 @@
 
 Character::Character(string fileName) {
     
+    ifstream file;
+    file.open(fileName.c_str());
+    
+    for (int i = 0; i < 10; i++) {
+        int val;
+        file >> val;
+        
+        //the only things in the save file are the 4 base values and the health, which persists
+        //pp and statuses do NOT persist from battle to battle, so aren't written to file
+        switch (i) {
+            case 0:
+                maxHealth = val;
+                break;
+            case 1:
+                standardPower = val;
+                break;
+            case 2:
+                maxPP = val;
+                break;
+            case 3:
+                standardPPRegen = val;
+                break;
+            case 4:
+                currentHealth = val;
+                break;
+                
+            default:
+                break;
+        }
+    }
+    
+    /*
     maxHealth = 100;
     standardPower = 10;
     maxPP = 10;
@@ -19,6 +51,11 @@ Character::Character(string fileName) {
     currentPP = 10;
     currentPower = 10;
     currentHealth = 100;
+     */
+    
+    currentPower = standardPower;
+    currentPPRegen = standardPPRegen;
+    currentPP = maxPP;
     
     fileName = fileName;
 }
@@ -49,6 +86,11 @@ void Character::actMoveOnTarget(string moveName, vector<Character> targets) {
             istringstream iss(line);
             string word;
             
+            //keep track of the most recent damage dealt
+            //used for display
+            int actorDamage = 0;
+            int targetDamage = 0;
+            
             while (getline(iss, word, ' ')) {
                 if (word=="Once") {
                     if (hasRun == 1) {
@@ -56,7 +98,7 @@ void Character::actMoveOnTarget(string moveName, vector<Character> targets) {
                     }
                 }
                 else if (word=="Display") {
-                    this->displayStringForMove(line, targets[0]);
+                    displayLog = this->displayStringForMove(line, targets[0], actorDamage, targetDamage);
                 }
                 else if (word=="Target") {
                     ch = targets[0];
@@ -70,6 +112,13 @@ void Character::actMoveOnTarget(string moveName, vector<Character> targets) {
                     
                     int val = getValueForCommand(word, ch.getCurrentHealth(), ch.getCurrentPower());
                     ch.setCurrentHealth(val);
+                    
+                    if (&ch == this) {
+                        actorDamage = val;
+                    }
+                    else {
+                        targetDamage = val;
+                    }
                 }
                 else if (word=="Power") {
                     getline(iss, word);
@@ -166,7 +215,7 @@ int Character::getValueForCommand(string com, int baseVal, int power) {
     return val;
 }
 
-string Character::displayStringForMove(string com, Character target) {
+string Character::displayStringForMove(string com, Character target, int targetDamage, int actorDamage) {
     ostringstream output;
     
     istringstream iss(com);
@@ -197,6 +246,12 @@ string Character::displayStringForMove(string com, Character target) {
             }
             else if (word == "$TARGET_HEALTH") {
                 output << target.getCurrentHealth();
+            }
+            else if (word == "$ACTOR_DAMAGE") {
+                output << actorDamage;
+            }
+            else if (word == "$TARGET_DAMAGE") {
+                output << targetDamage;
             }
             
         }

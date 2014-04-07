@@ -50,6 +50,8 @@ protected:
     vector<string> moves;
     
 	string spriteName;
+    
+    string displayLog;
         
 public:
 	Character(string fileName);
@@ -76,7 +78,7 @@ public:
     
 private:
     
-    string displayStringForMove(string command, Character target); //creates text to be displayed
+    string displayStringForMove(string command, Character target, int targetDamage, int actorDamage); //creates text to be displayed
     int getValueForCommand(string command, int baseVal, int power); //baseval typically a char's stat
     
 
