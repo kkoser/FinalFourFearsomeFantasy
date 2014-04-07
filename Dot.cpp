@@ -110,13 +110,13 @@ void Dot::handleEvent( SDL_Event& e )
         //Adjust the velocity
         switch( e.key.keysym.sym )
         {
-            case SDLK_UP: mVelY -= DOT_VEL; keyPressed=1; //mVelX=0;
+            case SDLK_UP: mVelY -= DOT_VEL; keyPressed=1;
                 break;
-            case SDLK_DOWN: mVelY += DOT_VEL; keyPressed=1; //mVelX=0;
+            case SDLK_DOWN: mVelY += DOT_VEL; keyPressed=1;
                 break;
-            case SDLK_LEFT: mVelX -= DOT_VEL; keyPressed=1; //mVelY=0;
+            case SDLK_LEFT: mVelX -= DOT_VEL; keyPressed=1;
                 break;
-            case SDLK_RIGHT: mVelX += DOT_VEL; keyPressed=1; //mVelY=0;
+            case SDLK_RIGHT: mVelX += DOT_VEL; keyPressed=1;
                 break;
         }
     }
@@ -126,13 +126,13 @@ void Dot::handleEvent( SDL_Event& e )
         //Adjust the velocity
         switch( e.key.keysym.sym )
         {
-            case SDLK_UP: mVelY += DOT_VEL; keyPressed=1; //mVelX=0;
+            case SDLK_UP: mVelY += DOT_VEL; keyPressed=1;
                 break;
-            case SDLK_DOWN: mVelY -= DOT_VEL; keyPressed=1; //mVelX=0;
+            case SDLK_DOWN: mVelY -= DOT_VEL; keyPressed=1;
                 break;
-            case SDLK_LEFT: mVelX += DOT_VEL; keyPressed=1; //mVelY=0;
+            case SDLK_LEFT: mVelX += DOT_VEL; keyPressed=1;
                 break;
-            case SDLK_RIGHT: mVelX -= DOT_VEL; keyPressed=1; //mVelY=0;
+            case SDLK_RIGHT: mVelX -= DOT_VEL; keyPressed=1;
                 break;
         }
     }
@@ -168,9 +168,6 @@ void Dot::moveSmoothUnrestricted(int mapNumber) //with velocity
         //Move back
         mPosY += mVelY;
     }
-    
-    //cout<<"X: "<<(mPosX+8)/16<<endl;
-    //cout<<"Y: "<<(mPosY+25)/16<<endl;
     
 }
 //------------------------------------------------------------------------------
