@@ -18,20 +18,20 @@ using namespace std;
 
 class MainCharacter : public Character {
 private: 
-	//these can be upgraded using level points
-	int maxHealth;
-	int standardPower;
-	int maxPP; //mana for moves
-	int standardPPRegen;
-	int standardArmor;
-
-	int currentHealth; //current health in battle
-
-	//these are augmented in battle and reset afterwords
-	int currentPower;
-	int currentPP;
-	int currentPPRegen;
-	int currentArmor;
+//	//these can be upgraded using level points
+//	int maxHealth;
+//	int standardPower;
+//	int maxPP; //mana for moves
+//	int standardPPRegen;
+//	int standardArmor;
+//
+//	int currentHealth; //current health in battle
+//
+//	//these are augmented in battle and reset afterwords
+//	int currentPower;
+//	int currentPP;
+//	int currentPPRegen;
+//	int currentArmor;
 
 	//these are not increased by level points
 	int exp;
