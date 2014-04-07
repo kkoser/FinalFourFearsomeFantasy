@@ -18,11 +18,18 @@ This is the base character class of which other characters will inherit.
 #include <fstream>
 #include <sstream>
 
-
 typedef enum {NOSTATUS, DPT, SHIELD, INCAP} Statuses; //these can be applied by the move
 //typedef enum {NOATTRIBUTE, POWER, CURRENTPP, PPREGEN, ARMOR} Attributes; //certain moves multiply these
 
 using namespace std;
+
+typedef struct {
+    int turnsUntilGone; //when zero, status is removed
+    bool isIncap; //when 1, status incapacitates character
+    int damagePowerPerTurn; //amount of damage to be dealt per turn
+    
+    
+} Status;
 
 class Character {
 protected:

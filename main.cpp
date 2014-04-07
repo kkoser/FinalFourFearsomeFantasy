@@ -601,7 +601,7 @@ int main( int argc, char* args[] )
             float katRotIterator=0;
             
             //open dialogue file
-            string filename="/Users/caseyhanley/Desktop/gitFFFF/Dialogue/SampleScript.dialogue";
+            string filename="/Users/Zach/Documents/14th School/2nd Semester/Fund Comp II/Final Project/FinalFourFearsomeFantasy/Dialogue/SampleScript.dialogue";
             ifstream file(filename.c_str());
             //check for open
             if (!file) {

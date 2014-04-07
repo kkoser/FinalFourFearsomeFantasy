@@ -487,28 +487,28 @@ void Dot::initializeMap(int mapNumber){
     string filename;
     switch(mapNumber){
         case 0:
-            filename="/Users/caseyhanley/Desktop/gitFFFF/MapFiles/map2.csv";
+            filename="/Users/Zach/Documents/14th School/2nd Semester/Fund Comp II/Final Project/FinalFourFearsomeFantasy/MapFiles/map2.csv";
             break;
         case 1:
-            filename="/Users/caseyhanley/Desktop/gitFFFF/MapFiles/map2.csv";
+            filename="/Users/Zach/Documents/14th School/2nd Semester/Fund Comp II/Final Project/FinalFourFearsomeFantasy/MapFiles/map2.csv";
             break;
         case 2:
-            filename="/Users/caseyhanley/Desktop/gitFFFF/MapFiles/map2.csv";
+            filename="/Users/Zach/Documents/14th School/2nd Semester/Fund Comp II/Final Project/FinalFourFearsomeFantasy/MapFiles/map2.csv";
             break;
         case 3:
-            filename="/Users/caseyhanley/Desktop/gitFFFF/MapFiles/map2.csv";
+            filename="/Users/Zach/Documents/14th School/2nd Semester/Fund Comp II/Final Project/FinalFourFearsomeFantasy/MapFiles/map2.csv";
             break;
         case 4:
-            filename="/Users/caseyhanley/Desktop/gitFFFF/MapFiles/map2.csv";
+            filename="/Users/Zach/Documents/14th School/2nd Semester/Fund Comp II/Final Project/FinalFourFearsomeFantasy/MapFiles/map2.csv";
             break;
         case 5:
-            filename="/Users/caseyhanley/Desktop/gitFFFF/MapFiles/map2.csv";
+            filename="/Users/Zach/Documents/14th School/2nd Semester/Fund Comp II/Final Project/FinalFourFearsomeFantasy/MapFiles/map2.csv";
             break;
         case 6:
-            filename="/Users/caseyhanley/Desktop/gitFFFF/MapFiles/map2.csv";
+            filename="/Users/Zach/Documents/14th School/2nd Semester/Fund Comp II/Final Project/FinalFourFearsomeFantasy/MapFiles/map2.csv";
             break;
         case 7:
-            filename="/Users/caseyhanley/Desktop/gitFFFF/MapFiles/map2.csv";
+            filename="/Users/Zach/Documents/14th School/2nd Semester/Fund Comp II/Final Project/FinalFourFearsomeFantasy/MapFiles/map2.csv";
             break;
     }
     
