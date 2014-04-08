@@ -1,32 +1,27 @@
-#include <string>
-#include <vector>
+//
+//  Enemy.h
+//  FinalFourFearsomeFantasy
+//
+//  Created by Kyle Koser on 4/8/14.
+//  Copyright (c) 2014 Kyle Koser. All rights reserved.
+//
 
-using namespace std;
+#ifndef __FinalFourFearsomeFantasy__Enemy__
+#define __FinalFourFearsomeFantasy__Enemy__
 
-class Enemy {
-private: 
-	//these can be upgraded using level points
-	int maxHealth;
-	int standardPower;
-	int maxPP; //mana for moves
-	int standardPPRegen;
-	int armor;
-	int accuracy;
-	string name;
+#include <iostream>
+#include "Character.h"
 
-	//these are augmented in battle and reset afterwords (except health)
-	int currentHealth;
-	int currentPower;
-	int currentPP;
-	int currentPPRegen;
-
-	Move activeMoves[4];
-
-	string spriteName;
-
+class Enemy : public Character {
 public:
-	Enemy(string fileName);
-
-	void actOnCharacter(Character &ch, Move m);
-	//Do we only plan to act on one character at a time? No splash/group attacks/heals
+    //constructor invokes basic Character constructor
+    Enemy(string file);
+    
+    //AI decision function. Recieves all of the valid Character targets, and chooses what move to act on what target(s)
+    //Subclasses override this for specific AI behavior
+    void actOnCharacters(vector<Character *> chars);
+private:
+    
 };
+
+#endif /* defined(__FinalFourFearsomeFantasy__Enemy__) */
