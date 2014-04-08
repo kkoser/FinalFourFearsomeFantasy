@@ -7,6 +7,7 @@
 //
 
 #include "Dot.h"
+#include "Settings.h"
 
 #include <iostream>
 #include <SDL2/SDL.h>
@@ -477,36 +478,32 @@ void Dot::initializeMap(int mapNumber){
     string filename;
     switch(mapNumber){
         case 0:
-            filename="/Users/caseyhanley/Desktop/gitFFFF/MapFiles/map0.csv";
+            filename="map0.csv";
             break;
         case 1:
-            filename="/Users/caseyhanley/Desktop/gitFFFF/MapFiles/map1.csv";
-=======
-            filename="/Users/Zach/Documents/14th School/2nd Semester/Fund Comp II/Final Project/FinalFourFearsomeFantasy/MapFiles/map2.csv";
-            break;
-        case 1:
-            filename="/Users/Zach/Documents/14th School/2nd Semester/Fund Comp II/Final Project/FinalFourFearsomeFantasy/MapFiles/map2.csv";
->>>>>>> FETCH_HEAD
+            filename="map1.csv";
             break;
         case 2:
-            filename="/Users/Zach/Documents/14th School/2nd Semester/Fund Comp II/Final Project/FinalFourFearsomeFantasy/MapFiles/map2.csv";
+            filename="map2.csv";
             break;
         case 3:
-            filename="/Users/Zach/Documents/14th School/2nd Semester/Fund Comp II/Final Project/FinalFourFearsomeFantasy/MapFiles/map2.csv";
+            filename="map2.csv";
             break;
         case 4:
-            filename="/Users/Zach/Documents/14th School/2nd Semester/Fund Comp II/Final Project/FinalFourFearsomeFantasy/MapFiles/map2.csv";
+            filename="map2.csv";
             break;
         case 5:
-            filename="/Users/Zach/Documents/14th School/2nd Semester/Fund Comp II/Final Project/FinalFourFearsomeFantasy/MapFiles/map2.csv";
+            filename="map2.csv";
             break;
         case 6:
-            filename="/Users/Zach/Documents/14th School/2nd Semester/Fund Comp II/Final Project/FinalFourFearsomeFantasy/MapFiles/map2.csv";
+            filename="map2.csv";
             break;
         case 7:
-            filename="/Users/Zach/Documents/14th School/2nd Semester/Fund Comp II/Final Project/FinalFourFearsomeFantasy/MapFiles/map2.csv";
+            filename="map2.csv";
             break;
     }
+    
+    filename = pathForFile(filename);
     
     string zone;
     int zoneInt;
