@@ -640,7 +640,7 @@ int main( int argc, char* args[] )
             //initialize zone as valid
             int zone=9;
             
-            Dot mapScout[8];
+            Dot mapScout;
             
             int startPosX[8];
             for(int q=0; q<8; q++) startPosX[q]=50;
@@ -813,7 +813,7 @@ int main( int argc, char* args[] )
                                 layout=OPEN_LAYOUT;
                                 mapNumber=0;
                                 layoutReset=1;
-                                mapScout[0].initializeMap(0);
+                                mapScout.initializeMap(0);
                                 Mix_HaltMusic();
                                 break;
                                 
@@ -822,7 +822,7 @@ int main( int argc, char* args[] )
                                 layout=OPEN_LAYOUT;
                                 mapNumber=1;
                                 layoutReset=1;
-                                mapScout[1].initializeMap(1);
+                                mapScout.initializeMap(1);
                                 Mix_HaltMusic();
                                 break;
                                 
@@ -831,7 +831,7 @@ int main( int argc, char* args[] )
                                 layout=OPEN_LAYOUT;
                                 mapNumber=2;
                                 layoutReset=1;
-                                mapScout[2].initializeMap(2);
+                                mapScout.initializeMap(2);
                                 Mix_HaltMusic();
                                 break;
                                 
@@ -840,7 +840,7 @@ int main( int argc, char* args[] )
                                 layout=OPEN_LAYOUT;
                                 mapNumber=3;
                                 layoutReset=1;
-                                mapScout[3].initializeMap(3);
+                                mapScout.initializeMap(3);
                                 Mix_HaltMusic();
                                 break;
                                 
@@ -849,7 +849,7 @@ int main( int argc, char* args[] )
                                 layout=OPEN_LAYOUT;
                                 mapNumber=4;
                                 layoutReset=1;
-                                mapScout[4].initializeMap(4);
+                                mapScout.initializeMap(4);
                                 Mix_HaltMusic();
                                 break;
                                 
@@ -858,7 +858,7 @@ int main( int argc, char* args[] )
                                 layout=OPEN_LAYOUT;
                                 mapNumber=5;
                                 layoutReset=1;
-                                mapScout[5].initializeMap(5);
+                                mapScout.initializeMap(5);
                                 Mix_HaltMusic();
                                 break;
                                 
@@ -867,7 +867,7 @@ int main( int argc, char* args[] )
                                 layout=OPEN_LAYOUT;
                                 mapNumber=6;
                                 layoutReset=1;
-                                mapScout[6].initializeMap(6);
+                                mapScout.initializeMap(6);
                                 Mix_HaltMusic();
                                 break;
                                 
@@ -876,7 +876,7 @@ int main( int argc, char* args[] )
                                 layout=OPEN_LAYOUT;
                                 mapNumber=7;
                                 layoutReset=1;
-                                mapScout[7].initializeMap(7);
+                                mapScout.initializeMap(7);
                                 Mix_HaltMusic();
                                 break;
                                 
@@ -890,7 +890,7 @@ int main( int argc, char* args[] )
                     
                     //Handle input for the character and scout
 					leader.handleEvent( e );
-                    mapScout[mapNumber].handleEvent( e );
+                    mapScout.handleEvent( e );
                     
                     //check for layout switch
                     if(zone != 9 && layout==OPEN_LAYOUT){
@@ -899,37 +899,37 @@ int main( int argc, char* args[] )
                             case 0:
                                 mapNumber=0;
                                 layoutReset=1;
-                                mapScout[0].initializeMap(0);
+                                mapScout.initializeMap(0);
                                 Mix_HaltMusic();
                                 break;
                             case 1:
                                 mapNumber=1;
                                 layoutReset=1;
-                                mapScout[1].initializeMap(1);
+                                mapScout.initializeMap(1);
                                 Mix_HaltMusic();
                                 break;
                             case 2:
                                 mapNumber=2;
                                 layoutReset=1;
-                                mapScout[2].initializeMap(2);
+                                mapScout.initializeMap(2);
                                 Mix_HaltMusic();
                                 break;
                             case 3:
                                 mapNumber=3;
                                 layoutReset=1;
-                                mapScout[3].initializeMap(3);
+                                mapScout.initializeMap(3);
                                 Mix_HaltMusic();
                                 break;
                             case 4:
                                 mapNumber=4;
                                 layoutReset=1;
-                                mapScout[4].initializeMap(4);
+                                mapScout.initializeMap(4);
                                 Mix_HaltMusic();
                                 break;
                             case 5:
                                 mapNumber=5;
                                 layoutReset=1;
-                                mapScout[5].initializeMap(5);
+                                mapScout.initializeMap(5);
                                 Mix_HaltMusic();
                                 break;
                             case 10:
@@ -940,7 +940,7 @@ int main( int argc, char* args[] )
                             case 11:
                                 mapNumber=0;
                                 layoutReset=1;
-                                mapScout[0].initializeMap(0);
+                                mapScout.initializeMap(0);
                                 Mix_HaltMusic();
                                 break;
                                 
@@ -958,20 +958,20 @@ int main( int argc, char* args[] )
                 //Move the character
                 if(!layoutReset && layout==OPEN_LAYOUT){
                     
-                    mapScout[mapNumber].moveSmoothUnrestricted(mapNumber); //move scout ahead
-                    zone = mapScout[mapNumber].checkZone(mapNumber); //determine the zone
+                    mapScout.moveSmoothUnrestricted(mapNumber); //move scout ahead
+                    zone = mapScout.checkZone(mapNumber); //determine the zone
 
                     //switch character direction
-                    charDirTemp = leader.getCharDir( mapScout[mapNumber].getPosX(), mapScout[mapNumber].getPosY(), charDirTemp );
+                    charDirTemp = leader.getCharDir( mapScout.getPosX(), mapScout.getPosY(), charDirTemp );
                     switch(charDirTemp){
                         case 0: charDir = UP; break;
                         case 1: charDir = DOWN; break;
                         case 2: charDir = LEFT; break;
                         case 3: charDir = RIGHT; break;
                     }
-                    mapScout[mapNumber].moveBackSmooth(mapNumber); //move scout back
+                    mapScout.moveBackSmooth(mapNumber); //move scout back
                     leader.moveSmooth(zone,mapNumber); //move character ahead
-                    mapScout[mapNumber].moveSmooth(zone,mapNumber); //move scout ahead, too
+                    mapScout.moveSmooth(zone,mapNumber); //move scout ahead, too
                     
                 }
 
@@ -1168,7 +1168,7 @@ int main( int argc, char* args[] )
                             
                             stepCount=0;
                             leader.moveAbs(startPosX[mapNumber], startPosY[mapNumber]);
-                            mapScout[mapNumber].moveAbs(startPosX[mapNumber], startPosY[mapNumber]);
+                            mapScout.moveAbs(startPosX[mapNumber], startPosY[mapNumber]);
                             charDir=UP;
                             
                             layoutReset=0;
