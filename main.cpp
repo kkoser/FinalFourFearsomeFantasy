@@ -112,6 +112,7 @@ LTexture albusSpriteBack;
 //Background Images
 
 LTexture ArendelleTexture;
+LTexture NorthMountBGTexture;
 LTexture CaveBGTexture;
 LTexture IslandBGTexture;
 LTexture ForestBGTexture;
@@ -290,68 +291,73 @@ bool loadMedia(){
 		printf( "Failed to load kat's sprite texture image!\n" );
 		success = false;
 	}
-//    if( !albusSpriteSide.loadFromFile( "albusSpriteSide.jpg", gRenderer ) )
-//	{
-//		printf( "Failed to load kat's sprite texture image!\n" );
-//		success = false;
-//	}
-//    if( !elsaSpriteSide.loadFromFile( "elsaSpriteSide.jpg", gRenderer ) )
-//	{
-//		printf( "Failed to load kat's sprite texture image!\n" );
-//		success = false;
-//	}
-//    if( !jackSpriteSide.loadFromFile( "jackSpriteSide.jpg", gRenderer ) )
-//	{
-//		printf( "Failed to load kat's sprite texture image!\n" );
-//		success = false;
-//	}
-//    
+    if( !albusSpriteSide.loadFromFile( "albusSpriteSide.png", gRenderer ) )
+	{
+		printf( "Failed to load kat's sprite texture image!\n" );
+		success = false;
+	}
+    if( !elsaSpriteSide.loadFromFile( "elsaSpriteSide.png", gRenderer ) )
+	{
+		printf( "Failed to load kat's sprite texture image!\n" );
+		success = false;
+	}
+    if( !jackSpriteSide.loadFromFile( "jackSpriteSide.png", gRenderer ) )
+	{
+		printf( "Failed to load kat's sprite texture image!\n" );
+		success = false;
+	}
+    
     //load Sprite Front Views
     if( !katSpriteFront.loadFromFile( "katSpriteFront.png", gRenderer ) )
 	{
 		printf( "Failed to load kat's sprite texture image!\n" );
 		success = false;
 	}
-//    if( !albusSpriteFront.loadFromFile( "albusSpriteFront.jpg", gRenderer ) )
-//	{
-//		printf( "Failed to load kat's sprite texture image!\n" );
-//		success = false;
-//	}
-//    if( !elsaSpriteFront.loadFromFile( "elsaSpriteFront.jpg", gRenderer ) )
-//	{
-//		printf( "Failed to load kat's sprite texture image!\n", gRenderer );
-//		success = false;
-//	}
-//    if( !jackSpriteFront.loadFromFile( "jackSpriteFront.jpg", gRenderer ) )
-//	{
-//		printf( "Failed to load kat's sprite texture image!\n", gRenderer );
-//		success = false;
-//	}
-//    
+    if( !albusSpriteFront.loadFromFile( "albusSpriteFront.png", gRenderer ) )
+	{
+		printf( "Failed to load kat's sprite texture image!\n" );
+		success = false;
+	}
+    if( !elsaSpriteFront.loadFromFile( "elsaSpriteFront.png", gRenderer ) )
+	{
+		printf( "Failed to load kat's sprite texture image!\n" );
+		success = false;
+	}
+    if( !jackSpriteFront.loadFromFile( "jackSpriteFront.png", gRenderer ) )
+	{
+		printf( "Failed to load kat's sprite texture image!\n" );
+		success = false;
+	}
+
     //load sprite Back Views
     if( !katSpriteBack.loadFromFile( "katSpriteBack.png", gRenderer ) )
 	{
 		printf( "Failed to load kat's sprite texture image!\n" );
 		success = false;
 	}
-//    if( !albusSpriteBack.loadFromFile( "albusSpriteBack.jpg", gRenderer ) )
-//	{
-//		printf( "Failed to load kat's sprite texture image!\n" );
-//		success = false;
-//	}
-//    if( !elsaSpriteBack.loadFromFile( "elsaSpriteBack.jpg", gRenderer ) )
-//	{
-//		printf( "Failed to load kat's sprite texture image!\n" );
-//		success = false;
-//	}
-//    if( !jackSpriteBack.loadFromFile( "jackSpriteBack.jpg", gRenderer ) )
-//	{
-//		printf( "Failed to load kat's sprite texture image!\n" );
-//		success = false;
-//	}
+    if( !albusSpriteBack.loadFromFile( "albusSpriteBack.png", gRenderer ) )
+	{
+		printf( "Failed to load kat's sprite texture image!\n" );
+		success = false;
+	}
+    if( !elsaSpriteBack.loadFromFile( "elsaSpriteBack.png", gRenderer ) )
+	{
+		printf( "Failed to load kat's sprite texture image!\n" );
+		success = false;
+	}
+    if( !jackSpriteBack.loadFromFile( "jackSpriteBack.png", gRenderer ) )
+	{
+		printf( "Failed to load kat's sprite texture image!\n" );
+		success = false;
+	}
     
 	//Load background textures
 	if( !ArendelleTexture.loadFromFile( "arendelle.jpg", gRenderer ) )
+	{
+		printf( "Failed to load north mountain background texture image!\n" );
+		success = false;
+	}
+    if( !NorthMountBGTexture.loadFromFile( "battleNorthMountain.jpg", gRenderer ) )
 	{
 		printf( "Failed to load north mountain background texture image!\n" );
 		success = false;
@@ -601,7 +607,7 @@ int main( int argc, char* args[] )
             float katRotIterator=0;
             
             //open dialogue file
-            string filename="/Users/Zach/Documents/14th School/2nd Semester/Fund Comp II/Final Project/FinalFourFearsomeFantasy/Dialogue/SampleScript.dialogue";
+            string filename="/Users/caseyhanley/Desktop/gitFFFF/Dialogue/SampleScript.dialogue";
             ifstream file(filename.c_str());
             //check for open
             if (!file) {
@@ -1023,7 +1029,6 @@ int main( int argc, char* args[] )
                             Jack.flipLeft();
                             Kat.flipLeft();
                             
-                            activeCharacter=ELSA;
                             layoutReset=0;
                         }
       
@@ -1158,7 +1163,7 @@ int main( int argc, char* args[] )
                         
                         if(layoutReset){
                             
-                            activeCharacter=KAT;
+                            //activeCharacter=KAT;
                             
                             stepCount=0;
                             leader.moveAbs(startPosX[mapNumber], startPosY[mapNumber]);
@@ -1173,10 +1178,30 @@ int main( int argc, char* args[] )
                         mapTexture[mapNumber].render( gRenderer, 0, 0, &camera[mapNumber] );
                         
                         //move Katniss around if she is selected
-                        if (charDir==UP) leader.renderRel( gRenderer, camera[mapNumber].x, camera[mapNumber].y, &katSpriteBack, Kat.getDir() );
-                        else if (charDir==DOWN) leader.renderRel( gRenderer, camera[mapNumber].x, camera[mapNumber].y, &katSpriteFront, Kat.getDir() );
-                        else if (charDir==LEFT) leader.renderRel( gRenderer, camera[mapNumber].x, camera[mapNumber].y, &katSpriteSide, Kat.getDir() );
-                        else if (charDir==RIGHT) leader.renderRel( gRenderer, camera[mapNumber].x, camera[mapNumber].y, &katSpriteSide, Kat.getDir() );
+                        if (activeCharacter==KAT){
+                            if (charDir==UP) leader.renderRel( gRenderer, camera[mapNumber].x, camera[mapNumber].y, &katSpriteBack, Kat.getDir() );
+                            else if (charDir==DOWN) leader.renderRel( gRenderer, camera[mapNumber].x, camera[mapNumber].y, &katSpriteFront, Kat.getDir() );
+                            else if (charDir==LEFT) leader.renderRel( gRenderer, camera[mapNumber].x, camera[mapNumber].y, &katSpriteSide, Kat.getDir() );
+                            else if (charDir==RIGHT) leader.renderRel( gRenderer, camera[mapNumber].x, camera[mapNumber].y, &katSpriteSide, Kat.getDir() );
+                        }
+                        else if( activeCharacter==ALBUS){
+                                if (charDir==UP) leader.renderRel( gRenderer, camera[mapNumber].x, camera[mapNumber].y, &albusSpriteBack, Albus.getDir() );
+                                else if (charDir==DOWN) leader.renderRel( gRenderer, camera[mapNumber].x, camera[mapNumber].y, &albusSpriteFront, Albus.getDir() );
+                                else if (charDir==LEFT) leader.renderRel( gRenderer, camera[mapNumber].x, camera[mapNumber].y, &albusSpriteSide, Albus.getDir() );
+                                else if (charDir==RIGHT) leader.renderRel( gRenderer, camera[mapNumber].x, camera[mapNumber].y, &albusSpriteSide, Albus.getDir() );
+                        }
+                        else if( activeCharacter==ELSA){
+                            if (charDir==UP) leader.renderRel( gRenderer, camera[mapNumber].x, camera[mapNumber].y, &elsaSpriteBack, Elsa.getDir() );
+                            else if (charDir==DOWN) leader.renderRel( gRenderer, camera[mapNumber].x, camera[mapNumber].y, &elsaSpriteFront, Elsa.getDir() );
+                            else if (charDir==LEFT) leader.renderRel( gRenderer, camera[mapNumber].x, camera[mapNumber].y, &elsaSpriteSide, Elsa.getDir() );
+                            else if (charDir==RIGHT) leader.renderRel( gRenderer, camera[mapNumber].x, camera[mapNumber].y, &elsaSpriteSide, Elsa.getDir() );
+                        }
+                        else if( activeCharacter==JACK){
+                            if (charDir==UP) leader.renderRel( gRenderer, camera[mapNumber].x, camera[mapNumber].y, &jackSpriteBack, Jack.getDir() );
+                            else if (charDir==DOWN) leader.renderRel( gRenderer, camera[mapNumber].x, camera[mapNumber].y, &jackSpriteFront, Jack.getDir() );
+                            else if (charDir==LEFT) leader.renderRel( gRenderer, camera[mapNumber].x, camera[mapNumber].y, &jackSpriteSide, Jack.getDir() );
+                            else if (charDir==RIGHT) leader.renderRel( gRenderer, camera[mapNumber].x, camera[mapNumber].y, &jackSpriteSide, Jack.getDir() );
+                        }
                         
                         
                         //SDL_RenderSetViewport( gRenderer, &bottomViewport );
