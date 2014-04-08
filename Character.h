@@ -17,9 +17,7 @@ This is the base character class of which other characters will inherit.
 #include <vector>
 #include <fstream>
 #include <sstream>
-
-typedef enum {NOSTATUS, DPT, SHIELD, INCAP} Statuses; //these can be applied by the move
-//typedef enum {NOATTRIBUTE, POWER, CURRENTPP, PPREGEN, ARMOR} Attributes; //certain moves multiply these
+#include "Settings.h"
 
 using namespace std;
 
@@ -66,7 +64,7 @@ protected:
 public:
 	Character(string fileName);
     
-    void actMoveOnTarget(string moveName, vector<Character> targets);
+    void actMoveOnTarget(string moveName, vector<Character *> targets);
     
     int numTargetsForMove(string moveName); //returns 0 if all
     
@@ -89,7 +87,7 @@ public:
     
 private:
     
-    string displayStringForMove(string command, Character target, int targetDamage, int actorDamage); //creates text to be displayed
+    string displayStringForMove(string command, Character *target, int targetDamage, int actorDamage); //creates text to be displayed
     int getValueForCommand(string command, int baseVal, int power); //baseval typically a char's stat
     
 

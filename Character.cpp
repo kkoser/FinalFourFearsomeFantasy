@@ -60,7 +60,7 @@ Character::Character(string fileName) {
     fileName = fileName;
 }
 
-void Character::actMoveOnTarget(string moveName, vector<Character> targets) {
+void Character::actMoveOnTarget(string moveName, vector<Character *> targets) {
     
     //open file
     ifstream file(moveName.c_str());
@@ -74,12 +74,12 @@ void Character::actMoveOnTarget(string moveName, vector<Character> targets) {
     string line;
     while (getline(file, line)) {
         
-        Character &ch = *this;
+        Character *ch = this;
         
         int hasRun = 0; //for once keyword
         
         //iterate through targets
-        typename vector<Character>::iterator currentTarget;
+        typename vector<Character *>::iterator currentTarget;
         for (currentTarget = targets.begin(); currentTarget != targets.end(); ++currentTarget) {
         
             //get each word from line
@@ -105,15 +105,15 @@ void Character::actMoveOnTarget(string moveName, vector<Character> targets) {
                     
                 }
                 else if (word=="Actor") {
-                    ch = *this;
+                    ch = this;
                 }
                 else if (word=="Health") {
                     getline(iss, word);
                     
-                    int val = getValueForCommand(word, ch.getCurrentHealth(), ch.getCurrentPower());
-                    ch.setCurrentHealth(val);
+                    int val = getValueForCommand(word, ch->getCurrentHealth(), ch->getCurrentPower());
+                    ch->setCurrentHealth(val);
                     
-                    if (&ch == this) {
+                    if (ch == this) {
                         actorDamage = val;
                     }
                     else {
@@ -123,24 +123,24 @@ void Character::actMoveOnTarget(string moveName, vector<Character> targets) {
                 else if (word=="Power") {
                     getline(iss, word);
                     
-                    int val = getValueForCommand(word, ch.getCurrentPower(), ch.getCurrentPower());
-                    ch.setCurrentPower(val);
+                    int val = getValueForCommand(word, ch->getCurrentPower(), ch->getCurrentPower());
+                    ch->setCurrentPower(val);
                 }
                 else if (word=="PP") {
                     getline(iss, word);
                     
-                    int val = getValueForCommand(word, ch.getCurrentPP(), 1);
-                    ch.setCurrentPP(val);
+                    int val = getValueForCommand(word, ch->getCurrentPP(), 1);
+                    ch->setCurrentPP(val);
                 }
                 else if (word=="PPRegen") {
                     getline(iss, word);
                     
-                    int val = getValueForCommand(word, ch.getCurrentPPRegen(), ch.getCurrentPower());
-                    ch.setCurrentPPRegen(val);
+                    int val = getValueForCommand(word, ch->getCurrentPPRegen(), ch->getCurrentPower());
+                    ch->setCurrentPPRegen(val);
                 }
                 else if (word=="Status") {
                     getline(iss, word);
-                    ch.applyStatus(word, getCurrentPower()); //pass in power of caster
+                    ch->applyStatus(word, getCurrentPower()); //pass in power of caster
                 }
                 
                 else {
@@ -275,7 +275,7 @@ int Character::getValueForCommand(string com, int baseVal, int power) {
     return val;
 }
 
-string Character::displayStringForMove(string com, Character target, int targetDamage, int actorDamage) {
+string Character::displayStringForMove(string com, Character *target, int targetDamage, int actorDamage) {
     ostringstream output;
     
     istringstream iss(com);
@@ -299,13 +299,13 @@ string Character::displayStringForMove(string com, Character target, int targetD
                 output << this->getName();
             }
             else if (word == "$TARGET_NAME") {
-                output << target.getName();
+                output << target->getName();
             }
             else if (word == "$ACTOR_HEALTH") {
                 output << this->getCurrentHealth();
             }
             else if (word == "$TARGET_HEALTH") {
-                output << target.getCurrentHealth();
+                output << target->getCurrentHealth();
             }
             else if (word == "$ACTOR_DAMAGE") {
                 output << actorDamage;
