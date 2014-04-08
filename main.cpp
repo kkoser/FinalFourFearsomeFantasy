@@ -127,6 +127,7 @@ Mix_Music *elsaMusic = NULL;
 Mix_Music *albusMusic = NULL;
 Mix_Music *katMusic = NULL;
 Mix_Music *jackMusic = NULL;
+Mix_Music *cityMusic = NULL;
 
 //The sound effects that will be used
 Mix_Chunk *soundEffect1 = NULL;
@@ -439,6 +440,13 @@ bool loadMedia(){
     if( katMusic == NULL )
     {
         printf( "Failed to load Albus music! SDL_mixer Error: %s\n", Mix_GetError() );
+        success = false;
+    }
+    
+    cityMusic = Mix_LoadMUS( "GoT.wav" );
+    if( cityMusic == NULL )
+    {
+        printf( "Failed to load city music! SDL_mixer Error: %s\n", Mix_GetError() );
         success = false;
     }
     
@@ -1126,6 +1134,9 @@ int main( int argc, char* args[] )
                         if( Mix_PlayingMusic() == 0 )
                         {
                             switch(mapNumber){
+                                case 0:
+                                    Mix_PlayMusic( cityMusic, -1 );
+                                    break;
                                 case 2:
                                     //Play the music
                                     Mix_PlayMusic( elsaMusic, -1 );
