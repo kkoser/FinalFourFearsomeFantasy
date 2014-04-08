@@ -478,28 +478,28 @@ void Dot::initializeMap(int mapNumber){
     string filename;
     switch(mapNumber){
         case 0:
-            filename="map0.csv";
+            filename="MapFiles/map0.csv";
             break;
         case 1:
-            filename="map1.csv";
+            filename="MapFiles/map1.csv";
             break;
         case 2:
-            filename="map2.csv";
+            filename="MapFiles/map2.csv";
             break;
         case 3:
-            filename="map2.csv";
+            filename="MapFiles/map2.csv";
             break;
         case 4:
-            filename="map2.csv";
+            filename="MapFiles/map2.csv";
             break;
         case 5:
-            filename="map2.csv";
+            filename="MapFiles/map2.csv";
             break;
         case 6:
-            filename="map2.csv";
+            filename="MapFiles/map2.csv";
             break;
         case 7:
-            filename="map2.csv";
+            filename="MapFiles/map2.csv";
             break;
     }
     

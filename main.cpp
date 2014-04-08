@@ -19,6 +19,7 @@
 #include "Dot.h"
 #include "LTexture.h"
 #include "CharacterView.h"
+#include "Settings.h"
 using namespace std;
 
 //The dimensions of the level (if you change this, change it in Dot.cpp, too)
@@ -607,7 +608,7 @@ int main( int argc, char* args[] )
             float katRotIterator=0;
             
             //open dialogue file
-            string filename="/Users/caseyhanley/Desktop/gitFFFF/Dialogue/SampleScript.dialogue";
+            string filename=pathForFile("Dialogue/SampleScript.dialogue");
             ifstream file(filename.c_str());
             //check for open
             if (!file) {
