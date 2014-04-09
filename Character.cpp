@@ -13,11 +13,17 @@ Character::Character(string fileName) {
     ifstream file;
     file.open(fileName.c_str());
     
+    if (!file) {
+        cout<<"File "<<fileName<<" failed to open"<<endl;
+        return;
+    }
+    
     for (int i = 0; i < 10; i++) {
         int val;
         file >> val;
         
         //the only things in the save file are the 4 base values and the health, which persists
+        //characters are read in line by line in this order
         //pp and statuses do NOT persist from battle to battle, so aren't written to file
         switch (i) {
             case 0:
@@ -111,7 +117,7 @@ void Character::actMoveOnTarget(string moveName, vector<Character *> targets) {
                     getline(iss, word);
                     
                     int val = getValueForCommand(word, ch->getCurrentHealth(), ch->getCurrentPower());
-                    ch->setCurrentHealth(val);
+                    ch->changeHealth(val);
                     
                     if (ch == this) {
                         actorDamage = val;
@@ -160,9 +166,10 @@ void Character::applyStatus(string line, int casterPower) {
     Status thisStatus;
     
     while (getline(issline, word, ' ')) {
-        if (word=="DPT") {
+        if (word=="HPT") {
             getline(issline, word, ' ');
-            thisStatus.damagePerTurn = casterPower*atof(word.c_str());
+            int hpt = getValueForCommand(word, getCurrentHealth(), casterPower) - getCurrentHealth();
+            thisStatus.healthPerTurn = hpt;
         }
         else if (word=="Incap") {
             getline(issline, word, ' ');
@@ -201,7 +208,8 @@ void Character::updateStatuses() {
         
         //update status and character
         currentStatus->turnsUntilGone = currentStatus->turnsUntilGone - 1; //decrement turns left
-        setCurrentHealth(getCurrentHealth() - currentStatus->damagePerTurn); //do damage
+        
+        changeHealth(getCurrentHealth() + currentStatus->healthPerTurn); //do damage
         if (currentStatus->causesIncap) {
             shouldBeIncap = 1;
         }
@@ -209,6 +217,23 @@ void Character::updateStatuses() {
     }
     
     isIncap = shouldBeIncap;
+}
+
+void Character::changeHealth(int newHealth) {
+    if (getCurrentShield()>0) {
+        int deltaHealth = newHealth - getCurrentHealth();
+        if (deltaHealth <= 0) { //if a damaging change and not a healing one
+            int newDelta = deltaHealth + getCurrentShield(); //mitigate with shield
+            if (newDelta > 0) { //shield holds
+                setCurrentShield(newDelta);
+            }
+            else {
+                setCurrentHealth(getCurrentHealth() + newDelta); //shield breaks
+                setCurrentShield(0);
+            }
+        }
+    }
+    else setCurrentHealth(newHealth); // no shield or not damaging
 }
 
 int Character::numTargetsForMove(string moveName) {
@@ -322,6 +347,8 @@ string Character::displayStringForMove(string com, Character *target, int target
     return output.str();
 }
 
+//---------------------
+
 //setters and getters
 int Character::getCurrentHealth() {
     return currentHealth;
@@ -375,6 +402,19 @@ void Character::setCurrentPPRegen(int PPRegen) {
     }
     else {
         currentPPRegen = PPRegen;
+    }
+}
+
+int Character::getCurrentShield() {
+    return currentShield;
+}
+
+void Character::setCurrentShield(int shield) {
+    if (currentShield < 0) {
+        currentShield = 0;
+    }
+    else {
+        currentShield = shield;
     }
 }
 

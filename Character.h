@@ -24,14 +24,14 @@ using namespace std;
 typedef struct {
     int turnsUntilGone; //when zero, status is removed
     bool causesIncap; //when 1, status incapacitates character
-    int damagePerTurn; //amount of damage to be dealt per turn
-    
-    
+    int healthPerTurn; //amount of damage to be dealt per turn CAN BE NEGATIVE TO HEAL
 } Status;
 
 class Character {
 protected:
     
+    //these are stored to be returned to after battle (except health)
+    //these can be improved by leveling up
 	int maxHealth;
 	int standardPower;
 	int maxPP; //mana for moves
@@ -40,14 +40,16 @@ protected:
     
 	int currentHealth; //current health in/out battle
     
-	//these are augmented in battle and reset afterwords
+	//these are augmented in battle and reset afterwords to the above values
 	int currentPower;
 	int currentPP;
 	int currentPPRegen;
+    int currentShield; //reset to 0
+
 	//int currentArmor;
     
 	//these are not increased by level points
-	int accuracy;
+	//int accuracy;
     
     int isIncap;
     
@@ -77,6 +79,8 @@ public:
     void setCurrentPP(int PP);
     int getCurrentPPRegen();
     void setCurrentPPRegen(int PPRegen);
+    int getCurrentShield();
+    void setCurrentShield(int shield);
     
     string getName();
     
@@ -84,11 +88,13 @@ public:
     
     void updateStatuses(); //updates each status (to be done at beginning of turn)
     
+    void changeHealth(int newHealth); //changes health, taking shields into account. pass in desired newHealth before shields
+    
     
 private:
     
     string displayStringForMove(string command, Character *target, int targetDamage, int actorDamage); //creates text to be displayed
-    int getValueForCommand(string command, int baseVal, int power); //baseval typically a char's stat
+    int getValueForCommand(string command, int baseVal, int power); //baseval typically a char's stat, this parses and multiplies by the actor's power
     
 
 };
