@@ -8,5 +8,5 @@
 
 #include "BattleController.h"
 
-BattleController::BattleController(vector<Character *> chars, vector<Enemy *> enem, string locName, SDL_Window *win) : ViewController(win) {
+BattleController::BattleController(vector<Character *> chars, vector<Enemy *> enem, string locName, SDL_Renderer *ren) : ViewController(ren) {
 }

@@ -8,21 +8,11 @@
 
 #include "ViewController.h"
 
-ViewController::ViewController(SDL_Window *win) {
-    //create the renderer
-    if( win == NULL )
-    {
-        printf( "Invalid window for ViewController" );
-    }
-    else
-    {
-        //Create renderer for window
-        renderer = SDL_CreateRenderer( win, -1, SDL_RENDERER_ACCELERATED );
-        if( renderer == NULL )
-        {
-            printf( "Renderer could not be created! SDL Error: %s\n", SDL_GetError() );
-        }
-    }
+ViewController::ViewController(SDL_Renderer *ren) {
+    //save the renderer
+    renderer = ren;
+    SDL_RenderClear(renderer);
+    
 }
 
 //remove the ViewController from the window

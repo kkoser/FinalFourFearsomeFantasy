@@ -30,7 +30,7 @@ private:
     void loadSprites();
 
 public:
-    BattleController(vector<Character *> chars, vector<Enemy *> enem, string locName, SDL_Window *win);
+    BattleController(vector<Character *> chars, vector<Enemy *> enem, string locName, SDL_Renderer *ren);
 };
 
 #endif /* defined(__FinalFourFearsomeFantasy__BattleController__) */

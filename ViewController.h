@@ -25,7 +25,7 @@ protected:
     SDL_Renderer *renderer;
 
 public:
-    ViewController(SDL_Window *win);
+    ViewController(SDL_Renderer *ren);
     void dismiss();
     ~ViewController();
 };
