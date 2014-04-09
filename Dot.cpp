@@ -487,7 +487,7 @@ void Dot::initializeMap(int mapNumber){
             filename="MapFiles/map2.csv";
             break;
         case 3:
-            filename="MapFiles/map2.csv";
+            filename="MapFiles/map3.csv";
             break;
         case 4:
             filename="MapFiles/map2.csv";

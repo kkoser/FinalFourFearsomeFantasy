@@ -128,6 +128,7 @@ Mix_Music *albusMusic = NULL;
 Mix_Music *katMusic = NULL;
 Mix_Music *jackMusic = NULL;
 Mix_Music *cityMusic = NULL;
+Mix_Music *mustafarMusic = NULL;
 
 //The sound effects that will be used
 Mix_Chunk *soundEffect1 = NULL;
@@ -450,6 +451,13 @@ bool loadMedia(){
         success = false;
     }
     
+    mustafarMusic = Mix_LoadMUS( "anakinVSobi.wav" );
+    if( cityMusic == NULL )
+    {
+        printf( "Failed to load mustafar music! SDL_mixer Error: %s\n", Mix_GetError() );
+        success = false;
+    }
+    
     //Load sound effects
     elsaSoundEffect = Mix_LoadWAV( "elsaSoundEffect.wav" );
     if( katMusic == NULL )
@@ -604,7 +612,7 @@ int main( int argc, char* args[] )
             int layoutReset=1;
             
             //initial active character
-            MainCharacters activeCharacter=KAT;
+            MainCharacters activeCharacter=ELSA;
             
             //initial Character Direction
             Direction charDir=UP;
@@ -657,10 +665,12 @@ int main( int argc, char* args[] )
             
             startPosX[0]=752;
             startPosY[0]=176;
-            startPosX[2]=544;
-            startPosY[2]=2352;
             startPosX[1]=80;
             startPosY[1]=784;
+            startPosX[2]=544;
+            startPosY[2]=2340;
+            startPosX[3]=1728;
+            startPosY[3]=304;
             
             
 			//While application is running
@@ -685,7 +695,7 @@ int main( int argc, char* args[] )
 //------------------------------------------------------------------------------
                     
                     //Process User Input
-					else if( e.type == SDL_KEYDOWN )
+					else if( (e.type == SDL_KEYDOWN) || (e.type == SDL_KEYUP) )
 					{
                         
 						switch( e.key.keysym.sym )
@@ -754,31 +764,7 @@ int main( int argc, char* args[] )
                                 if(layout==OPEN_LAYOUT) cout<<"Steps: "<<stepCount<<endl;
                                 break;
                                 
-                            case SDLK_5: //Elsa's Music
-                                Mix_HaltMusic();
-                                Mix_PlayMusic( elsaMusic, -1 );
-                                break;
-                            
-                            case SDLK_6: //Jack's Music
-                                Mix_HaltMusic();
-                                Mix_PlayMusic( jackMusic, -1 );
-                                break;
-                            
-                            case SDLK_7: //Kat's Music
-                                Mix_HaltMusic();
-                                Mix_PlayMusic( katMusic, -1 );
-                                break;
                                 
-                            case SDLK_8: //Albus's Music
-                                Mix_HaltMusic();
-                                Mix_PlayMusic( albusMusic, -1 );
-                                break;
-                                
-                            case SDLK_9:
-                                //Stop the music
-                                Mix_HaltMusic();
-                                break;
-                              
                             //cycle through dialogue
                             case SDLK_RETURN:
                                 getline(file,diaLine);
@@ -808,7 +794,6 @@ int main( int argc, char* args[] )
                                 Mix_PlayChannel( -1, katSoundEffect, 0 );
                                 break;
                                 
-                                
                             //set battle layout
                             case SDLK_b:
                                 layout=BATTLE_LAYOUT;
@@ -816,79 +801,6 @@ int main( int argc, char* args[] )
                                 Mix_HaltMusic();
                                 break;
                                 
-                            //set map0 layout
-                            case SDLK_z:
-                                layout=OPEN_LAYOUT;
-                                mapNumber=0;
-                                layoutReset=1;
-                                mapScout.initializeMap(0);
-                                Mix_HaltMusic();
-                                break;
-                                
-                            //set map1 layout
-                            case SDLK_x:
-                                layout=OPEN_LAYOUT;
-                                mapNumber=1;
-                                layoutReset=1;
-                                mapScout.initializeMap(1);
-                                Mix_HaltMusic();
-                                break;
-                                
-                            //set map2 layout
-                            case SDLK_c:
-                                layout=OPEN_LAYOUT;
-                                mapNumber=2;
-                                layoutReset=1;
-                                mapScout.initializeMap(2);
-                                Mix_HaltMusic();
-                                break;
-                                
-                            //set map3 layout
-                            case SDLK_v:
-                                layout=OPEN_LAYOUT;
-                                mapNumber=3;
-                                layoutReset=1;
-                                mapScout.initializeMap(3);
-                                Mix_HaltMusic();
-                                break;
-                                
-                            //set map4 layout
-                            case SDLK_n:
-                                layout=OPEN_LAYOUT;
-                                mapNumber=4;
-                                layoutReset=1;
-                                mapScout.initializeMap(4);
-                                Mix_HaltMusic();
-                                break;
-                                
-                            //set map5 layout
-                            case SDLK_m:
-                                layout=OPEN_LAYOUT;
-                                mapNumber=5;
-                                layoutReset=1;
-                                mapScout.initializeMap(5);
-                                Mix_HaltMusic();
-                                break;
-                                
-                            //set map6 layout
-                            case SDLK_k:
-                                layout=OPEN_LAYOUT;
-                                mapNumber=6;
-                                layoutReset=1;
-                                mapScout.initializeMap(6);
-                                Mix_HaltMusic();
-                                break;
-                                
-                            //set map7 layout
-                            case SDLK_l:
-                                layout=OPEN_LAYOUT;
-                                mapNumber=7;
-                                layoutReset=1;
-                                mapScout.initializeMap(7);
-                                Mix_HaltMusic();
-                                break;
-                                
-
                             default:
                                 break;
 						}
@@ -1137,8 +1049,10 @@ int main( int argc, char* args[] )
                                 case 0:
                                     Mix_PlayMusic( cityMusic, -1 );
                                     break;
+                                case 1:
+                                    Mix_PlayMusic( mustafarMusic, -1 );
+                                    break;
                                 case 2:
-                                    //Play the music
                                     Mix_PlayMusic( elsaMusic, -1 );
                                     break;
                                 case 3:
@@ -1175,7 +1089,6 @@ int main( int argc, char* args[] )
                         
                         if(layoutReset){
                             
-                            //activeCharacter=KAT;
                             
                             stepCount=0;
                             leader.moveAbs(startPosX[mapNumber], startPosY[mapNumber]);
@@ -1242,6 +1155,8 @@ int main( int argc, char* args[] )
                         cout<<"NO LAYOUT SELECTED!"<<endl; break;
                     
                 }
+                
+                
                 
                 //Update screen
                 SDL_RenderPresent( gRenderer );
