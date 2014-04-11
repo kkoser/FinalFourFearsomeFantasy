@@ -87,7 +87,7 @@ void Character::actMoveOnTarget(string moveName, vector<Character *> targets) {
         //iterate through targets
         typename vector<Character *>::iterator currentTarget;
         for (currentTarget = targets.begin(); currentTarget != targets.end(); ++currentTarget) {
-        
+            
             //get each word from line
             istringstream iss(line);
             string word;
@@ -345,6 +345,36 @@ string Character::displayStringForMove(string com, Character *target, int target
     
     
     return output.str();
+}
+
+bool Character::canCastMove(string moveName) {
+    //open file
+    ifstream file(moveName.c_str());
+    //check for open
+    if (!file) {
+        cout<<"File "<<moveName<<" failed to open"<<endl;
+        return 0;
+    }
+    
+    //get each line from file
+    string line;
+    while (getline(file, line)) {
+        istringstream issline(line);
+        string word;
+        while (getline(issline, word, ' ')) {
+            if (word=="Actor") {
+                getline(issline, word, ' ');
+                if (word=="PP") {
+                    getline(issline, word, ' ');
+                    int val = getValueForCommand(word, getCurrentPP(), 1);
+                    if (val<0) { //not enough pp
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+    return true; //enough pp!
 }
 
 //---------------------

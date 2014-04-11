@@ -90,6 +90,8 @@ public:
     
     void changeHealth(int newHealth); //changes health, taking shields into account. pass in desired newHealth before shields
     
+    bool canCastMove(string moveName); //checks if enough PP for move
+    
     
 private:
     
