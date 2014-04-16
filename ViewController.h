@@ -23,10 +23,12 @@
 class ViewController {
 protected:
     SDL_Renderer *renderer;
+    ViewController *base;
 
 public:
     ViewController(SDL_Renderer *ren);
     void dismiss();
+    void becomeTop(ViewController *baseVC);
     ~ViewController();
 };
 

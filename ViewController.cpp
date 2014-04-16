@@ -11,14 +11,24 @@
 ViewController::ViewController(SDL_Renderer *ren) {
     //save the renderer
     renderer = ren;
-    SDL_RenderClear(renderer);
+    //SDL_RenderClear(renderer);
     
+}
+
+//override this for custom transition animation
+void ViewController::becomeTop(ViewController *baseVC) {
+    if (baseVC != NULL) {
+        base = baseVC;
+    }
+    SDL_RenderClear(renderer);
 }
 
 //remove the ViewController from the window
 //not sure how to implement - talk to casey
 void ViewController::dismiss() {
-    
+    if (base != NULL) {
+        base->becomeTop(NULL);
+    }
 }
 
 ViewController::~ViewController() {
