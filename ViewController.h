@@ -27,8 +27,12 @@ protected:
 
 public:
     ViewController(SDL_Renderer *ren);
+    
     void dismiss();
     void becomeTop(ViewController *baseVC);
+    
+    void draw(SDL_Event e);
+    
     ~ViewController();
 };
 

@@ -31,6 +31,11 @@ void ViewController::dismiss() {
     }
 }
 
+void ViewController::draw(SDL_Event e) {
+    SDL_RenderClear(renderer);
+}
+
 ViewController::~ViewController() {
-    SDL_DestroyRenderer( renderer );
+    //dont want to destroy the renderer, its used by all VCs for that window
+    //SDL_DestroyRenderer( renderer );
 }
