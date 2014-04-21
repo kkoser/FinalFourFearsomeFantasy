@@ -44,8 +44,8 @@ Dot::Dot()
     mapHeight[2]=150+2;
     mapWidth[2]=82+2;
     
-    mapHeight[3]=44;
-    mapWidth[3]=112;
+    mapHeight[3]=44+2;
+    mapWidth[3]=112+2;
     
     mapHeight[4]=78;
     mapWidth[4]=84;
@@ -82,8 +82,8 @@ Dot::Dot(int PosX, int PosY)
     mapHeight[2]=150+2;
     mapWidth[2]=82+2;
     
-    mapHeight[3]=150;
-    mapWidth[3]=82;
+    mapHeight[3]=150+2;
+    mapWidth[3]=82+2;
     
     mapHeight[4]=150;
     mapWidth[4]=82;

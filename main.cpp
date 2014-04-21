@@ -668,7 +668,7 @@ int main( int argc, char* args[] )
             startPosX[1]=80;
             startPosY[1]=784;
             startPosX[2]=544;
-            startPosY[2]=2340;
+            startPosY[2]=2300;
             startPosX[3]=1728;
             startPosY[3]=304;
             
