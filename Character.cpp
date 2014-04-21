@@ -402,9 +402,7 @@ void Character::setCurrentPower(int power) {
     if (power < 0) {
         power = 0;
     }
-    else {
-        currentPower = power;
-    }
+    currentPower = power;
 }
 
 int Character::getCurrentPP() {
@@ -430,9 +428,7 @@ void Character::setCurrentPPRegen(int PPRegen) {
     if (PPRegen < 0) {
         PPRegen = 0;
     }
-    else {
-        currentPPRegen = PPRegen;
-    }
+    currentPPRegen = PPRegen;
 }
 
 int Character::getCurrentShield() {
