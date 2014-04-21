@@ -439,9 +439,7 @@ void Character::setCurrentShield(int shield) {
     if (currentShield < 0) {
         currentShield = 0;
     }
-    else {
-        currentShield = shield;
-    }
+    currentShield = shield;
 }
 
 string Character::getName() {
