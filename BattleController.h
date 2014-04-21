@@ -31,6 +31,9 @@ private:
 
 public:
     BattleController(vector<Character *> chars, vector<Enemy *> enem, string locName, SDL_Renderer *ren);
+    BattleController(SDL_Renderer *ren);
+    
+    virtual void draw(SDL_Event e);
 };
 
 #endif /* defined(__FinalFourFearsomeFantasy__BattleController__) */

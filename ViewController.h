@@ -24,14 +24,16 @@ class ViewController {
 protected:
     SDL_Renderer *renderer;
     ViewController *base;
+    ViewController *top;
 
 public:
     ViewController(SDL_Renderer *ren);
     
-    void dismiss();
-    void becomeTop(ViewController *baseVC);
+    virtual void dismiss();
+    virtual void becomeTop(ViewController *baseVC);
+    void pushViewController(ViewController *vc);
     
-    void draw(SDL_Event e);
+    virtual void draw(SDL_Event e);
     
     ~ViewController();
 };

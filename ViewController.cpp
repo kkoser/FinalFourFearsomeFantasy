@@ -12,6 +12,7 @@ ViewController::ViewController(SDL_Renderer *ren) {
     //save the renderer
     renderer = ren;
     //SDL_RenderClear(renderer);
+    top = NULL;
     
 }
 
@@ -31,8 +32,22 @@ void ViewController::dismiss() {
     }
 }
 
+void ViewController::pushViewController(ViewController *vc) {
+    if (top != NULL) {
+        top = vc;
+    }
+}
+
 void ViewController::draw(SDL_Event e) {
     SDL_RenderClear(renderer);
+    std::cout<<"Drawing a baseVC!"<<endl;
+    
+    if (top != NULL) {
+        top->draw(e);
+        return;
+    }
+
+    //custom drawing code here
 }
 
 ViewController::~ViewController() {

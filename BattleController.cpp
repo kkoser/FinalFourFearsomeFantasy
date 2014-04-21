@@ -10,3 +10,11 @@
 
 BattleController::BattleController(vector<Character *> chars, vector<Enemy *> enem, string locName, SDL_Renderer *ren) : ViewController(ren) {
 }
+
+BattleController::BattleController(SDL_Renderer *ren) : ViewController(ren) {
+    
+}
+
+void BattleController::draw(SDL_Event e) {
+    ViewController::draw(e);
+}
