@@ -245,171 +245,171 @@ bool loadMedia(){
 	bool success = true;
     
     //Load battle textures
-	if( !elsaBattleTexture.loadFromFile( "elsaBattle.png", gRenderer ) )
+	if( !elsaBattleTexture.loadFromFile( pathForFile("Images/elsaBattle.png"), gRenderer ) )
 	{
 		printf( "Failed to load elsa' texture image!\n" );
 		success = false;
 	}
-    if( !katBattleTexture.loadFromFile( "katBattle.png", gRenderer ) )
+    if( !katBattleTexture.loadFromFile( pathForFile("Images/katBattle.png"), gRenderer ) )
 	{
 		printf( "Failed to load elsa' texture image!\n" );
 		success = false;
 	}
-    if( !jackBattleTexture.loadFromFile( "jackBattle.png", gRenderer ) )
+    if( !jackBattleTexture.loadFromFile( pathForFile("Images/jackBattle.png"), gRenderer ) )
 	{
 		printf( "Failed to load elsa' texture image!\n" );
 		success = false;
 	}
-    if( !albusBattleTexture.loadFromFile( "albusBattle.png", gRenderer ) )
+    if( !albusBattleTexture.loadFromFile( pathForFile("Images/albusBattle.png"), gRenderer ) )
 	{
 		printf( "Failed to load elsa' texture image!\n" );
 		success = false;
 	}
     
     //Load dialogue textures
-	if( !albusDialogueTexture.loadFromFile( "albusDialogue.png", gRenderer ) )
+	if( !albusDialogueTexture.loadFromFile( pathForFile("Images/albusDialogue.png"), gRenderer ) )
 	{
 		printf( "Failed to load albus's texture image!\n" );
 		success = false;
 	}
-    if( !katDialogueTexture.loadFromFile( "katDialogue.png", gRenderer ) )
+    if( !katDialogueTexture.loadFromFile( pathForFile("Images/katDialogue.png"), gRenderer ) )
 	{
 		printf( "Failed to load kat's texture image!\n" );
 		success = false;
 	}
-    if( !elsaDialogueTexture.loadFromFile( "elsaDialogue.png", gRenderer ) )
+    if( !elsaDialogueTexture.loadFromFile( pathForFile("Images/elsaDialogue.png"), gRenderer ) )
 	{
 		printf( "Failed to load elsa's texture image!\n" );
 		success = false;
 	}
-    if( !jackDialogueTexture.loadFromFile( "jackDialogue.png", gRenderer ) )
+    if( !jackDialogueTexture.loadFromFile( pathForFile("Images/jackDialogue.png"), gRenderer ) )
 	{
 		printf( "Failed to load jack's texture image!\n" );
 		success = false;
 	}
     
     //Load Sprite Side Views
-    if( !katSpriteSide.loadFromFile( "katSpriteSide.png", gRenderer ) )
+    if( !katSpriteSide.loadFromFile( pathForFile("Images/katSpriteSide.png"), gRenderer ) )
 	{
 		printf( "Failed to load kat's sprite texture image!\n" );
 		success = false;
 	}
-    if( !albusSpriteSide.loadFromFile( "albusSpriteSide.png", gRenderer ) )
+    if( !albusSpriteSide.loadFromFile( pathForFile("Images/albusSpriteSide.png"), gRenderer ) )
 	{
 		printf( "Failed to load kat's sprite texture image!\n" );
 		success = false;
 	}
-    if( !elsaSpriteSide.loadFromFile( "elsaSpriteSide.png", gRenderer ) )
+    if( !elsaSpriteSide.loadFromFile( pathForFile("Images/elsaSpriteSide.png"), gRenderer ) )
 	{
 		printf( "Failed to load kat's sprite texture image!\n" );
 		success = false;
 	}
-    if( !jackSpriteSide.loadFromFile( "jackSpriteSide.png", gRenderer ) )
+    if( !jackSpriteSide.loadFromFile( pathForFile("Images/jackSpriteSide.png"), gRenderer ) )
 	{
 		printf( "Failed to load kat's sprite texture image!\n" );
 		success = false;
 	}
     
     //load Sprite Front Views
-    if( !katSpriteFront.loadFromFile( "katSpriteFront.png", gRenderer ) )
+    if( !katSpriteFront.loadFromFile( pathForFile("Images/katSpriteFront.png"), gRenderer ) )
 	{
 		printf( "Failed to load kat's sprite texture image!\n" );
 		success = false;
 	}
-    if( !albusSpriteFront.loadFromFile( "albusSpriteFront.png", gRenderer ) )
+    if( !albusSpriteFront.loadFromFile( pathForFile("Images/albusSpriteFront.png"), gRenderer ) )
 	{
 		printf( "Failed to load kat's sprite texture image!\n" );
 		success = false;
 	}
-    if( !elsaSpriteFront.loadFromFile( "elsaSpriteFront.png", gRenderer ) )
+    if( !elsaSpriteFront.loadFromFile( pathForFile("Images/elsaSpriteFront.png"), gRenderer ) )
 	{
 		printf( "Failed to load kat's sprite texture image!\n" );
 		success = false;
 	}
-    if( !jackSpriteFront.loadFromFile( "jackSpriteFront.png", gRenderer ) )
+    if( !jackSpriteFront.loadFromFile( pathForFile("Images/jackSpriteFront.png"), gRenderer ) )
 	{
 		printf( "Failed to load kat's sprite texture image!\n" );
 		success = false;
 	}
 
     //load sprite Back Views
-    if( !katSpriteBack.loadFromFile( "katSpriteBack.png", gRenderer ) )
+    if( !katSpriteBack.loadFromFile( pathForFile("Images/katSpriteBack.png"), gRenderer ) )
 	{
 		printf( "Failed to load kat's sprite texture image!\n" );
 		success = false;
 	}
-    if( !albusSpriteBack.loadFromFile( "albusSpriteBack.png", gRenderer ) )
+    if( !albusSpriteBack.loadFromFile( pathForFile("Images/albusSpriteBack.png"), gRenderer ) )
 	{
 		printf( "Failed to load kat's sprite texture image!\n" );
 		success = false;
 	}
-    if( !elsaSpriteBack.loadFromFile( "elsaSpriteBack.png", gRenderer ) )
+    if( !elsaSpriteBack.loadFromFile( pathForFile("Images/elsaSpriteBack.png"), gRenderer ) )
 	{
 		printf( "Failed to load kat's sprite texture image!\n" );
 		success = false;
 	}
-    if( !jackSpriteBack.loadFromFile( "jackSpriteBack.png", gRenderer ) )
+    if( !jackSpriteBack.loadFromFile( pathForFile("Images/jackSpriteBack.png"), gRenderer ) )
 	{
 		printf( "Failed to load kat's sprite texture image!\n" );
 		success = false;
 	}
     
 	//Load background textures
-	if( !ArendelleTexture.loadFromFile( "arendelle.jpg", gRenderer ) )
+	if( !ArendelleTexture.loadFromFile( pathForFile("Images/arendelle.jpg"), gRenderer ) )
 	{
 		printf( "Failed to load north mountain background texture image!\n" );
 		success = false;
 	}
-    if( !NorthMountBGTexture.loadFromFile( "battleNorthMountain.jpg", gRenderer ) )
+    if( !NorthMountBGTexture.loadFromFile( pathForFile("Images/battleNorthMountain.jpg"), gRenderer ) )
 	{
 		printf( "Failed to load north mountain background texture image!\n" );
 		success = false;
 	}
     
     //Load Maps
-    if( !mapTexture[0].loadFromFile( "map0.png", gRenderer ) )
+    if( !mapTexture[0].loadFromFile( pathForFile("Images/map0.png"), gRenderer ) )
 	{
 		printf( "Failed to load map0 background texture image!\n" );
 		success = false;
 	}
-   if( !mapTexture[1].loadFromFile( "map1.png", gRenderer ) )
+   if( !mapTexture[1].loadFromFile( pathForFile("Images/map1.png"), gRenderer ) )
 	{
 		printf( "Failed to load map1 background texture image!\n" );
 		success = false;
 	}
-    if( !mapTexture[2].loadFromFile( "map2.png", gRenderer ) )
+    if( !mapTexture[2].loadFromFile( pathForFile("Images/map2.png"), gRenderer ) )
 	{
 		printf( "Failed to load map2 background texture image!\n" );
 		success = false;
 	}
-    if( !mapTexture[3].loadFromFile( "map3.png", gRenderer ) )
+    if( !mapTexture[3].loadFromFile( pathForFile("Images/map3.png"), gRenderer ) )
 	{
 		printf( "Failed to load map3 background texture image!\n" );
 		success = false;
 	}
-    if( !mapTexture[4].loadFromFile( "map4.png", gRenderer ) )
+    if( !mapTexture[4].loadFromFile( pathForFile("Images/map4.png"), gRenderer ) )
 	{
 		printf( "Failed to load map4 background texture image!\n" );
 		success = false;
 	}
-//    if( !mapTexture[5].loadFromFile( "map5.png", gRenderer ) )
+//    if( !mapTexture[5].loadFromFile( pathForFile("Images/map5.png"), gRenderer ) )
 //	{
 //		printf( "Failed to load map5 background texture image!\n" );
 //		success = false;
 //	}
-//    if( !mapTexture[6].loadFromFile( "map6.png", gRenderer ) )
+//    if( !mapTexture[6].loadFromFile( pathForFile("Images/map6.png"), gRenderer ) )
 //	{
 //		printf( "Failed to load map6 background texture image!\n" );
 //		success = false;
 //	}
-//    if( !mapTexture[7].loadFromFile( "map7.png", gRenderer ) )
+//    if( !mapTexture[7].loadFromFile( pathForFile("Images/map7.png"), gRenderer ) )
 //	{
 //		printf( "Failed to load map7 background texture image!\n" );
 //		success = false;
 //	}
     
     //Load bottom viewport texture
-	if( !BViewTexture.loadFromFile( "BattleStats.jpg", gRenderer ) )
+	if( !BViewTexture.loadFromFile( pathForFile("Images/BattleStats.jpg"), gRenderer ) )
 	{
 		printf( "Failed to load bottom viewport texture image!\n" );
 		success = false;
@@ -594,7 +594,7 @@ int main( int argc, char* args[] )
 //------------------------------------------------------------------------------
 //              INITIALIZE VARIABLES
 //------------------------------------------------------------------------------
-            //Characters
+            //Characters for Battle
             CharacterView Elsa(720,500);
             CharacterView Albus(750,350);
             CharacterView Jack(650,430);
@@ -605,7 +605,6 @@ int main( int argc, char* args[] )
 			SDL_Event e;
             
             //Play the music
-            //Mix_PlayMusic( elsaMusic, -1 ); //start playing Elsa's music
             
             //initial layout
             WindowLayouts layout=OPEN_LAYOUT;
@@ -952,7 +951,7 @@ int main( int argc, char* args[] )
                         //Render battleStat boxes to the screen
                         BViewTexture.render(gRenderer, 0,0);
                         
-                        //Render text (put into a class later to make it easier w/ functions and shit)
+                        //Render text
                         textAndaleTexture.loadFromRenderedText( "1: Choose Albus", { 255, 255, 255 }, gRenderer, gFont );
                         textAndaleTexture.render( gRenderer, 20, 20 );
                         textAndaleTexture.loadFromRenderedText( "2: Choose Elsa", { 255, 255, 255 }, gRenderer, gFont );

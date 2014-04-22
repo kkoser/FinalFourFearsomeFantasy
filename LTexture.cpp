@@ -8,6 +8,7 @@
 // This is a class for loading and displaying text/images
 
 #include "LTexture.h"
+#include "Settings.h"
 
 #include <iostream>
 #include <SDL2/SDL.h>
@@ -92,6 +93,8 @@ bool LTexture::loadFromFile( string path, SDL_Renderer * gRenderer )
     
 	//The final texture
 	SDL_Texture* newTexture = NULL;
+    
+    //cout<<path<<endl;
     
 	//Load image from specified path
 	SDL_Surface* loadedSurface = IMG_Load( path.c_str() );

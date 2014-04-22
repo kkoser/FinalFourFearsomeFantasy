@@ -37,9 +37,6 @@ public:
     //Takes key presses and adjusts the dot's velocity
     void handleEvent( SDL_Event& e );
     
-    //Moves the dot
-   
-    
     //Moves the dot with a moving background ("Rel"ative to background)
     void moveRel(int mChangeX, int mChangeY); //for scouting
     void moveRel2(int mChangeX, int mChangeY, int zone); //only move if zone is valid
