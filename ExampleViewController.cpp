@@ -13,6 +13,7 @@ ExampleViewController::ExampleViewController(SDL_Renderer *r) : ViewController(r
     
     gFont = TTF_OpenFont( "AndaleMono.ttf", 16 );
     //text.loadFromFile( "elsaBattle.png", renderer);
+    label = TextLabel(10, 10, "Hello World!", "AndaleMono.ttf", 16);
     
 }
 
@@ -20,7 +21,7 @@ int ExampleViewController::draw(SDL_Event e) {
     if(ViewController::draw(e) == 0) {
         return 0;
     }
-    
+    /*
     //now draw the text
     SDL_Color textColor;
     if (base == NULL) {
@@ -32,6 +33,9 @@ int ExampleViewController::draw(SDL_Event e) {
     
     text.loadFromRenderedText("Test", textColor, renderer, gFont);
     text.render(renderer, 10, 10);
+     */
+    
+    label.draw(renderer);
     
     if (e.type == SDL_KEYDOWN) {
         //lets try pushing a new vc

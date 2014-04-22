@@ -10,12 +10,14 @@
 #define __FinalFourFearsomeFantasy__ExampleViewController__
 
 #include "ViewController.h"
+#include "TextLabel.h"
 
 #include <iostream>
 class ExampleViewController : public ViewController {
 private:
     LTexture text;
     TTF_Font *gFont;
+    TextLabel label;
 public:
     ExampleViewController(SDL_Renderer *ren);
     
