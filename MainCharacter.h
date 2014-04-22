@@ -17,25 +17,10 @@
 using namespace std;
 
 class MainCharacter : public Character {
-private: 
-//	//these can be upgraded using level points
-//	int maxHealth;
-//	int standardPower;
-//	int maxPP; //mana for moves
-//	int standardPPRegen;
-//	int standardArmor;
-//
-//	int currentHealth; //current health in battle
-//
-//	//these are augmented in battle and reset afterwords
-//	int currentPower;
-//	int currentPP;
-//	int currentPPRegen;
-//	int currentArmor;
-
+private:
 	//these are not increased by level points
 	int exp;
-	int expToNext;
+	int expToNextLevel;
     
     string dialogueSpriteName;
     string movementSpriteName;
@@ -52,4 +37,6 @@ public:
     
     void writeToFile(string fileName);
 };
+
+
 #endif /* defined(__tester__MainCharacter__) */

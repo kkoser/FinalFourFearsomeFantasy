@@ -16,6 +16,7 @@ class Enemy : public Character {
 public:
     //constructor invokes basic Character constructor
     Enemy(string file);
+    int XPOnKill; //xp it gives when it dies
     
     //AI decision function. Recieves all of the valid Character targets, and chooses what move to act on what target(s)
     //Subclasses override this for specific AI behavior
