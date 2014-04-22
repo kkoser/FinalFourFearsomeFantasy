@@ -35,8 +35,9 @@ int ExampleViewController::draw(SDL_Event e) {
     
     if (e.type == SDL_KEYDOWN) {
         //lets try pushing a new vc
-        ExampleViewController *newVC = new ExampleViewController(renderer);
-        pushViewController(newVC);
+        //ExampleViewController *newVC = new ExampleViewController(renderer);
+        //pushViewController(newVC);
+        dismiss();
     }
     return 1;
 }

@@ -21,6 +21,8 @@
 #include "CharacterView.h"
 #include "Settings.h"
 #include "ExampleViewController.h"
+#include "MainMenuViewController.h"
+
 using namespace std;
 
 //The dimensions of the level (if you change this, change it in Dot.cpp, too)
@@ -598,7 +600,7 @@ int main( int argc, char* args[] )
             //Event handler
 			SDL_Event e;
             
-            ExampleViewController baseVC(gRenderer);
+            MainMenuViewController baseVC(gRenderer);
             
             			//While application is running
 			while( !quit )
@@ -626,7 +628,7 @@ int main( int argc, char* args[] )
             
 		}
 	}
-        cout<<"Closing the application"<<endl;
+    cout<<"Closing the application"<<endl;
     
 	//Free resources and close SDL
 	close();
