@@ -11,7 +11,14 @@
 MainMenuViewController::MainMenuViewController(SDL_Renderer *rend) : ViewController(rend) {
     //load textures etc
     
-    bgImage.loadFromFile(pathForFile("Images/mainMenuBackground.jpg"), renderer);
+    bgImage.loadFromFile(pathForFile("Images/mainMenuBackground.png"), renderer);
+    
+    Mix_Music *music;
+    
+    string pathName = pathForFile("Audio/DearlyBeloved.wav");
+    music = Mix_LoadMUS(pathName.c_str());
+    
+    Mix_PlayMusic(music, -1);
     
 }
 
@@ -31,3 +38,16 @@ int MainMenuViewController::draw(SDL_Event e) {
     }
     return 1;
 }
+
+void MainMenuViewController::pushViewController(ViewController *vc) {
+    ViewController::pushViewController(vc);
+    //stop the music!
+    Mix_PauseMusic();
+}
+
+void MainMenuViewController::becomeTop() {
+    ViewController::becomeTop();
+    Mix_ResumeMusic();
+}
+
+

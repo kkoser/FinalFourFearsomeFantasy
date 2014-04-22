@@ -19,6 +19,8 @@ class MainMenuViewController : public ViewController {
 public:
     MainMenuViewController(SDL_Renderer *rend);
     virtual int draw(SDL_Event e);
+    virtual void pushViewController(ViewController *vc);
+    virtual void becomeTop();
     
 private:
     LTexture bgImage;
