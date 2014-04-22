@@ -244,27 +244,6 @@ bool loadMedia(){
 	//Loading success flag
 	bool success = true;
     
-    //Load battle textures
-	if( !elsaBattleTexture.loadFromFile( pathForFile("Images/elsaBattle.png"), gRenderer ) )
-	{
-		printf( "Failed to load elsa' texture image!\n" );
-		success = false;
-	}
-    if( !katBattleTexture.loadFromFile( pathForFile("Images/katBattle.png"), gRenderer ) )
-	{
-		printf( "Failed to load elsa' texture image!\n" );
-		success = false;
-	}
-    if( !jackBattleTexture.loadFromFile( pathForFile("Images/jackBattle.png"), gRenderer ) )
-	{
-		printf( "Failed to load elsa' texture image!\n" );
-		success = false;
-	}
-    if( !albusBattleTexture.loadFromFile( pathForFile("Images/albusBattle.png"), gRenderer ) )
-	{
-		printf( "Failed to load elsa' texture image!\n" );
-		success = false;
-	}
     
     //Load dialogue textures
 	if( !albusDialogueTexture.loadFromFile( pathForFile("Images/albusDialogue.png"), gRenderer ) )
@@ -595,10 +574,10 @@ int main( int argc, char* args[] )
 //              INITIALIZE VARIABLES
 //------------------------------------------------------------------------------
             //Characters for Battle
-            CharacterView Elsa(720,500);
-            CharacterView Albus(750,350);
-            CharacterView Jack(650,430);
-            CharacterView Kat(850,430);
+            CharacterView Elsa(720,500, pathForFile("Images/elsaBattle.png"), gRenderer);
+            CharacterView Albus(750,350, pathForFile("Images/albusBattle.png"), gRenderer);
+            CharacterView Jack(650,430, pathForFile("Images/jackBattle.png"), gRenderer);
+            CharacterView Kat(850,430, pathForFile("Images/katBattle.png"), gRenderer);
             
             
 			//Event handler
@@ -965,10 +944,10 @@ int main( int argc, char* args[] )
                         ArendelleTexture.render(gRenderer, 0,150);
                         
                         //Render battle characters to the screen
-                        elsaBattleTexture.render( gRenderer, Elsa.getX(), Elsa.getY(), NULL, Elsa.getDegs(), NULL, Elsa.getDir() );
-                        katBattleTexture.render( gRenderer, Kat.getX(), Kat.getY(), NULL, Kat.getDegs(), NULL, Kat.getDir() );
-                        jackBattleTexture.render( gRenderer, Jack.getX(), Jack.getY(), NULL, Jack.getDegs(), NULL, Jack.getDir() );
-                        albusBattleTexture.render( gRenderer, Albus.getX(), Albus.getY(), NULL, Albus.getDegs(), NULL, Albus.getDir() );
+                        Elsa.draw(gRenderer);
+                        Kat.draw(gRenderer);
+                        Jack.draw(gRenderer);
+                        Albus.draw(gRenderer);
                         
                         //Check for Rendering Dialogue Textures to the Screen
                         if(activeCharacter==ELSA){

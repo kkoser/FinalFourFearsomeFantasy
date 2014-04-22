@@ -9,6 +9,7 @@
 #include "CharacterView.h"
 
 #include <SDL2/SDL.h>
+#include "SDL2_image/SDL_image.h"
 #include <stdio.h>
 
 int CharacterView::getX(){
@@ -55,6 +56,12 @@ SDL_RendererFlip CharacterView::flipRight(){
     return flipDir;
 }
 //------------------------------------------------------------------------------
+void CharacterView::draw(SDL_Renderer *gRenderer){
+
+    battleTexture.render(gRenderer, xLoc, yLoc, NULL, degs, NULL, flipDir);
+    
+}
+//------------------------------------------------------------------------------
 CharacterView::CharacterView(){
     //initialize stuff
     xLoc=0;
@@ -63,10 +70,16 @@ CharacterView::CharacterView(){
     flipDir=SDL_FLIP_NONE;
 }
 //------------------------------------------------------------------------------
-CharacterView::CharacterView(int x, int y){
+CharacterView::CharacterView(int x, int y, string filename, SDL_Renderer *gRenderer){
     //initialize stuff
     xLoc=x;
     yLoc=y;
     degs=0;
     flipDir=SDL_FLIP_NONE;
+    
+    battleTexture.loadFromFile(filename, gRenderer);
+    
+    
+    
+    
 }
