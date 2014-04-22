@@ -646,8 +646,9 @@ int main( int argc, char* args[] )
             Dot leader;
             
             //The camera area
-			SDL_Rect camera[8];
-            for(int q=0;q<8;q++) camera[q]= { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+			SDL_Rect blank = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+            SDL_Rect camera[8];
+            for(int q=0;q<8;q++) camera[q]= blank;
             
             //initialize map number
             int mapNumber=0;
