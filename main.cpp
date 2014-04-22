@@ -633,6 +633,9 @@ int main( int argc, char* args[] )
             //declare dialogue line
             string diaLine;
             
+            //initialize color
+            SDL_Color whiteColor = { 255, 255, 255};
+            
             //read from file
             getline(file,diaLine);
             
@@ -694,7 +697,7 @@ int main( int argc, char* args[] )
 //------------------------------------------------------------------------------
                     
                     //Process User Input
-					else if( (e.type == SDL_KEYDOWN) || (e.type == SDL_KEYUP) )
+					else if( e.type == SDL_KEYDOWN )
 					{
                         
 						switch( e.key.keysym.sym )
@@ -992,27 +995,27 @@ int main( int argc, char* args[] )
                         BViewTexture.render(gRenderer, 0,0);
                         
                         //Render text
-                        textAndaleTexture.loadFromRenderedText( "1: Choose Albus", { 255, 255, 255 }, gRenderer, gFont );
+                        textAndaleTexture.loadFromRenderedText( "1: Choose Albus", whiteColor, gRenderer, gFont );
                         textAndaleTexture.render( gRenderer, 20, 20 );
-                        textAndaleTexture.loadFromRenderedText( "2: Choose Elsa", { 255, 255, 255 }, gRenderer, gFont );
+                        textAndaleTexture.loadFromRenderedText( "2: Choose Elsa", whiteColor, gRenderer, gFont );
                         textAndaleTexture.render( gRenderer, 20, 45 );
-                        textAndaleTexture.loadFromRenderedText( "3: Choose Jack", { 255, 255, 255 }, gRenderer, gFont );
+                        textAndaleTexture.loadFromRenderedText( "3: Choose Jack", whiteColor, gRenderer, gFont );
                         textAndaleTexture.render( gRenderer, 20, 70 );
-                        textAndaleTexture.loadFromRenderedText( "4: Choose Kat", { 255, 255, 255 }, gRenderer, gFont );
+                        textAndaleTexture.loadFromRenderedText( "4: Choose Kat", whiteColor, gRenderer, gFont );
                         textAndaleTexture.render( gRenderer, 20, 95 );
-                        textAndaleTexture.loadFromRenderedText( "Arrow Keys: Move", { 255, 255, 255 }, gRenderer, gFont );
+                        textAndaleTexture.loadFromRenderedText( "Arrow Keys: Move", whiteColor, gRenderer, gFont );
                         textAndaleTexture.render( gRenderer, 20, 120 );
                         
                         
-                        textAndaleTexture.loadFromRenderedText( "5: Elsa's Theme", { 255, 255, 255 }, gRenderer, gFont );
+                        textAndaleTexture.loadFromRenderedText( "5: Elsa's Theme", whiteColor, gRenderer, gFont );
                         textAndaleTexture.render( gRenderer, 380, 20 );
-                        textAndaleTexture.loadFromRenderedText( "6: Jack's Theme", { 255, 255, 255 }, gRenderer, gFont );
+                        textAndaleTexture.loadFromRenderedText( "6: Jack's Theme", whiteColor, gRenderer, gFont );
                         textAndaleTexture.render( gRenderer, 380, 45 );
-                        textAndaleTexture.loadFromRenderedText( "7: Kat's Theme", { 255, 255, 255 }, gRenderer, gFont );
+                        textAndaleTexture.loadFromRenderedText( "7: Kat's Theme", whiteColor, gRenderer, gFont );
                         textAndaleTexture.render( gRenderer, 380, 70 );
-                        textAndaleTexture.loadFromRenderedText( "8: Albus' Theme", { 255, 255, 255 }, gRenderer, gFont );
+                        textAndaleTexture.loadFromRenderedText( "8: Albus' Theme", whiteColor, gRenderer, gFont );
                         textAndaleTexture.render( gRenderer, 380, 95 );
-                        textAndaleTexture.loadFromRenderedText( diaLine, { 255, 255, 255 }, gRenderer, gFont );
+                        textAndaleTexture.loadFromRenderedText( diaLine, whiteColor, gRenderer, gFont );
                         textAndaleTexture.render( gRenderer, 380, 120 );
                         
                         
