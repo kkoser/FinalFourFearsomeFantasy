@@ -23,17 +23,26 @@
 class ViewController {
 protected:
     SDL_Renderer *renderer;
-    ViewController *base;
-    ViewController *top;
+    ViewController *base = NULL;
+    ViewController *top = NULL;
 
 public:
+    //the basic constructor. The renderer should be for the window that the VC should draw in
     ViewController(SDL_Renderer *ren);
     
+    //pop this viewcontroller from the stack. The base becomes the new top
+    //NOTE: This should only be used on the top VC
     virtual void dismiss();
-    virtual void becomeTop(ViewController *baseVC);
-    void pushViewController(ViewController *vc);
+    //called by dismiss on the top
+    virtual void becomeTop();
+    //add a new viewcontroller to the stack. call dismiss on the new VC to remove and bring control back to this one
+    virtual void pushViewController(ViewController *vc);
     
-    virtual void draw(SDL_Event e);
+    //the main method of the viewcontroller
+    //****call ViewController::draw first, and check result to see if you should be drawing!!!!
+    virtual int draw(SDL_Event e);
+    
+    void setBase(ViewController *vc);
     
     ~ViewController();
 };

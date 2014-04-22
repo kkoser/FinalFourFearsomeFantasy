@@ -17,10 +17,9 @@ ViewController::ViewController(SDL_Renderer *ren) {
 }
 
 //override this for custom transition animation
-void ViewController::becomeTop(ViewController *baseVC) {
-    if (baseVC != NULL) {
-        base = baseVC;
-    }
+void ViewController::becomeTop() {
+    free(top);
+    top = NULL;
     SDL_RenderClear(renderer);
 }
 
@@ -28,26 +27,37 @@ void ViewController::becomeTop(ViewController *baseVC) {
 //not sure how to implement - talk to casey
 void ViewController::dismiss() {
     if (base != NULL) {
-        base->becomeTop(NULL);
+        base->becomeTop();
     }
 }
 
+//used to push new viewcontrollers onto the navigation stack
+//override to define custom animations
 void ViewController::pushViewController(ViewController *vc) {
-    if (top != NULL) {
+    if (top == NULL) {
         top = vc;
+        vc->setBase(this);
     }
 }
 
-void ViewController::draw(SDL_Event e) {
+//this method is overriden to define custom display behavior
+//the main method of viewcontrollers
+//MUST call super:draw at beginning of method to ensure heirarchy stays intact
+int ViewController::draw(SDL_Event e) {
     SDL_RenderClear(renderer);
-    std::cout<<"Drawing a baseVC!"<<endl;
     
     if (top != NULL) {
         top->draw(e);
-        return;
+        return 0;
     }
+    
+    return 1;
 
     //custom drawing code here
+}
+
+void ViewController::setBase(ViewController *vc) {
+    base = vc;
 }
 
 ViewController::~ViewController() {
