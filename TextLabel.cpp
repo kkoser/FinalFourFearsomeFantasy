@@ -56,3 +56,15 @@ void TextLabel::setY(int cy) {
     y = cy;
 }
 
+SDL_Color TextLabel::getColor() {
+    return textColor;
+}
+
+void TextLabel::setColor(SDL_Color col) {
+    textColor = col;
+}
+
+void TextLabel::setColor(Uint8 r, Uint8 g, Uint8 b) {
+    setColor({r,g,b});
+}
+

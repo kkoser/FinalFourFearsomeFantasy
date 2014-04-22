@@ -39,6 +39,9 @@ public:
     void setX(int cx);
     void setY(int cy);
     
+    SDL_Color getColor();
+    void setColor(SDL_Color col);
+    void setColor(Uint8 r, Uint8 g, Uint8 b);
     
 };
 
