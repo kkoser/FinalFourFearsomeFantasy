@@ -702,64 +702,24 @@ int main( int argc, char* args[] )
 						{
                             //move character up
                             case SDLK_UP:
-                                if(activeCharacter==ELSA) Elsa.moveRel(0,-15);
-                                if(activeCharacter==KAT) Kat.moveRel(0,-15);
-                                if(activeCharacter==JACK) Jack.moveRel(0,-15);
-                                if(activeCharacter==ALBUS) Albus.moveRel(0,-15);
                                 stepCount++;
                                 if(layout==OPEN_LAYOUT) cout<<"Steps: "<<stepCount<<endl;
                                 break;
                                 
                             //move character down
                             case SDLK_DOWN:
-                                if(activeCharacter==ELSA) Elsa.moveRel(0,15);
-                                if(activeCharacter==KAT) Kat.moveRel(0,15);
-                                if(activeCharacter==JACK) Jack.moveRel(0,15);
-                                if(activeCharacter==ALBUS) Albus.moveRel(0,15);
                                 stepCount++;
                                 if(layout==OPEN_LAYOUT) cout<<"Steps: "<<stepCount<<endl;
                                 break;
                                 
                             //move character left
                             case SDLK_LEFT:
-                                if(activeCharacter==ELSA){
-                                    Elsa.moveRel(-15,0);
-                                    Elsa.flipLeft();
-                                }
-                                if(activeCharacter==KAT){
-                                    Kat.moveRel(-15,0);
-                                    Kat.flipLeft();
-                                }
-                                if(activeCharacter==JACK){
-                                    Jack.moveRel(-15,0);
-                                    Jack.flipLeft();
-                                }
-                                if(activeCharacter==ALBUS){
-                                    Albus.moveRel(-15,0);
-                                    Albus.flipLeft();
-                                }
                                 stepCount++;
                                 if(layout==OPEN_LAYOUT) cout<<"Steps: "<<stepCount<<endl;
                                 break;
                                 
                             //move character right
                             case SDLK_RIGHT:
-                                if(activeCharacter==ELSA){
-                                    Elsa.moveRel(15,0);
-                                    Elsa.flipRight();
-                                }
-                                if(activeCharacter==KAT){
-                                    Kat.moveRel(15,0);
-                                    Kat.flipRight();
-                                }
-                                if(activeCharacter==JACK){
-                                    Jack.moveRel(15,0);
-                                    Jack.flipRight();
-                                }
-                                if(activeCharacter==ALBUS){
-                                    Albus.moveRel(15,0);
-                                    Albus.flipRight();
-                                }
                                 stepCount++;
                                 if(layout==OPEN_LAYOUT) cout<<"Steps: "<<stepCount<<endl;
                                 break;
@@ -800,9 +760,7 @@ int main( int argc, char* args[] )
                                 layoutReset=1;
                                 Mix_HaltMusic();
                                 break;
-                                
-                            default:
-                                break;
+
 						}
                         
                 
