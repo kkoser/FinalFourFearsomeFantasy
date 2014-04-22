@@ -20,6 +20,7 @@
 class BattleController : public ViewController {
 private:
     LTexture bgText;
+    LTexture text;
     
     vector<CharacterView *> mainCharViews;
     vector<CharacterView *> enemyViews;
@@ -30,10 +31,9 @@ private:
     void loadSprites();
 
 public:
-    BattleController(vector<Character *> chars, vector<Enemy *> enem, string locName, SDL_Renderer *ren);
-    BattleController(SDL_Renderer *ren);
+    BattleController(vector<MainCharacter *> chars, vector<Enemy *> enem, string locName, SDL_Renderer *ren);
     
-    virtual void draw(SDL_Event e);
+    virtual int draw(SDL_Event e);
 };
 
 #endif /* defined(__FinalFourFearsomeFantasy__BattleController__) */
