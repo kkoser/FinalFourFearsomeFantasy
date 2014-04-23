@@ -20,6 +20,7 @@
 #include "LTexture.h"
 #include "CharacterView.h"
 #include "Settings.h"
+#include "TextView.h"
 using namespace std;
 
 //The dimensions of the level (if you change this, change it in Dot.cpp, too)
@@ -244,30 +245,7 @@ bool loadMedia(){
 	//Loading success flag
 	bool success = true;
     
-    
-    //Load dialogue textures
-	if( !albusDialogueTexture.loadFromFile( pathForFile("Images/albusDialogue.png"), gRenderer ) )
-	{
-		printf( "Failed to load albus's texture image!\n" );
-		success = false;
-	}
-    if( !katDialogueTexture.loadFromFile( pathForFile("Images/katDialogue.png"), gRenderer ) )
-	{
-		printf( "Failed to load kat's texture image!\n" );
-		success = false;
-	}
-    if( !elsaDialogueTexture.loadFromFile( pathForFile("Images/elsaDialogue.png"), gRenderer ) )
-	{
-		printf( "Failed to load elsa's texture image!\n" );
-		success = false;
-	}
-    if( !jackDialogueTexture.loadFromFile( pathForFile("Images/jackDialogue.png"), gRenderer ) )
-	{
-		printf( "Failed to load jack's texture image!\n" );
-		success = false;
-	}
-    
-    //Load Sprite Side Views
+        //Load Sprite Side Views
     if( !katSpriteSide.loadFromFile( pathForFile("Images/katSpriteSide.png"), gRenderer ) )
 	{
 		printf( "Failed to load kat's sprite texture image!\n" );
@@ -579,6 +557,13 @@ int main( int argc, char* args[] )
             CharacterView Jack(650,430, pathForFile("Images/jackBattle.png"), gRenderer);
             CharacterView Kat(850,430, pathForFile("Images/katBattle.png"), gRenderer);
             
+            CharacterView elsaDialogue(10, 2*SCREEN_HEIGHT/3+50, pathForFile("Images/elsaDialogue.png"), gRenderer);
+            CharacterView katDialogue(0, 2*SCREEN_HEIGHT/3+40, pathForFile("Images/katDialogue.png"), gRenderer);
+            CharacterView jackDialogue(10, 2*SCREEN_HEIGHT/3+60, pathForFile("Images/jackDialogue.png"), gRenderer);
+            CharacterView albusDialogue(20, 2*SCREEN_HEIGHT/3+50, pathForFile("Images/albusDialogue.png"), gRenderer);
+            
+            TextView text;
+
             
 			//Event handler
 			SDL_Event e;
@@ -950,18 +935,10 @@ int main( int argc, char* args[] )
                         Albus.draw(gRenderer);
                         
                         //Check for Rendering Dialogue Textures to the Screen
-                        if(activeCharacter==ELSA){
-                            elsaDialogueTexture.render( gRenderer, 10, 2*SCREEN_HEIGHT/3+50, NULL, NULL, NULL, SDL_FLIP_NONE );
-                        }
-                        if(activeCharacter==KAT){
-                            katDialogueTexture.render( gRenderer, 0, 2*SCREEN_HEIGHT/3+40, NULL, NULL, NULL, SDL_FLIP_NONE );
-                        }
-                        if(activeCharacter==JACK){
-                            jackDialogueTexture.render( gRenderer, 10, 2*SCREEN_HEIGHT/3+60, NULL, NULL, NULL, SDL_FLIP_NONE );
-                        }
-                        if(activeCharacter==ALBUS){
-                            albusDialogueTexture.render( gRenderer, 20, 2*SCREEN_HEIGHT/3+50, NULL, NULL, NULL, SDL_FLIP_NONE );
-                        }
+                        if(activeCharacter==ELSA) elsaDialogue.draw(gRenderer);
+                        if(activeCharacter==KAT) katDialogue.draw(gRenderer);
+                        if(activeCharacter==JACK) jackDialogue.draw(gRenderer);
+                        if(activeCharacter==ALBUS) albusDialogue.draw(gRenderer);
                        
                         //Bottom viewport
                         bottomViewport.x = 0;
@@ -975,30 +952,19 @@ int main( int argc, char* args[] )
                         BViewTexture.render(gRenderer, 0,0);
                         
                         //Render text
-                        textAndaleTexture.loadFromRenderedText( "1: Choose Albus", whiteColor, gRenderer, gFont );
-                        textAndaleTexture.render( gRenderer, 20, 20 );
-                        textAndaleTexture.loadFromRenderedText( "2: Choose Elsa", whiteColor, gRenderer, gFont );
-                        textAndaleTexture.render( gRenderer, 20, 45 );
-                        textAndaleTexture.loadFromRenderedText( "3: Choose Jack", whiteColor, gRenderer, gFont );
-                        textAndaleTexture.render( gRenderer, 20, 70 );
-                        textAndaleTexture.loadFromRenderedText( "4: Choose Kat", whiteColor, gRenderer, gFont );
-                        textAndaleTexture.render( gRenderer, 20, 95 );
-                        textAndaleTexture.loadFromRenderedText( "Arrow Keys: Move", whiteColor, gRenderer, gFont );
-                        textAndaleTexture.render( gRenderer, 20, 120 );
+                        text.draw("1: Choose Albus", 20, 20, gRenderer);
+                        text.draw("2: Choose Elsa", 20, 45, gRenderer);
+                        text.draw("3: Choose Jack", 20, 70, gRenderer);
+                        text.draw("4: Choose Kat", 20, 95, gRenderer);
+                        text.draw("Arrow Keys: Move", 20, 120, gRenderer);
+                        text.draw("5: Elsa's Theme", 380, 20, gRenderer);
+                        text.draw("6: Jack's Theme", 380, 45, gRenderer);
+                        text.draw("7: Kat's Theme", 380, 70, gRenderer);
+                        text.draw("8: Albus' Theme", 380, 95, gRenderer);
+                        text.draw(diaLine, 380, 120, gRenderer);
+                       
                         
-                        
-                        textAndaleTexture.loadFromRenderedText( "5: Elsa's Theme", whiteColor, gRenderer, gFont );
-                        textAndaleTexture.render( gRenderer, 380, 20 );
-                        textAndaleTexture.loadFromRenderedText( "6: Jack's Theme", whiteColor, gRenderer, gFont );
-                        textAndaleTexture.render( gRenderer, 380, 45 );
-                        textAndaleTexture.loadFromRenderedText( "7: Kat's Theme", whiteColor, gRenderer, gFont );
-                        textAndaleTexture.render( gRenderer, 380, 70 );
-                        textAndaleTexture.loadFromRenderedText( "8: Albus' Theme", whiteColor, gRenderer, gFont );
-                        textAndaleTexture.render( gRenderer, 380, 95 );
-                        textAndaleTexture.loadFromRenderedText( diaLine, whiteColor, gRenderer, gFont );
-                        textAndaleTexture.render( gRenderer, 380, 120 );
-                        
-                        
+                        //jiggle the characters
                         if (activeCharacter==ELSA){
                             elsaRotIterator++;
                             Elsa.setDegs(Elsa.getDegs()+sin(elsaRotIterator));

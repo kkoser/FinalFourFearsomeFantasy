@@ -79,7 +79,4 @@ CharacterView::CharacterView(int x, int y, string filename, SDL_Renderer *gRende
     
     battleTexture.loadFromFile(filename, gRenderer);
     
-    
-    
-    
 }
