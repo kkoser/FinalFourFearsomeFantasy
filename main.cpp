@@ -605,6 +605,7 @@ int main( int argc, char* args[] )
             
             //temporary character stuff
             vector<MainCharacter *> chars;
+            //MainCharacter Elsa(
             vector<Enemy *> enemies;
             
             

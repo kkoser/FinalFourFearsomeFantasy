@@ -8,6 +8,8 @@
 
 #include "TextLabel.h"
 
+const std::string defaultFont = pathForFile("Fonts/Hero.ttf");
+
 TextLabel::TextLabel(int cx, int cy, string str, string fontName, int size) {
     x = cx;
     y = cy;
