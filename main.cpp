@@ -138,8 +138,6 @@ Mix_Chunk *elsaSoundEffect = NULL;
 Mix_Chunk *jackSoundEffect = NULL;
 Mix_Chunk *katSoundEffect = NULL;
 
-//Dot (character) textures for exploration mode
-//LTexture gDotTexture;
 
 //------------------------------------------------------------------------------
 //              RUN INITIALIZATION FUNCTION
@@ -210,33 +208,6 @@ bool init(){
     }
     
 	return success;
-}
-//------------------------------------------------------------------------------
-//              START OF A DYNAMIC TEXT DISPLAY FUNCTION
-//------------------------------------------------------------------------------
-bool getText(){
-    bool success = true;
-    
-    //Open the font
-    gFont = TTF_OpenFont( "AndaleMono.ttf", 16 );
-    if( gFont == NULL )
-    {
-        printf( "Failed to load andale mono font! SDL_ttf Error: %s\n", TTF_GetError() );
-        success = false;
-    }
-    else
-    {
-        //Render text
-        SDL_Color textColor = { 255, 255, 255 };
-        if( !textAndaleTexture.loadFromRenderedText( "5: Elsa's Theme", textColor, gRenderer, gFont ) )
-        {
-            printf( "Failed to render text texture!\n" );
-            success = false;
-        }
-    }
-
-    
-    return success;
 }
 //------------------------------------------------------------------------------
 //              LOAD ALL IMAGES/SPRITES/MUSIC FILES
@@ -562,6 +533,7 @@ int main( int argc, char* args[] )
             CharacterView jackDialogue(10, 2*SCREEN_HEIGHT/3+60, pathForFile("Images/jackDialogue.png"), gRenderer);
             CharacterView albusDialogue(20, 2*SCREEN_HEIGHT/3+50, pathForFile("Images/albusDialogue.png"), gRenderer);
             
+            //TextView for displaying dialogue/stats
             TextView text;
 
             
@@ -647,9 +619,6 @@ int main( int argc, char* args[] )
 				//Handle events on queue
 				while( SDL_PollEvent( &e ) != 0 )
 				{
-                    
-                    getText(); //load in text
-
                     
 					//User requests quit
 					if( e.type == SDL_QUIT )
