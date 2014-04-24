@@ -603,14 +603,14 @@ int main( int argc, char* args[] )
             //Event handler
 			SDL_Event e;
             
-            //MainMenuViewController baseVC(gRenderer);
+            MainMenuViewController baseVC(gRenderer);
             
             //temporary character stuff
             vector<MainCharacter *> chars;
             vector<Enemy *> enemies;
             
             
-            BattleViewController baseVC(chars, enemies, pathForFile("Images/arendelle.jpg"), gRenderer);
+            //BattleViewController baseVC(chars, enemies, pathForFile("Images/arendelle.jpg"), gRenderer);
             
             //While application is running
 			while( !quit )
