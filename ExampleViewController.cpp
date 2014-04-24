@@ -14,7 +14,7 @@ ExampleViewController::ExampleViewController(SDL_Renderer *r) : ViewController(r
     gFont = TTF_OpenFont( "AndaleMono.ttf", 16 );
     //text.loadFromFile( "elsaBattle.png", renderer);
     label = TextLabel(10, 10, "Hello World!", "AndaleMono.ttf", 16);
-    img = ImageView(20, 20, pathForFile("Images/mainMenuBackground.png"), renderer);
+    img = ImageView(200, 200, pathForFile("Images/elsaDialogue.png"), renderer);
     
 }
 

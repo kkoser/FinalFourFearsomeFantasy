@@ -13,7 +13,7 @@ ImageView::ImageView() {
     renderer = NULL;
     xLoc = 0;
     yLoc = 0;
-    degs =0;
+    degs = 0;
     flipDir = SDL_FLIP_NONE;
 }
 
