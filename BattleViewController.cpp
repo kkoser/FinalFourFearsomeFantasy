@@ -21,6 +21,13 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     
     //load background too
     
+    //move labels
+    move1 = TextLabel(550, 450, "Icy Wind", pathForFile("Fonts/junction-light.ttf"), 24);
+    move2 = TextLabel(550, 550, "Healing Salve", "AndaleMono.ttf", 24);
+    move3 = TextLabel(850, 450, "Explosion", "AndaleMono.ttf", 24);
+    move4 = TextLabel(850, 550, "Ronnicus Explodicus", "AndaleMono.ttf", 24);
+
+    
     
     
 }
@@ -34,6 +41,7 @@ int BattleViewController::draw(SDL_Event e) {
     
     
     
+    
     //draw the mainCharacters
     typename vector<CharacterView *>::const_iterator iter;
     for (iter = mainCharViews.begin(); iter != mainCharViews.end(); ++iter) {
@@ -44,7 +52,11 @@ int BattleViewController::draw(SDL_Event e) {
     
     //draw the background
     
-    //draw the moves
+    //draw the moves of the active character
+    move1.draw(renderer);
+    move2.draw(renderer);
+    move3.draw(renderer);
+    move4.draw(renderer);
     
     
     

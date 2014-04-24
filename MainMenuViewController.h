@@ -12,6 +12,7 @@
 #include <iostream>
 #include "ViewController.h"
 #include "ExampleViewController.h"
+#include "BattleViewController.h"
 
 
 class MainMenuViewController : public ViewController {

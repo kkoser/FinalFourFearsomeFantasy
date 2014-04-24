@@ -23,6 +23,9 @@
 #include "ExampleViewController.h"
 #include "MainMenuViewController.h"
 
+#include "MainCharacter.h"
+#include "Enemy.h"
+
 using namespace std;
 
 //The dimensions of the level (if you change this, change it in Dot.cpp, too)
@@ -600,7 +603,12 @@ int main( int argc, char* args[] )
             //Event handler
 			SDL_Event e;
             
-            MainMenuViewController baseVC(gRenderer);
+            //temporary character stuff
+            vector<MainCharacter *> chars;
+            vector<Enemy *> enemies;
+            
+            
+            BattleViewController baseVC(chars, enemies, "Arendelle", gRenderer);
             
             			//While application is running
 			while( !quit )

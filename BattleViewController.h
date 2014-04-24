@@ -15,6 +15,7 @@
 #include "MainCharacter.h"
 #include "Enemy.h"
 #include "Settings.h"
+#include "TextLabel.h"
 
 
 class BattleViewController : public ViewController {
@@ -31,6 +32,11 @@ private:
     MainCharacter *activeCharacter;
     
     void loadSprites();
+    
+    TextLabel move1;
+    TextLabel move2;
+    TextLabel move3;
+    TextLabel move4;
 
 public:
     BattleViewController(vector<MainCharacter *> chars, vector<Enemy *> enem, string locName, SDL_Renderer *ren);
