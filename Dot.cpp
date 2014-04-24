@@ -59,6 +59,8 @@ Dot::Dot()
     mapHeight[7]=150;
     mapWidth[7]=82;
     
+    keyPressed=0;
+    
     
 }
 //------------------------------------------------------------------------------
@@ -96,7 +98,7 @@ Dot::Dot(int PosX, int PosY)
     mapHeight[7]=150;
     mapWidth[7]=82;
     
-
+    keyPressed=0;
     
 }
 
@@ -109,13 +111,13 @@ void Dot::handleEvent( SDL_Event& e )
         //Adjust the velocity
         switch( e.key.keysym.sym )
         {
-            case SDLK_UP: mVelY -= DOT_VEL;
+            case SDLK_UP: mVelY -= DOT_VEL; keyPressed=1;
                 break;
-            case SDLK_DOWN: mVelY += DOT_VEL;
+            case SDLK_DOWN: mVelY += DOT_VEL; keyPressed=1;
                 break;
-            case SDLK_LEFT: mVelX -= DOT_VEL;
+            case SDLK_LEFT: mVelX -= DOT_VEL; keyPressed=1;
                 break;
-            case SDLK_RIGHT: mVelX += DOT_VEL;
+            case SDLK_RIGHT: mVelX += DOT_VEL; keyPressed=1;
                 break;
         }
     }
@@ -125,13 +127,13 @@ void Dot::handleEvent( SDL_Event& e )
         //Adjust the velocity
         switch( e.key.keysym.sym )
         {
-            case SDLK_UP: mVelY += DOT_VEL;
+            case SDLK_UP: mVelY += DOT_VEL; keyPressed=1;
                 break;
-            case SDLK_DOWN: mVelY -= DOT_VEL;
+            case SDLK_DOWN: mVelY -= DOT_VEL; keyPressed=1;
                 break;
-            case SDLK_LEFT: mVelX += DOT_VEL;
+            case SDLK_LEFT: mVelX += DOT_VEL; keyPressed=1;
                 break;
-            case SDLK_RIGHT: mVelX -= DOT_VEL;
+            case SDLK_RIGHT: mVelX -= DOT_VEL; keyPressed=1;
                 break;
         }
     }
@@ -254,8 +256,8 @@ int Dot::getCharDir(int scoutX, int scoutY, int currentDir){
     difX = scoutX - mPosX;
     difY = scoutY - mPosY;
 
-    //if(keyPressed){
-        //keyPressed=0;
+    if(keyPressed){
+        keyPressed=0;
         
         if(difY==0){
             if(difX<0) return 2;
@@ -275,7 +277,7 @@ int Dot::getCharDir(int scoutX, int scoutY, int currentDir){
             if(difY>0) return 0;
             else if(difY<0) return 1;
         }
-    //}
+    }
     return currentDir;
     
     

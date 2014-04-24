@@ -399,17 +399,17 @@ int OpenWorldViewController::draw(SDL_Event e) {
             }
         }
         
-        //Top viewport
-        topViewport.x = 0;
-        topViewport.y = SCREEN_HEIGHT / 4;
-        topViewport.w = SCREEN_WIDTH;
-        topViewport.h = SCREEN_HEIGHT;
-        
-        //Bottom viewport
-        bottomViewport.x = 0;
-        bottomViewport.y = 0;
-        bottomViewport.w = SCREEN_WIDTH;
-        bottomViewport.h = SCREEN_HEIGHT / 4;
+//        //Top viewport
+//        topViewport.x = 0;
+//        topViewport.y = SCREEN_HEIGHT / 4;
+//        topViewport.w = SCREEN_WIDTH;
+//        topViewport.h = SCREEN_HEIGHT;
+//        
+//        //Bottom viewport
+//        bottomViewport.x = 0;
+//        bottomViewport.y = 0;
+//        bottomViewport.w = SCREEN_WIDTH;
+//        bottomViewport.h = SCREEN_HEIGHT / 4;
         
         //fullViewport
         fullViewport.x = 0;
