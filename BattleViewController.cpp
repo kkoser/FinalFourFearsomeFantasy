@@ -23,11 +23,15 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     
     backgroundImage = ImageView(0, 0, pathForFile("Images/arendelle.jpg"), renderer);
     //move labels
-    move1 = TextLabel(550, 450, "Icy Wind", defaultFont, 24);
-    move2 = TextLabel(550, 550, "Healing Salve", defaultFont, 24);
-    move3 = TextLabel(850, 450, "Explosion", defaultFont, 24);
-    move4 = TextLabel(850, 550, "Ronnicus Explodicus", defaultFont, 24);
-    
+    move1 = TextLabel(550, 575, "Icy Wind", defaultFont, 24);
+    move2 = TextLabel(550, 625, "Healing Salve", defaultFont, 24);
+    move3 = TextLabel(850, 575, "Explosion", defaultFont, 24);
+    move4 = TextLabel(850, 625, "Ronnicus Explodicus", defaultFont, 24);
+    move1.setColor(255, 255, 255);
+    move2.setColor(255, 255, 255);
+    move3.setColor(255, 255, 255);
+    move4.setColor(255, 255, 255);
+
 }
 
 int BattleViewController::draw(SDL_Event e) {
@@ -37,7 +41,22 @@ int BattleViewController::draw(SDL_Event e) {
     }
     //draw!
     
+    SDL_Rect healthBar;
+    healthBar.x = 10;
+    healthBar.y = 10;
+    healthBar.w = 100;
+    healthBar.h = 50;
     
+    backgroundImage.draw();
+    
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+    SDL_GetRenderDrawColor(<#SDL_Renderer *renderer#>, <#Uint8 *r#>, <#Uint8 *g#>, <#Uint8 *b#>, <#Uint8 *a#>)
+    
+    SDL_RenderDrawRect(renderer, &healthBar);
+    SDL_RenderFillRect(renderer, &healthBar);
+    
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+
     
     
     //draw the mainCharacters
@@ -49,7 +68,7 @@ int BattleViewController::draw(SDL_Event e) {
     //draw the enemies
     
     //draw the background
-    backgroundImage.draw();
+    
     
     //draw the moves of the active character
     move1.draw(renderer);

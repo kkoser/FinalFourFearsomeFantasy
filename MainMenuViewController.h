@@ -13,6 +13,9 @@
 #include "ViewController.h"
 #include "ExampleViewController.h"
 #include "BattleViewController.h"
+#include "ImageView.h"
+#include "LTexture.h"
+
 
 
 class MainMenuViewController : public ViewController {
@@ -24,7 +27,7 @@ public:
     virtual void becomeTop();
     
 private:
-    LTexture bgImage;
+    ImageView backgroundImage;
     
 };
 

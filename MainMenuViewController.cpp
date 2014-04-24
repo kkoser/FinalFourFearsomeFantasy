@@ -11,7 +11,7 @@
 MainMenuViewController::MainMenuViewController(SDL_Renderer *rend) : ViewController(rend) {
     //load textures etc
     
-    bgImage.loadFromFile(pathForFile("Images/mainMenuBackground.png"), renderer);
+    backgroundImage = ImageView(0, 0, pathForFile("Images/mainMenuBackground.png"), renderer);
     
     Mix_Music *music;
     
@@ -30,7 +30,7 @@ int MainMenuViewController::draw(SDL_Event e) {
     //draw!
     
     
-    bgImage.render(renderer, 0, 0);
+    backgroundImage.draw();
     
     if (e.key.keysym.sym == SDLK_RETURN) {
         ExampleViewController *vc = new ExampleViewController(renderer);
