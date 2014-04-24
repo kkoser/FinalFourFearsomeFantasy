@@ -610,9 +610,9 @@ int main( int argc, char* args[] )
             vector<Enemy *> enemies;
             
             
-            BattleViewController baseVC(chars, enemies, "Arendelle", gRenderer);
+            BattleViewController baseVC(chars, enemies, pathForFile("Images/arendelle.jpg"), gRenderer);
             
-            			//While application is running
+            //While application is running
 			while( !quit )
 			{
 

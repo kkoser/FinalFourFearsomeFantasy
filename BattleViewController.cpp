@@ -21,6 +21,7 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     
     //load background too
     
+    backgroundImage = ImageView(0, 0, pathForFile("Images/arendelle.jpg"), renderer);
     //move labels
     move1 = TextLabel(550, 450, "Icy Wind", defaultFont, 24);
     move2 = TextLabel(550, 550, "Healing Salve", defaultFont, 24);
@@ -48,6 +49,7 @@ int BattleViewController::draw(SDL_Event e) {
     //draw the enemies
     
     //draw the background
+    backgroundImage.draw();
     
     //draw the moves of the active character
     move1.draw(renderer);
