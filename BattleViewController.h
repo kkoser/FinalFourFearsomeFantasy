@@ -16,6 +16,7 @@
 #include "Enemy.h"
 #include "Settings.h"
 #include "TextLabel.h"
+#include "ImageView.h"
 
 
 class BattleViewController : public ViewController {
@@ -32,6 +33,8 @@ private:
     MainCharacter *activeCharacter;
     
     void loadSprites();
+    
+    ImageView backgroundImage;
     
     TextLabel move1;
     TextLabel move2;
