@@ -155,25 +155,14 @@ int main( int argc, char* args[] )
 
             //Event handler
 			SDL_Event e;
-<<<<<<< HEAD
-        
-=======
-            
-            MainMenuViewController baseVC(gRenderer);
-            
->>>>>>> FETCH_HEAD
+
             //temporary character stuff
             vector<MainCharacter *> chars;
             vector<Enemy *> enemies;
         
             OpenWorldViewController baseVC(gRenderer);
             
-<<<<<<< HEAD
-=======
-            
-            //BattleViewController baseVC(chars, enemies, pathForFile("Images/arendelle.jpg"), gRenderer);
-            
->>>>>>> FETCH_HEAD
+
             //While application is running
 			while( !quit )
 			{
@@ -198,7 +187,7 @@ int main( int argc, char* args[] )
                 
 			
             
-		}
+            }
 	
     cout<<"Closing the application"<<endl;
     

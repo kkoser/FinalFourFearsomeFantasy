@@ -234,7 +234,7 @@ int OpenWorldViewController::draw(SDL_Event e) {
         return 0;
     }
     else{
-        if( e.type == SDL_KEYDOWN){
+        if( e.type == SDL_KEYDOWN ){
                 switch( e.key.keysym.sym )
                 {
                         //set Albus as active
