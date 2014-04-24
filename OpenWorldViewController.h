@@ -86,6 +86,9 @@ private:
     int startPosX[8];
     int startPosY[8];
     
+    int returnPosX[8];
+    int returnPosY[8];
+    
     SDL_Rect blank;
     SDL_Rect camera[8];
     
@@ -102,6 +105,9 @@ private:
     const int SCREEN_HEIGHT = 650;
 
     bool loadTextures();
+    
+    int isReturning;
+    int mapReturningFrom;
     
 public:
     OpenWorldViewController(SDL_Renderer *ren);

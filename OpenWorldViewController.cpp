@@ -7,6 +7,8 @@
 //
 
 #include "OpenWorldViewController.h"
+#include "BattleViewController.h"
+#include "ExampleViewController.h"
 #include "Dot.h"
 #include "SDL2_mixer/SDL_mixer.h"
 #include "LTexture.h"
@@ -34,12 +36,29 @@ OpenWorldViewController::OpenWorldViewController(SDL_Renderer *ren) : ViewContro
     
     startPosX[0]=752;
     startPosY[0]=176;
-    startPosX[1]=80;
-    startPosY[1]=800;
+    startPosX[1]=65;
+    startPosY[1]=840;
     startPosX[2]=544;
-    startPosY[2]=2300;
-    startPosX[3]=1728;
+    startPosY[2]=2350;
+    startPosX[3]=1750;
     startPosY[3]=304;
+    startPosX[4]=65;
+    startPosY[4]=25;
+    
+    for(int q=0; q<8; q++) returnPosX[q]=50;
+    for(int q=0; q<8; q++) returnPosY[q]=50;
+
+    returnPosX[1]=1110;
+    returnPosY[1]=10;
+    returnPosX[2]=480;
+    returnPosY[2]=20;
+    returnPosX[3]=20;
+    returnPosY[3]=605;
+    returnPosX[4]=535;
+    returnPosY[4]=575;
+    
+    isReturning = 0;
+    mapReturningFrom=0;
     
     quit=false;
 
@@ -262,6 +281,26 @@ int OpenWorldViewController::draw(SDL_Event e) {
                         Mix_PlayChannel( -1, katSoundEffect, 0 );
                         break;
                         
+                    case SDLK_UP:
+                        stepCount++;
+                        cout<<"Steps: "<<stepCount<<endl;
+                        break;
+                        
+                    case SDLK_DOWN:
+                        stepCount++;
+                        cout<<"Steps: "<<stepCount<<endl;
+                        break;
+                        
+                    case SDLK_LEFT:
+                        stepCount++;
+                        cout<<"Steps: "<<stepCount<<endl;
+                        break;
+                        
+                    case SDLK_RIGHT:
+                        stepCount++;
+                        cout<<"Steps: "<<stepCount<<endl;
+                        break;
+                        
                 }
                 
             }
@@ -269,8 +308,6 @@ int OpenWorldViewController::draw(SDL_Event e) {
             //Handle input for the character and scout
             leader.handleEvent( e );
             mapScout.handleEvent( e );
-            
-        //}
         
             //check for layout switch
             if(zone != 9){
@@ -279,47 +316,94 @@ int OpenWorldViewController::draw(SDL_Event e) {
                     case 0:
                         mapNumber=0;
                         layoutReset=1;
+                        isReturning=0;
                         mapScout.initializeMap(0);
                         Mix_HaltMusic();
                         break;
                     case 1:
                         mapNumber=1;
                         layoutReset=1;
+                        isReturning=0;
                         mapScout.initializeMap(1);
                         Mix_HaltMusic();
                         break;
                     case 2:
                         mapNumber=2;
                         layoutReset=1;
+                        isReturning=0;
                         mapScout.initializeMap(2);
                         Mix_HaltMusic();
                         break;
                     case 3:
                         mapNumber=3;
                         layoutReset=1;
+                        isReturning=0;
                         mapScout.initializeMap(3);
                         Mix_HaltMusic();
                         break;
                     case 4:
                         mapNumber=4;
                         layoutReset=1;
+                        isReturning=0;
                         mapScout.initializeMap(4);
                         Mix_HaltMusic();
                         break;
                     case 5:
                         mapNumber=5;
                         layoutReset=1;
+                        isReturning=0;
                         mapScout.initializeMap(5);
                         Mix_HaltMusic();
                         break;
                     case 10:
                         //layout=BATTLE_LAYOUT;
-                        layoutReset=1;
+                        //layoutReset=1;
                         Mix_HaltMusic();
                         break;
                     case 11:
                         mapNumber=0;
                         layoutReset=1;
+                        isReturning=0;
+                        mapScout.initializeMap(0);
+                        Mix_HaltMusic();
+                        break;
+                    case 12:
+                        mapNumber=0;
+                        mapReturningFrom=4;
+                        layoutReset=1;
+                        isReturning=1;
+                        mapScout.initializeMap(0);
+                        Mix_HaltMusic();
+                        break;
+                    case 17:
+                        mapNumber=0;
+                        mapReturningFrom=1;
+                        layoutReset=1;
+                        isReturning=1;
+                        mapScout.initializeMap(0);
+                        Mix_HaltMusic();
+                        break;
+                    case 18:
+                        mapNumber=0;
+                        mapReturningFrom=2;
+                        layoutReset=1;
+                        isReturning=1;
+                        mapScout.initializeMap(0);
+                        Mix_HaltMusic();
+                        break;
+                    case 19:
+                        mapNumber=0;
+                        mapReturningFrom=3;
+                        layoutReset=1;
+                        isReturning=1;
+                        mapScout.initializeMap(0);
+                        Mix_HaltMusic();
+                        break;
+                    case 20:
+                        mapNumber=0;
+                        mapReturningFrom=4;
+                        layoutReset=1;
+                        isReturning=1;
                         mapScout.initializeMap(0);
                         Mix_HaltMusic();
                         break;
@@ -415,8 +499,15 @@ int OpenWorldViewController::draw(SDL_Event e) {
         if(layoutReset){
             
             stepCount=0;
-            leader.moveAbs(startPosX[mapNumber], startPosY[mapNumber]);
-            mapScout.moveAbs(startPosX[mapNumber], startPosY[mapNumber]);
+            if(isReturning){
+                leader.moveAbs(returnPosX[mapReturningFrom], returnPosY[mapReturningFrom]);
+                mapScout.moveAbs(returnPosX[mapReturningFrom], returnPosY[mapReturningFrom]);
+                isReturning = 0;
+            }
+            else{
+                leader.moveAbs(startPosX[mapNumber], startPosY[mapNumber]);
+                mapScout.moveAbs(startPosX[mapNumber], startPosY[mapNumber]);
+            }
             charDir=DOWN;
             layoutReset=0;
             
@@ -449,6 +540,19 @@ int OpenWorldViewController::draw(SDL_Event e) {
             else if (charDir==LEFT) leader.renderRel( renderer, camera[mapNumber].x, camera[mapNumber].y, &jackSpriteSide, SDL_FLIP_NONE );
             else if (charDir==RIGHT) leader.renderRel( renderer, camera[mapNumber].x, camera[mapNumber].y, &jackSpriteSide, SDL_FLIP_HORIZONTAL );
         }
+        
+        //CHECK FOR BATTLE SWITCHING
+        
+        if(stepCount>20 && mapNumber!=0){ //change later
+            stepCount=0;
+            Mix_HaltMusic();
+            cout<<"Switch to Battle Mode"<<endl;
+            
+            ExampleViewController *vc = new ExampleViewController(renderer);
+            pushViewController(vc);
+            layoutReset=1;
+        }
+        
 
     return 1;
 }

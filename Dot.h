@@ -69,6 +69,7 @@ public:
     
     void draw(SDL_Renderer *ren);
     void draw(); //uses the last renderer
+
     
 private:
     //The X and Y offsets of the dot

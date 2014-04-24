@@ -27,7 +27,10 @@ int ExampleViewController::draw(SDL_Event e) {
     label.draw(renderer);
     
     if (e.type == SDL_KEYDOWN) {
-        dismiss();
+        if(e.key.keysym.sym == SDLK_RETURN){
+            dismiss();
+            //ViewController::becomeTop();
+        }
     }
     return 1;
 }
