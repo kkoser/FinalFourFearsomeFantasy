@@ -11,7 +11,7 @@
 ExampleViewController::ExampleViewController(SDL_Renderer *r) : ViewController(r) {
     //load textures here
     
-    label = TextLabel(10, 10, "Hello World!", "AndaleMono.ttf", 16);
+    label = TextLabel(10, 10, "Hello World!", "Fonts/AndaleMono.ttf", 16);
     img = ImageView(200, 200, pathForFile("Images/elsaBattle.png"), renderer);
     
 }
@@ -20,6 +20,8 @@ int ExampleViewController::draw(SDL_Event e) {
     if(ViewController::draw(e) == 0) {
         return 0;
     }
+    
+    img.moveRel(4,0);
     
     img.draw(renderer);
     label.draw(renderer);

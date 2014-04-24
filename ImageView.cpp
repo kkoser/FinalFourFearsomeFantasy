@@ -25,11 +25,6 @@ ImageView::ImageView(int x, int y, string fileName, SDL_Renderer *ren) {
     renderer = ren;
     flipDir = SDL_FLIP_NONE;
     
-    /*if (!texture.loadFromFile(fileName, renderer)) {
-        std::cout<<"Unable to load image: "<<fileName<<endl;
-    }*/
-    //texture.loadFromFile(fileName, renderer);
-    //texture.loadFromFile(pathForFile("Images/albusBattle.png"), ren);
 }
 
 void ImageView::load() {

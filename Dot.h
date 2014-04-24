@@ -14,6 +14,7 @@
 #include <SDL2/SDL.h>
 #include "LTexture.h"
 #include "SDL2_image/SDL_image.h"
+#include "LTexture.h"
 
 
 #ifndef FFFF_Dot_h
@@ -28,7 +29,7 @@ public:
     static const int DOT_HEIGHT = 31;
     
     //Maximum axis velocity of the dot
-    static const int DOT_VEL = 9;
+    static const int DOT_VEL = 3;
     
     //Initializes the variables
     Dot();
@@ -37,13 +38,10 @@ public:
     //Takes key presses and adjusts the dot's velocity
     void handleEvent( SDL_Event& e );
     
-    //Moves the dot
-   
-    
     //Moves the dot with a moving background ("Rel"ative to background)
     void moveRel(int mChangeX, int mChangeY); //for scouting
-    void moveRel2(int mChangeX, int mChangeY, int zone); //only move if zone is valid
-    void moveBack(int mChangeX, int mChangeY); //to move the scout back with main character
+    //void moveRel2(int mChangeX, int mChangeY, int zone); //only move if zone is valid
+    //void moveBack(int mChangeX, int mChangeY); //to move the scout back with main character
     
     void moveSmooth(int zone,int mapNumber); //move smoothly with zone restrictions
     void moveBackSmooth(int mapNumber); //move scout back
@@ -69,6 +67,9 @@ public:
     //get leader direction
     int getCharDir(int scoutX, int scoutY, int currentDir);
     
+    void draw(SDL_Renderer *ren);
+    void draw(); //uses the last renderer
+    
 private:
     //The X and Y offsets of the dot
     int mPosX, mPosY;
@@ -81,7 +82,6 @@ private:
     int mapHeight[8];
     
     int mapArray[160][160]; //maximum
-    
     int keyPressed;
     
 
