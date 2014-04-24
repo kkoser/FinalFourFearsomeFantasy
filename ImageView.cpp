@@ -21,11 +21,22 @@ ImageView::ImageView(int x, int y, string fileName, SDL_Renderer *ren) {
     xLoc = x;
     yLoc = y;
     degs = 0;
+    textFile = fileName;
     renderer = ren;
+    flipDir = SDL_FLIP_NONE;
     
-    if (!texture.loadFromFile(fileName, renderer)) {
+    /*if (!texture.loadFromFile(fileName, renderer)) {
         std::cout<<"Unable to load image: "<<fileName<<endl;
+    }*/
+    //texture.loadFromFile(fileName, renderer);
+    //texture.loadFromFile(pathForFile("Images/albusBattle.png"), ren);
+}
+
+void ImageView::load() {
+    if (!(texture.getWidth() > 0)) {
+        texture.loadFromFile(textFile, renderer);
     }
+    
 }
 
 void ImageView::draw(SDL_Renderer *ren) {
@@ -34,6 +45,7 @@ void ImageView::draw(SDL_Renderer *ren) {
 }
 
 void ImageView::draw() {
+    load();
     texture.render(renderer, xLoc, yLoc, NULL, degs, NULL, flipDir);
 }
 
@@ -61,10 +73,6 @@ void ImageView::setDegs(double value){
 //------------------------------------------------------------------------------
 double ImageView::getDegs(){
     return degs;
-}
-//------------------------------------------------------------------------------
-void ImageView::setDir(int direction){
-    faceDir=direction;
 }
 //------------------------------------------------------------------------------
 SDL_RendererFlip ImageView::getDir(){

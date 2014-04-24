@@ -14,18 +14,21 @@
 #include <SDL2/SDL.h>
 #include "LTexture.h"
 #include <string>
+#include "Settings.h"
 
 class ImageView {
 private:
     int xLoc;
     int yLoc;
     double degs; //degrees of rotation
-    int faceDir; //direction they are facing (1=up, 2=down, 3=left, 4=right)
     SDL_RendererFlip flipDir;
     
     LTexture texture;
+    string textFile;
     
     SDL_Renderer *renderer;
+    
+    void load();
     
 public:
     ImageView();
@@ -36,7 +39,6 @@ public:
     double getDegs();
     SDL_RendererFlip getDir();
     void setDegs(double value);
-    void setDir(int direction);
     void moveRel(int x, int y); //move relative to current pos.
     void moveAbs(int x, int y); //move to absolute location in window
     SDL_RendererFlip flipRight();
@@ -44,6 +46,8 @@ public:
     
     void draw(SDL_Renderer *ren);
     void draw(); //uses the last renderer
+    
+    
 };
 
 #endif /* defined(__FinalFourFearsomeFantasy__ImageView__) */
