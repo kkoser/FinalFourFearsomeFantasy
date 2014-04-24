@@ -35,7 +35,7 @@ OpenWorldViewController::OpenWorldViewController(SDL_Renderer *ren) : ViewContro
     startPosX[0]=752;
     startPosY[0]=176;
     startPosX[1]=80;
-    startPosY[1]=784;
+    startPosY[1]=800;
     startPosX[2]=544;
     startPosY[2]=2300;
     startPosX[3]=1728;
@@ -449,10 +449,7 @@ int OpenWorldViewController::draw(SDL_Event e) {
             else if (charDir==LEFT) leader.renderRel( renderer, camera[mapNumber].x, camera[mapNumber].y, &jackSpriteSide, SDL_FLIP_NONE );
             else if (charDir==RIGHT) leader.renderRel( renderer, camera[mapNumber].x, camera[mapNumber].y, &jackSpriteSide, SDL_FLIP_HORIZONTAL );
         }
-    
-        
-    
-    
+
     return 1;
 }
 }
