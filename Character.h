@@ -64,7 +64,7 @@ protected:
     string displayLog;
         
 public:
-	Character(string fileName);
+	Character();
     
     void actMoveOnTarget(string moveName, vector<Character *> targets);
     

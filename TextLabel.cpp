@@ -13,7 +13,7 @@ TextLabel::TextLabel(int cx, int cy, string str, string fontName, int size) {
     y = cy;
     text = str;
     
-    font = TTF_OpenFont(fontName.c_str(), size );
+    font = TTF_OpenFont(fontName.c_str(), size);
     if(font == NULL) printf("font fail: %s\n", TTF_GetError());
     textColor = {0,0,0};
 }

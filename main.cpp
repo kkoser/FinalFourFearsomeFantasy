@@ -603,13 +603,14 @@ int main( int argc, char* args[] )
             //Event handler
 			SDL_Event e;
             
+            //MainMenuViewController baseVC(gRenderer);
+            
             //temporary character stuff
             vector<MainCharacter *> chars;
-            //MainCharacter Elsa(
             vector<Enemy *> enemies;
             
             
-            MainMenuViewController baseVC(gRenderer);
+            BattleViewController baseVC(chars, enemies, "Arendelle", gRenderer);
             
             			//While application is running
 			while( !quit )

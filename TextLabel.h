@@ -19,6 +19,7 @@
 
 using namespace std;
 
+//default font
 const std::string defaultFont = pathForFile("Fonts/Hero.ttf");
 
 class TextLabel {
