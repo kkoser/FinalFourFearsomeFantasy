@@ -21,6 +21,8 @@ int ExampleViewController::draw(SDL_Event e) {
         return 0;
     }
     
+    img.moveRel(4,0);
+    
     img.draw(renderer);
     label.draw(renderer);
     
