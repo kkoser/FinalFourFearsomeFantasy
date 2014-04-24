@@ -28,7 +28,7 @@ TextLabel::TextLabel() {
 
 void TextLabel::draw(SDL_Renderer *ren) {
     texture.loadFromRenderedText(text, textColor, ren, font);
-    texture.render(ren, 10, 10);
+    texture.render(ren, x, y);
 
 }
 
