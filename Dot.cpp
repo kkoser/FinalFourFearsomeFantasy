@@ -59,7 +59,6 @@ Dot::Dot()
     mapHeight[7]=150;
     mapWidth[7]=82;
     
-    keyPressed=0;
     
 }
 //------------------------------------------------------------------------------
@@ -97,7 +96,6 @@ Dot::Dot(int PosX, int PosY)
     mapHeight[7]=150;
     mapWidth[7]=82;
     
-    keyPressed=0;
 
     
 }
@@ -111,13 +109,13 @@ void Dot::handleEvent( SDL_Event& e )
         //Adjust the velocity
         switch( e.key.keysym.sym )
         {
-            case SDLK_UP: mVelY -= DOT_VEL; keyPressed=1;
+            case SDLK_UP: mVelY -= DOT_VEL;
                 break;
-            case SDLK_DOWN: mVelY += DOT_VEL; keyPressed=1;
+            case SDLK_DOWN: mVelY += DOT_VEL;
                 break;
-            case SDLK_LEFT: mVelX -= DOT_VEL; keyPressed=1;
+            case SDLK_LEFT: mVelX -= DOT_VEL;
                 break;
-            case SDLK_RIGHT: mVelX += DOT_VEL; keyPressed=1;
+            case SDLK_RIGHT: mVelX += DOT_VEL;
                 break;
         }
     }
@@ -127,13 +125,13 @@ void Dot::handleEvent( SDL_Event& e )
         //Adjust the velocity
         switch( e.key.keysym.sym )
         {
-            case SDLK_UP: mVelY += DOT_VEL; keyPressed=1;
+            case SDLK_UP: mVelY += DOT_VEL;
                 break;
-            case SDLK_DOWN: mVelY -= DOT_VEL; keyPressed=1;
+            case SDLK_DOWN: mVelY -= DOT_VEL;
                 break;
-            case SDLK_LEFT: mVelX += DOT_VEL; keyPressed=1;
+            case SDLK_LEFT: mVelX += DOT_VEL;
                 break;
-            case SDLK_RIGHT: mVelX -= DOT_VEL; keyPressed=1;
+            case SDLK_RIGHT: mVelX -= DOT_VEL;
                 break;
         }
     }
@@ -177,11 +175,7 @@ void Dot::moveSmooth(int zone,int mapNumber) //with velocity
     if(zone!=8){
         mPosX += mVelX;
     }
-    
-    
-    //Move the dot left or right
-    
-    
+
     //If the dot went too far to the right
     if( ( (mPosX+8)/16 +1) > mapWidth[mapNumber] )
     {
@@ -242,171 +236,13 @@ void Dot::moveBackSmooth(int mapNumber) //with velocity
        //Move back
        mPosY -= mVelY;
     }
+}
 
-}
-//------------------------------------------------------------------------------
-/*void Dot::moveBack(int mChangeX, int mChangeY) //MODIFY LATER FOR OBSTACLE AVOIDANCE!!!
-{
-    
-    mPosX -= mChangeX;
-    mPosY -= mChangeY;
-    
-    //If the dot went too far to the right
-    if( ( ((mPosX+8)/16 +1) > mapWidth[2]) )
-    {
-        //Move back
-        mPosX += 16;
-    }
-    else if ( ((mPosX+8)/16 -1) < 0){
-        //Move back
-        mPosX -= 16;
-    }
-    
-    //Move the dot up or down
-    //mPosY += mVelY;
-    
-    //If the dot went too far up or down
-    if( ( ((mPosY+25)/16 +1) > mapHeight[2]) )
-    {
-        //Move back
-        mPosY += 16;
-    }
-    else if ( ((mPosY+25)/16 -1) < 0){
-        //Move back
-        mPosY -= 16;
-    }
-    
-}
-//------------------------------------------------------------------------------
-void Dot::moveRel(int mChangeX, int mChangeY) //MODIFY LATER FOR OBSTACLE AVOIDANCE!!!
-{
-    
-    mPosX += mChangeX;
-    mPosY += mChangeY;
-    
-    //If the dot went too far to the right
-    if( ( ((mPosX+8)/16 +1) > mapWidth) )
-    {
-        //Move back
-        mPosX -= 16;
-    }
-    else if ( ((mPosX+8)/16 -1) < 0){
-        //Move back
-        mPosX += 16;
-    }
-    
-    //Move the dot up or down
-    //mPosY += mVelY;
-    
-    //If the dot went too far up or down
-    if( ( ((mPosY+25)/16 +1) > mapHeight) )
-    {
-        //Move back
-        mPosY -= 16;
-    }
-    else if ( ((mPosY+25)/16 -1) < 0){
-        //Move back
-        mPosY += 16;
-    }
-    
-    int zone=1;
-    //cout<<mapArray[24][24];
-    //cout<<zone<<endl;
-    switch(zone){
-            
-        case 0: break;
-        case 1: break;
-        case 2: break;
-        case 3: break;
-        case 4: break;
-        case 5: break;
-        case 6: break;
-        case 7: break;
-        case 8: break;
-        case 9: break;
-        case 10: break;
-        case 11: break;
-        case 12: break;
-        case 13: break;
-        case 14: break;
-        case 15: break;
-        case 17: break;
-        case 18: break;
-            
-            
-    }
-    
-}
-//------------------------------------------------------------------------------
-void Dot::moveRel2(int mChangeX, int mChangeY,int zone) //MODIFY LATER FOR OBSTACLE AVOIDANCE!!!
-{
-    
-    if(zone!=8){
-        mPosX += mChangeX;
-        mPosY += mChangeY;
-    }
-    
-    //If the dot went too far to the right
-    if( ( ((mPosX+8)/16 +1) > mapWidth) )
-    {
-        //Move back
-        mPosX -= 16;
-    }
-    else if ( ((mPosX+8)/16 -1) < 0){
-        //Move back
-        mPosX += 16;
-    }
-    
-    //Move the dot up or down
-    //mPosY += mVelY;
-    
-    //If the dot went too far up or down
-    if( ( ((mPosY+25)/16 +1) > mapHeight) )
-    {
-        //Move back
-        mPosY -= 16;
-    }
-    else if ( ((mPosY+25)/16 -1) < 0){
-        //Move back
-        mPosY += 16;
-    }
-    
-    //cout<<mapArray[24][24];
-    //cout<<zone<<endl;
-    switch(zone){
-            
-        case 0: break;
-        case 1: break;
-        case 2: break;
-        case 3: break;
-        case 4: break;
-        case 5: break;
-        case 6: break;
-        case 7: break;
-        case 8: break;
-        case 9: break;
-        case 10: break;
-        case 11: break;
-        case 12: break;
-        case 13: break;
-        case 14: break;
-        case 15: break;
-        case 17: break;
-        case 18: break;
-          
-            
-    }
-    
-    
-    cout<<"X: "<<(mPosX+8)/16<<endl;
-    cout<<"Y: "<<(mPosY+25)/16<<endl;
-}*/
 //------------------------------------------------------------------------------
 int Dot::checkZone(int mapNumber){
     int zone;
     
     zone = mapArray[(mPosY+25)/16 +1][(mPosX+8)/16 +1];
-    //cout<<"Zone: "<<zone<<endl;
     
     return zone;
 }
@@ -418,8 +254,8 @@ int Dot::getCharDir(int scoutX, int scoutY, int currentDir){
     difX = scoutX - mPosX;
     difY = scoutY - mPosY;
 
-    if(keyPressed){
-        keyPressed=0;
+    //if(keyPressed){
+        //keyPressed=0;
         
         if(difY==0){
             if(difX<0) return 2;
@@ -439,7 +275,7 @@ int Dot::getCharDir(int scoutX, int scoutY, int currentDir){
             if(difY>0) return 0;
             else if(difY<0) return 1;
         }
-    }
+    //}
     return currentDir;
     
     

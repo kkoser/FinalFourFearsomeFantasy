@@ -11,6 +11,8 @@
 
 #include <iostream>
 #include "ViewController.h"
+#include "Dot.h"
+#include "ImageView.h"
 
 class OpenWorldViewController : public ViewController {
 private:
@@ -49,17 +51,63 @@ private:
     Mix_Music *mustafarMusic = NULL;
     
     //The sound effects that will be used
-    Mix_Chunk *soundEffect1 = NULL;
     Mix_Chunk *albusSoundEffect = NULL;
     Mix_Chunk *elsaSoundEffect = NULL;
     Mix_Chunk *jackSoundEffect = NULL;
     Mix_Chunk *katSoundEffect = NULL;
+    
+    enum MainCharacters{
+        ALBUS,
+        ELSA,
+        JACK,
+        KAT
+    };
+    
+    enum Direction{
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT
+    };
+    
+    MainCharacters activeCharacter;
+    int layoutReset;
+    Direction charDir;
+    int stepCount;
+    
+    Dot leader;
+    Dot mapScout;
 
-    void loadTextures();
+    
+    int mapNumber;
+    int charDirTemp;
+    int zone;
+    
+    int startPosX[8];
+    int startPosY[8];
+    
+    SDL_Rect blank;
+    SDL_Rect camera[8];
+    
+    SDL_Rect fullViewport;
+    SDL_Rect topViewport;
+    SDL_Rect bottomViewport;
+    
+    bool quit;
+    
+    const int LEVEL_WIDTH[8] = {1200,1312,1312,1792,1344,1312,1312,1312};
+    const int LEVEL_HEIGHT[8] = {656,880,2400,704,1248,2400,2400,2400};
+
+    const int SCREEN_WIDTH = 1200;
+    const int SCREEN_HEIGHT = 650;
+
+    bool loadTextures();
+    
 public:
     OpenWorldViewController(SDL_Renderer *ren);
     
     virtual int draw(SDL_Event e);
+    
 };
 
 
