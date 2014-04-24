@@ -183,18 +183,9 @@ int main( int argc, char* args[] )
                     
                  //Update screen
                 SDL_RenderPresent( gRenderer );
-<<<<<<< HEAD
-                SDL_Delay(3);
-                
-                
-                e = empty;
-                
-			
-=======
                 SDL_Delay(30);
                 e=empty;
 
->>>>>>> FETCH_HEAD
             
             }
 	
