@@ -329,8 +329,6 @@ int OpenWorldViewController::draw(SDL_Event e) {
             }
 
         //MOVE THE CHARACTERS AND CAMERA
-
-        //Move the character
         
         mapScout.moveSmoothUnrestricted(mapNumber); //move scout ahead
         zone = mapScout.checkZone(mapNumber); //determine the zone
@@ -346,10 +344,6 @@ int OpenWorldViewController::draw(SDL_Event e) {
         mapScout.moveBackSmooth(mapNumber); //move scout back
         leader.moveSmooth(zone,mapNumber); //move character ahead
         mapScout.moveSmooth(zone,mapNumber); //move scout ahead, too
-        
-        cout<<"X: "<<leader.getPosX()<<" Y: "<<leader.getPosY()<<endl;
-        cout<<"Layout Reset: "<<layoutReset<<endl;
-        
         
         //Center the camera over the dot
         camera[mapNumber].x = ( leader.getPosX() + Dot::DOT_WIDTH / 2 ) - SCREEN_WIDTH / 2;
@@ -435,25 +429,25 @@ int OpenWorldViewController::draw(SDL_Event e) {
             if (charDir==UP) leader.renderRel( renderer, camera[mapNumber].x, camera[mapNumber].y, &katSpriteBack, SDL_FLIP_NONE );
             else if (charDir==DOWN) leader.renderRel( renderer, camera[mapNumber].x, camera[mapNumber].y, &katSpriteFront, SDL_FLIP_NONE );
             else if (charDir==LEFT) leader.renderRel( renderer, camera[mapNumber].x, camera[mapNumber].y, &katSpriteSide, SDL_FLIP_NONE );
-            else if (charDir==RIGHT) leader.renderRel( renderer, camera[mapNumber].x, camera[mapNumber].y, &katSpriteSide, SDL_FLIP_NONE );
+            else if (charDir==RIGHT) leader.renderRel( renderer, camera[mapNumber].x, camera[mapNumber].y, &katSpriteSide, SDL_FLIP_HORIZONTAL );
         }
         else if( activeCharacter==ALBUS){
             if (charDir==UP) leader.renderRel( renderer, camera[mapNumber].x, camera[mapNumber].y, &albusSpriteBack, SDL_FLIP_NONE );
             else if (charDir==DOWN) leader.renderRel( renderer, camera[mapNumber].x, camera[mapNumber].y, &albusSpriteFront, SDL_FLIP_NONE );
             else if (charDir==LEFT) leader.renderRel( renderer, camera[mapNumber].x, camera[mapNumber].y, &albusSpriteSide, SDL_FLIP_NONE );
-            else if (charDir==RIGHT) leader.renderRel( renderer, camera[mapNumber].x, camera[mapNumber].y, &albusSpriteSide, SDL_FLIP_NONE );
+            else if (charDir==RIGHT) leader.renderRel( renderer, camera[mapNumber].x, camera[mapNumber].y, &albusSpriteSide, SDL_FLIP_HORIZONTAL );
         }
         else if( activeCharacter==ELSA){
             if (charDir==UP) leader.renderRel( renderer, camera[mapNumber].x, camera[mapNumber].y, &elsaSpriteBack, SDL_FLIP_NONE );
             else if (charDir==DOWN) leader.renderRel( renderer, camera[mapNumber].x, camera[mapNumber].y, &elsaSpriteFront, SDL_FLIP_NONE );
             else if (charDir==LEFT) leader.renderRel( renderer, camera[mapNumber].x, camera[mapNumber].y, &elsaSpriteSide, SDL_FLIP_NONE );
-            else if (charDir==RIGHT) leader.renderRel( renderer, camera[mapNumber].x, camera[mapNumber].y, &elsaSpriteSide, SDL_FLIP_NONE );
+            else if (charDir==RIGHT) leader.renderRel( renderer, camera[mapNumber].x, camera[mapNumber].y, &elsaSpriteSide, SDL_FLIP_HORIZONTAL );
         }
         else if( activeCharacter==JACK){
             if (charDir==UP) leader.renderRel( renderer, camera[mapNumber].x, camera[mapNumber].y, &jackSpriteBack, SDL_FLIP_NONE );
             else if (charDir==DOWN) leader.renderRel( renderer, camera[mapNumber].x, camera[mapNumber].y, &jackSpriteFront, SDL_FLIP_NONE );
             else if (charDir==LEFT) leader.renderRel( renderer, camera[mapNumber].x, camera[mapNumber].y, &jackSpriteSide, SDL_FLIP_NONE );
-            else if (charDir==RIGHT) leader.renderRel( renderer, camera[mapNumber].x, camera[mapNumber].y, &jackSpriteSide, SDL_FLIP_NONE );
+            else if (charDir==RIGHT) leader.renderRel( renderer, camera[mapNumber].x, camera[mapNumber].y, &jackSpriteSide, SDL_FLIP_HORIZONTAL );
         }
     
         
