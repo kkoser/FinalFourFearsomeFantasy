@@ -331,27 +331,25 @@ int OpenWorldViewController::draw(SDL_Event e) {
         //MOVE THE CHARACTERS AND CAMERA
 
         //Move the character
-        //if(!layoutReset){
-            
-            mapScout.moveSmoothUnrestricted(mapNumber); //move scout ahead
-            zone = mapScout.checkZone(mapNumber); //determine the zone
-            
-            //switch character direction
-            charDirTemp = leader.getCharDir( mapScout.getPosX(), mapScout.getPosY(), charDirTemp );
-            switch(charDirTemp){
-                case 0: charDir = UP; break;
-                case 1: charDir = DOWN; break;
-                case 2: charDir = LEFT; break;
-                case 3: charDir = RIGHT; break;
-            }
-            mapScout.moveBackSmooth(mapNumber); //move scout back
-            leader.moveSmooth(zone,mapNumber); //move character ahead
-            mapScout.moveSmooth(zone,mapNumber); //move scout ahead, too
-            
-            cout<<"X: "<<leader.getPosX()<<" Y: "<<leader.getPosY()<<endl;
-            cout<<"Layout Reset: "<<layoutReset<<endl;
         
-        //}
+        mapScout.moveSmoothUnrestricted(mapNumber); //move scout ahead
+        zone = mapScout.checkZone(mapNumber); //determine the zone
+        
+        //switch character direction
+        charDirTemp = leader.getCharDir( mapScout.getPosX(), mapScout.getPosY(), charDirTemp );
+        switch(charDirTemp){
+            case 0: charDir = UP; break;
+            case 1: charDir = DOWN; break;
+            case 2: charDir = LEFT; break;
+            case 3: charDir = RIGHT; break;
+        }
+        mapScout.moveBackSmooth(mapNumber); //move scout back
+        leader.moveSmooth(zone,mapNumber); //move character ahead
+        mapScout.moveSmooth(zone,mapNumber); //move scout ahead, too
+        
+        cout<<"X: "<<leader.getPosX()<<" Y: "<<leader.getPosY()<<endl;
+        cout<<"Layout Reset: "<<layoutReset<<endl;
+        
         
         //Center the camera over the dot
         camera[mapNumber].x = ( leader.getPosX() + Dot::DOT_WIDTH / 2 ) - SCREEN_WIDTH / 2;

@@ -183,8 +183,8 @@ int main( int argc, char* args[] )
                     
                  //Update screen
                 SDL_RenderPresent( gRenderer );
-                SDL_Delay(30);
-                e=empty;
+                SDL_Delay(4);
+                e = empty;
 
             
             }
