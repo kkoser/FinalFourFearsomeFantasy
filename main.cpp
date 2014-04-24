@@ -608,7 +608,7 @@ int main( int argc, char* args[] )
             vector<Enemy *> enemies;
             
             
-            BattleViewController baseVC(chars, enemies, "Arendelle", gRenderer);
+            MainMenuViewController baseVC(gRenderer);
             
             			//While application is running
 			while( !quit )

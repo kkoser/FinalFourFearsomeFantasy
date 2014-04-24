@@ -14,6 +14,7 @@ ExampleViewController::ExampleViewController(SDL_Renderer *r) : ViewController(r
     gFont = TTF_OpenFont( "AndaleMono.ttf", 16 );
     //text.loadFromFile( "elsaBattle.png", renderer);
     label = TextLabel(10, 10, "Hello World!", "AndaleMono.ttf", 16);
+    img = ImageView(20, 20, pathForFile("Images/mainMenuBackground.png"), renderer);
     
 }
 
@@ -35,7 +36,8 @@ int ExampleViewController::draw(SDL_Event e) {
     text.render(renderer, 10, 10);
      */
     
-    label.draw(renderer);
+    //label.draw(renderer);
+    img.draw();
     
     if (e.type == SDL_KEYDOWN) {
         //lets try pushing a new vc

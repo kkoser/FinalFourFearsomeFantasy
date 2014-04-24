@@ -11,6 +11,7 @@
 
 #include "ViewController.h"
 #include "TextLabel.h"
+#include "ImageView.h"
 
 #include <iostream>
 class ExampleViewController : public ViewController {
@@ -18,6 +19,7 @@ private:
     LTexture text;
     TTF_Font *gFont;
     TextLabel label;
+    ImageView img;
 public:
     ExampleViewController(SDL_Renderer *ren);
     
