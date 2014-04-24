@@ -155,6 +155,7 @@ int main( int argc, char* args[] )
 
             //Event handler
 			SDL_Event e;
+            SDL_Event empty;
 
             //temporary character stuff
             vector<MainCharacter *> chars;
@@ -182,8 +183,10 @@ int main( int argc, char* args[] )
                     
                  //Update screen
                 SDL_RenderPresent( gRenderer );
-                SDL_Delay(30);
-
+                SDL_Delay(3);
+                
+                
+                e = empty;
                 
 			
             

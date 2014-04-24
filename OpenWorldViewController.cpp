@@ -234,6 +234,7 @@ int OpenWorldViewController::draw(SDL_Event e) {
         return 0;
     }
     else{
+        //if(e.type <= 0) return 1;
         if( e.type == SDL_KEYDOWN ){
                 switch( e.key.keysym.sym )
                 {
