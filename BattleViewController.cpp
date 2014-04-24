@@ -22,13 +22,10 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     //load background too
     
     //move labels
-    move1 = TextLabel(550, 450, "Icy Wind", pathForFile("Fonts/junction-light.ttf"), 24);
-    move2 = TextLabel(550, 550, "Healing Salve", "AndaleMono.ttf", 24);
-    move3 = TextLabel(850, 450, "Explosion", "AndaleMono.ttf", 24);
-    move4 = TextLabel(850, 550, "Ronnicus Explodicus", "AndaleMono.ttf", 24);
-
-    
-    
+    move1 = TextLabel(550, 450, "Icy Wind", defaultFont, 24);
+    move2 = TextLabel(550, 550, "Healing Salve", defaultFont, 24);
+    move3 = TextLabel(850, 450, "Explosion", defaultFont, 24);
+    move4 = TextLabel(850, 550, "Ronnicus Explodicus", defaultFont, 24);
     
 }
 

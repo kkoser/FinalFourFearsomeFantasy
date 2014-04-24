@@ -15,6 +15,7 @@
 #include "SDL2_image/SDL_image.h"
 #include "SDL2_ttf/SDL_ttf.h"
 #include "LTexture.h"
+#include "Settings.h"
 
 using namespace std;
 
@@ -25,13 +26,11 @@ private:
     int x, y;
     TTF_Font *font;
     SDL_Color textColor;
-    
-    string defaultFont = "junction-light.ttf";
-    int defaultSize = 16;
-    
+        
 public:
     TextLabel(int x, int y, string str, string fontName, int size);
-    TextLabel(int x, int y, string str); //uses deafult font and size
+    TextLabel(int x, int y, string str); //uses default font and size
+    TextLabel(int x, int y, string str, int size); //default font, custom size
     TextLabel();
     void draw(SDL_Renderer *ren);
     
