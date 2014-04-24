@@ -358,9 +358,7 @@ void Character::setCurrentPower(int power) {
     if (power < 0) {
         power = 0;
     }
-    else {
-        currentPower = power;
-    }
+    currentPower = power;
 }
 
 int Character::getCurrentPP() {
@@ -386,9 +384,7 @@ void Character::setCurrentPPRegen(int PPRegen) {
     if (PPRegen < 0) {
         PPRegen = 0;
     }
-    else {
-        currentPPRegen = PPRegen;
-    }
+    currentPPRegen = PPRegen;
 }
 
 int Character::getCurrentShield() {
@@ -397,11 +393,9 @@ int Character::getCurrentShield() {
 
 void Character::setCurrentShield(int shield) {
     if (currentShield < 0) {
-        currentShield = 0;
+        shield = 0;
     }
-    else {
         currentShield = shield;
-    }
 }
 
 string Character::getName() {
