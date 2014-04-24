@@ -192,6 +192,7 @@ int main( int argc, char* args[] )
 			
 =======
                 SDL_Delay(30);
+                e=empty;
 
 >>>>>>> FETCH_HEAD
             
