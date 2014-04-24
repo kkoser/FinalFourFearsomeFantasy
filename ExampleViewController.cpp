@@ -36,7 +36,7 @@ int ExampleViewController::draw(SDL_Event e) {
     text.render(renderer, 10, 10);
      */
     
-    //label.draw(renderer);
+    label.draw(renderer);
     img.draw();
     
     if (e.type == SDL_KEYDOWN) {

@@ -20,6 +20,7 @@ ImageView::ImageView() {
 ImageView::ImageView(int x, int y, string fileName, SDL_Renderer *ren) {
     xLoc = x;
     yLoc = y;
+    degs = 0;
     renderer = ren;
     
     if (!texture.loadFromFile(fileName, renderer)) {
