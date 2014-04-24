@@ -17,6 +17,14 @@ TextLabel::TextLabel(int cx, int cy, string str, string fontName, int size) {
     textColor = {0,0,0};
 }
 
+TextLabel::TextLabel(int cx, int cy, string str) {
+    x = cx;
+    y = cy;
+    text = str;
+    
+    font = TTF_OpenFont(defaultFont.c_str(), defaultSize);
+}
+
 TextLabel::TextLabel() {
     x = 0;
     y = 0;

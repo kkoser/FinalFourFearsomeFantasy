@@ -26,8 +26,12 @@ private:
     TTF_Font *font;
     SDL_Color textColor;
     
+    string defaultFont = "junction-light.ttf";
+    int defaultSize = 16;
+    
 public:
     TextLabel(int x, int y, string str, string fontName, int size);
+    TextLabel(int x, int y, string str); //uses deafult font and size
     TextLabel();
     void draw(SDL_Renderer *ren);
     
