@@ -29,7 +29,7 @@ public:
     static const int DOT_HEIGHT = 31;
     
     //Maximum axis velocity of the dot
-    static const int DOT_VEL = 9;
+    static const int DOT_VEL = 1;
     
     //Initializes the variables
     Dot();
@@ -82,7 +82,7 @@ private:
     int mapHeight[8];
     
     int mapArray[160][160]; //maximum
-
+    int keyPressed;
     
 
 };

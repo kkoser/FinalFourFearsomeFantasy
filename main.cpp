@@ -162,7 +162,7 @@ int main( int argc, char* args[] )
             vector<Enemy *> enemies;
         
             OpenWorldViewController baseVC(gRenderer);
-            
+            //ExampleViewController baseVC(gRenderer);
 
             //While application is running
 			while( !quit )
@@ -183,12 +183,17 @@ int main( int argc, char* args[] )
                     
                  //Update screen
                 SDL_RenderPresent( gRenderer );
+<<<<<<< HEAD
                 SDL_Delay(3);
                 
                 
                 e = empty;
                 
 			
+=======
+                SDL_Delay(30);
+
+>>>>>>> FETCH_HEAD
             
             }
 	
