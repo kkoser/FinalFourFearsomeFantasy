@@ -11,7 +11,7 @@
 ExampleViewController::ExampleViewController(SDL_Renderer *r) : ViewController(r) {
     //load textures here
     
-    label = TextLabel(10, 10, "Hello World!", "Fonts/AndaleMono.ttf", 16);
+    label = TextLabel(10, 10, "Hello World!", defaultFont, 16);
     img = ImageView(200, 200, pathForFile("Images/elsaBattle.png"), renderer);
     
 }
