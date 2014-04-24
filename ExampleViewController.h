@@ -16,8 +16,6 @@
 #include <iostream>
 class ExampleViewController : public ViewController {
 private:
-    LTexture text;
-    TTF_Font *gFont;
     TextLabel label;
     ImageView img;
 public:
