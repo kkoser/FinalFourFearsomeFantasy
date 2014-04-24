@@ -247,6 +247,7 @@ bool OpenWorldViewController::loadTextures() {
 
 }
 
+//------------------------------------------------------------------------------------------
 int OpenWorldViewController::draw(SDL_Event e) {
     
     if(ViewController::draw(e) == 0) {
@@ -543,17 +544,29 @@ int OpenWorldViewController::draw(SDL_Event e) {
         
         //CHECK FOR BATTLE SWITCHING
         
-        if(stepCount>20 && mapNumber!=0){ //change later
+        if(stepCount>20 && mapNumber!=0){
             stepCount=0;
             Mix_HaltMusic();
             cout<<"Switch to Battle Mode"<<endl;
             
             ExampleViewController *vc = new ExampleViewController(renderer);
             pushViewController(vc);
-            layoutReset=1;
+            
         }
-        
-
     return 1;
+    }
 }
+
+//------------------------------------------------------------------------------------------
+
+void OpenWorldViewController::pushViewController(ViewController *vc) {
+    ViewController::pushViewController(vc);
+    Mix_HaltMusic();
 }
+
+void OpenWorldViewController::becomeTop() {
+    ViewController::becomeTop();
+    cout<<"X: "<<leader.getPosX()<<" Y: "<<leader.getPosY()<<endl;
+}
+
+

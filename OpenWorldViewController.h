@@ -112,6 +112,9 @@ private:
 public:
     OpenWorldViewController(SDL_Renderer *ren);
     
+    virtual void pushViewController(ViewController *vc);
+    virtual void becomeTop();
+    
     virtual int draw(SDL_Event e);
     
 };

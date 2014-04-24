@@ -50,7 +50,6 @@ int BattleViewController::draw(SDL_Event e) {
     backgroundImage.draw();
     
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-    SDL_GetRenderDrawColor(<#SDL_Renderer *renderer#>, <#Uint8 *r#>, <#Uint8 *g#>, <#Uint8 *b#>, <#Uint8 *a#>)
     
     SDL_RenderDrawRect(renderer, &healthBar);
     SDL_RenderFillRect(renderer, &healthBar);
