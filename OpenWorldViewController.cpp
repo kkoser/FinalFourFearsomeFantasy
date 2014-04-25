@@ -153,42 +153,42 @@ bool OpenWorldViewController::loadTextures() {
 		success = false;
 	}
     //Load music
-    elsaMusic = Mix_LoadMUS( "Audio/LetItGo.wav" );
+    elsaMusic = Mix_LoadMUS( pathForFile("Audio/LetItGo.wav" ).c_str());
     if( elsaMusic == NULL )
     {
         printf( "Failed to load Elsa music! SDL_mixer Error: %s\n", Mix_GetError() );
         success = false;
     }
     
-    jackMusic = Mix_LoadMUS( "Audio/hesAPirate.wav" );
+    jackMusic = Mix_LoadMUS( pathForFile("Audio/hesAPirate.wav" ).c_str());
     if( jackMusic == NULL )
     {
         printf( "Failed to load Jack Music SDL_mixer Error: %s\n", Mix_GetError() );
         success = false;
     }
     
-    katMusic = Mix_LoadMUS( "Audio/ArrowsAtTheSky.wav" );
+    katMusic = Mix_LoadMUS( pathForFile("Audio/ArrowsAtTheSky.wav" ).c_str());
     if( katMusic == NULL )
     {
         printf( "Failed to load Kat music! SDL_mixer Error: %s\n", Mix_GetError() );
         success = false;
     }
     
-    albusMusic = Mix_LoadMUS( "Audio/hedwigsTheme.wav" );
+    albusMusic = Mix_LoadMUS( pathForFile("Audio/hedwigsTheme.wav").c_str());
     if( katMusic == NULL )
     {
         printf( "Failed to load Albus music! SDL_mixer Error: %s\n", Mix_GetError() );
         success = false;
     }
     
-    cityMusic = Mix_LoadMUS( "Audio/GoT.wav" );
+    cityMusic = Mix_LoadMUS( pathForFile("Audio/GoT.wav" ).c_str());
     if( cityMusic == NULL )
     {
         printf( "Failed to load city music! SDL_mixer Error: %s\n", Mix_GetError() );
         success = false;
     }
     
-    mustafarMusic = Mix_LoadMUS( "Audio/anakinVSobi.wav" );
+    mustafarMusic = Mix_LoadMUS( pathForFile("Audio/anakinVSobi.wav").c_str() );
     if( cityMusic == NULL )
     {
         printf( "Failed to load mustafar music! SDL_mixer Error: %s\n", Mix_GetError() );
@@ -196,28 +196,28 @@ bool OpenWorldViewController::loadTextures() {
     }
     
     //Load sound effects
-    elsaSoundEffect = Mix_LoadWAV( "Audio/elsaSoundEffect.wav" );
+    elsaSoundEffect = Mix_LoadWAV( pathForFile("Audio/elsaSoundEffect.wav" ).c_str());
     if( katMusic == NULL )
     {
         printf( "Failed to load kat sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
         success = false;
     }
     
-    jackSoundEffect = Mix_LoadWAV( "Audio/jackSoundEffect.wav" );
+    jackSoundEffect = Mix_LoadWAV( pathForFile("Audio/jackSoundEffect.wav").c_str());
     if( katMusic == NULL )
     {
         printf( "Failed to load jack sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
         success = false;
     }
     
-    katSoundEffect = Mix_LoadWAV( "Audio/katSoundEffect.wav" );
+    katSoundEffect = Mix_LoadWAV( pathForFile("Audio/katSoundEffect.wav").c_str());
     if( katMusic == NULL )
     {
         printf( "Failed to load kat sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
         success = false;
     }
-    
-    albusSoundEffect = Mix_LoadWAV( "Audio/albusSoundEffect.wav" );
+
+    albusSoundEffect = Mix_LoadWAV( pathForFile("Audio/albusSoundEffect.wav").c_str());
     if( katMusic == NULL )
     {
         printf( "Failed to load albus sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
