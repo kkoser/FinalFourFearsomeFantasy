@@ -12,10 +12,14 @@
 #include "Dot.h"
 #include "SDL2_mixer/SDL_mixer.h"
 #include "LTexture.h"
+#include <time.h>
+#include <stdlib.h>
 
 //---------------------------------------------------------
 
 OpenWorldViewController::OpenWorldViewController(SDL_Renderer *ren) : ViewController(ren) {
+    
+    //srand (time(NULL));
     
     loadTextures();
     
@@ -544,8 +548,8 @@ int OpenWorldViewController::draw(SDL_Event e) {
         
         //CHECK FOR BATTLE SWITCHING
         
-        int battleSteps = 10 + rand()%20;
-        if(stepCount>20 && mapNumber!=0){
+        //int battleSteps = 10 + rand()%20;
+        if(stepCount>25 && mapNumber!=0){
             stepCount=0;
             //Mix_HaltMusic();
             cout<<"Switch to Battle Mode"<<endl;

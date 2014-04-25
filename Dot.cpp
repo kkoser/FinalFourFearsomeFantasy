@@ -169,7 +169,6 @@ void Dot::moveSmoothUnrestricted(int mapNumber) //with velocity
         //Move back
         mPosY += mVelY;
     }
-    
 }
 //------------------------------------------------------------------------------
 void Dot::moveSmooth(int zone,int mapNumber) //with velocity
