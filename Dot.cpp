@@ -311,6 +311,11 @@ int Dot::getPosY()
 	return mPosY;
 }
 //------------------------------------------------------------------------------
+void Dot::clearVels(){
+    mVelX=0;
+    mVelY=0;
+}
+//------------------------------------------------------------------------------
 void Dot::initializeMap(int mapNumber){
     
     string filename;

@@ -69,6 +69,8 @@ public:
     
     void draw(SDL_Renderer *ren);
     void draw(); //uses the last renderer
+    
+    void clearVels(); //set velocity=0 before switching VCs
 
     
 private:

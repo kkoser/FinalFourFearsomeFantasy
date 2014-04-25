@@ -109,6 +109,7 @@ private:
     int isReturning;
     int mapReturningFrom;
     
+    
 public:
     OpenWorldViewController(SDL_Renderer *ren);
     

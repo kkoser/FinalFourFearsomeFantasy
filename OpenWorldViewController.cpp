@@ -430,6 +430,7 @@ int OpenWorldViewController::draw(SDL_Event e) {
         leader.moveSmooth(zone,mapNumber); //move character ahead
         mapScout.moveSmooth(zone,mapNumber); //move scout ahead, too
         
+        
         //Center the camera over the dot
         camera[mapNumber].x = ( leader.getPosX() + Dot::DOT_WIDTH / 2 ) - SCREEN_WIDTH / 2;
         camera[mapNumber].y = ( leader.getPosY() + Dot::DOT_HEIGHT / 2 ) - SCREEN_HEIGHT / 2;
@@ -496,7 +497,6 @@ int OpenWorldViewController::draw(SDL_Event e) {
         fullViewport.h = SCREEN_HEIGHT;
         SDL_RenderSetViewport( renderer, &fullViewport );
         
-        
         if(layoutReset){
             
             stepCount=0;
@@ -544,9 +544,10 @@ int OpenWorldViewController::draw(SDL_Event e) {
         
         //CHECK FOR BATTLE SWITCHING
         
+        int battleSteps = 10 + rand()%20;
         if(stepCount>20 && mapNumber!=0){
             stepCount=0;
-            Mix_HaltMusic();
+            //Mix_HaltMusic();
             cout<<"Switch to Battle Mode"<<endl;
             
             ExampleViewController *vc = new ExampleViewController(renderer);
@@ -566,6 +567,10 @@ void OpenWorldViewController::pushViewController(ViewController *vc) {
 
 void OpenWorldViewController::becomeTop() {
     ViewController::becomeTop();
+    
+    leader.clearVels();
+    mapScout.clearVels();
+    
     cout<<"X: "<<leader.getPosX()<<" Y: "<<leader.getPosY()<<endl;
 }
 
