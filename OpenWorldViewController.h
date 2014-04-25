@@ -86,6 +86,9 @@ private:
     int startPosX[8];
     int startPosY[8];
     
+    int returnPosX[8];
+    int returnPosY[8];
+    
     SDL_Rect blank;
     SDL_Rect camera[8];
     
@@ -103,8 +106,15 @@ private:
 
     bool loadTextures();
     
+    int isReturning;
+    int mapReturningFrom;
+    
+    
 public:
     OpenWorldViewController(SDL_Renderer *ren);
+    
+    virtual void pushViewController(ViewController *vc);
+    virtual void becomeTop();
     
     virtual int draw(SDL_Event e);
     

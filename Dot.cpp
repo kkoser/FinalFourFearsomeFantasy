@@ -47,8 +47,8 @@ Dot::Dot()
     mapHeight[3]=44+2;
     mapWidth[3]=112+2;
     
-    mapHeight[4]=78;
-    mapWidth[4]=84;
+    mapHeight[4]=78+2;
+    mapWidth[4]=84+2;
     
     mapHeight[5]=150;
     mapWidth[5]=82;
@@ -86,8 +86,8 @@ Dot::Dot(int PosX, int PosY)
     mapHeight[3]=150+2;
     mapWidth[3]=82+2;
     
-    mapHeight[4]=150;
-    mapWidth[4]=82;
+    mapHeight[4]=78+2;
+    mapWidth[4]=84+2;
     
     mapHeight[5]=150;
     mapWidth[5]=82;
@@ -311,6 +311,11 @@ int Dot::getPosY()
 	return mPosY;
 }
 //------------------------------------------------------------------------------
+void Dot::clearVels(){
+    mVelX=0;
+    mVelY=0;
+}
+//------------------------------------------------------------------------------
 void Dot::initializeMap(int mapNumber){
     
     string filename;
@@ -328,7 +333,7 @@ void Dot::initializeMap(int mapNumber){
             filename="MapFiles/map3.csv";
             break;
         case 4:
-            filename="MapFiles/map2.csv";
+            filename="MapFiles/map4.csv";
             break;
         case 5:
             filename="MapFiles/map2.csv";
