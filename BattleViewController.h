@@ -37,6 +37,7 @@ private:
     //pointer to active character
     Character *activeCharacter;
     BattleCharacterView *activeCharacterView;
+    string selectedMove;
     
     
     ImageView backgroundImage;
@@ -48,6 +49,8 @@ private:
     vector<BattleCharacterView> plotViewsAroundCircle(int x, int y, int radius, vector<Character *> chars);
     
     void animateActiveCharacter();
+    
+    void handleEvent(SDL_Event e);
     
     
 public:

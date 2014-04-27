@@ -49,6 +49,8 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     music = Mix_LoadMUS(pathName.c_str());
     
     Mix_PlayMusic(music, -1);
+    
+    selectedMove = "";
 
 }
 
@@ -130,10 +132,53 @@ int BattleViewController::draw(SDL_Event e) {
     drawActiveMoves();
     
     //check for user input
+    handleEvent(e);
     
     
     return 1;
 }
 
-
+void BattleViewController::handleEvent(SDL_Event e) {
+    if (e.type == SDL_KEYDOWN) {
+        if (selectedMove.compare("") == 0) {
+            //there is no selected move, so they are selecting one
+            switch (e.key.keysym.sym) {
+                case SDLK_1:
+                    selectedMove = activeCharacter->getMoves()[0];
+                    break;
+                case SDLK_2:
+                    selectedMove = activeCharacter->getMoves()[1];
+                    break;
+                case SDLK_3:
+                    selectedMove = activeCharacter->getMoves()[2];
+                    break;
+                default:
+                    break;
+            }
+        }
+        else {
+            //they have selected a move, now select a character to act it on
+            Character *target;
+            switch (e.key.keysym.sym) {
+                case SDLK_1:
+                    target = enemies[0];
+                    break;
+                case SDLK_2:
+                    target = enemies[1];
+                    break;
+                case SDLK_3:
+                    target = enemies[2];
+                    break;
+                default:
+                    break;
+            }
+            vector<Character *> targets;
+            targets.push_back(target);
+            activeCharacter->actMoveOnTarget(selectedMove, targets);
+            
+            //now clear up and switch to the next character
+            selectedMove = "";
+        }
+    }
+}
 
