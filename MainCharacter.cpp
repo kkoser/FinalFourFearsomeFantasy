@@ -39,5 +39,18 @@ void MainCharacter::writeToFile(string fileName) {
     
     file.close();
     
-    
+}
+
+void MainCharacter::levelUp(int healthAdded, int powerAdded, int ppRegenAdded) {
+    maxHealth += healthAdded;
+    standardPower += powerAdded;
+    standardPPRegen += ppRegenAdded;
+}
+
+void MainCharacter::addExperience(int added) {
+    exp += added;
+    if (exp > EXP_TO_LEVEL) {
+        exp = 0;
+        levelUp(5, 1, 1);
+    }
 }

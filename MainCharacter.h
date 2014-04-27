@@ -14,6 +14,8 @@
 #include <vector>
 #include "Character.h"
 
+#define EXP_TO_LEVEL 100
+
 using namespace std;
 
 class MainCharacter : public Character {
@@ -47,10 +49,9 @@ public:
 	MainCharacter(string fileName);
     ~MainCharacter();
     
-    void levelUp(int healthAdded, int powerAdded, int ppRegenAdded, int armorAdded);
-
-
-	void actOnCharacter(Character &ch, string moveName);
+    void levelUp(int healthAdded, int powerAdded, int ppRegenAdded);
+    
+    void addExperience(int exp);
     
     void writeToFile(string fileName);
 };
