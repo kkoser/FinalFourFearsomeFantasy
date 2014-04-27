@@ -58,7 +58,8 @@ protected:
     vector<string> moves;
     vector<Status> statuses;
     
-	string spriteName;
+    string spriteName;
+	string spriteFullPath;
     
     string displayLog;
     
@@ -89,7 +90,7 @@ public:
     int ppCostForMove(string move);
     int getIsIncap();
     
-    string getSpriteFile();
+    string getSpriteFile(); //returns full path
     
     string getName();
     

@@ -166,6 +166,11 @@ int main( int argc, char* args[] )
         chars.push_back(&Elsa);
         chars.push_back(&Elsa);
         chars.push_back(&Elsa);
+        
+        Enemy goblin(pathForFile("Characters/Goblin.character"));
+        enemies.push_back(&goblin);
+        enemies.push_back(&goblin);
+
         BattleViewController baseVC(chars, enemies, pathForFile("Images/arendelle.jpg"), gRenderer);
         //OpenWorldViewController baseVC(gRenderer);
         //ExampleViewController baseVC(gRenderer);

@@ -1,0 +1,8 @@
+    file >> name;
+    file >> maxHealth;
+    file >> standardPower;
+    file >> maxPP;
+    file >> standardPPRegen;
+    file >> currentHealth; //CHANGE?
+    file >> exp;
+    file >> spriteName;

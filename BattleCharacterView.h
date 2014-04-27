@@ -48,6 +48,8 @@ private:
     int currentShield;
     bool isIncap;
     
+    double animateDelta; //amount to change animation by
+    
     string name;
     string spriteLocation;
     

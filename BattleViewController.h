@@ -19,32 +19,37 @@
 #include "ImageView.h"
 #include "BattleCharacterView.h"
 #include <cmath>
+#include <sstream>
 
 class BattleViewController : public ViewController {
 private:
     LTexture bgText;
     LTexture text;
     
+    //vectors of views
     vector<BattleCharacterView> mainCharViews;
     vector<BattleCharacterView> enemyViews;
     
+    //vectors of models
     vector<MainCharacter *> mainChars;
     vector<Enemy *> enemies;
     
-    MainCharacter *activeCharacter;
+    //pointer to active character
+    Character *activeCharacter;
+    BattleCharacterView *activeCharacterView;
     
-    void loadSprites();
     
     ImageView backgroundImage;
     
-    TextLabel move1;
-    TextLabel move2;
-    TextLabel move3;
-    TextLabel move4;
-
+    TextLabel activeMoves[4];
+    
+    void drawActiveMoves();
+    
     vector<BattleCharacterView> plotViewsAroundCircle(int x, int y, int radius, vector<Character *> chars);
     
-    vector<BattleCharacterView> characterViews;
+    void animateActiveCharacter();
+    
+    
 public:
     BattleViewController(vector<MainCharacter *> chars, vector<Enemy *> enem, string locName, SDL_Renderer *ren);
     

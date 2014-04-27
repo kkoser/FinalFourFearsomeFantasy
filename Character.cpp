@@ -74,7 +74,11 @@ Character::Character(string fileName) {
     file >> standardPPRegen;
     file >> currentHealth; //CHANGE?
     file >> exp;
+    //get full path of sprite
     file >> spriteName;
+    stringstream fullPath;
+    fullPath << "Images/" << spriteName;
+    spriteFullPath = pathForFile(fullPath.str());
 
     
     
@@ -509,7 +513,7 @@ vector<string> Character::getMoves() {
 }
 
 string Character::getSpriteFile() {
-    return spriteName;
+    return spriteFullPath;
 }
 
 int Character::getMaxHealth() {

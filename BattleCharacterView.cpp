@@ -22,10 +22,11 @@ BattleCharacterView::BattleCharacterView(string n, int x, int y, int cHealth, in
     renderer = rend;
     
     //init image
-    image = ImageView(x, y + 85, spriteLoc, renderer);
+    image = ImageView(x, y + 75, spriteLoc, renderer);
+    animateDelta = 0.7;
     
     //init name
-    nameLabel = TextLabel(x,y + 205, name, defaultFont, 24);
+    nameLabel = TextLabel(x,y + 195, name, defaultFont, 24);
     nameLabel.setColor(255, 255, 255);
 
     //init shield text
@@ -35,10 +36,10 @@ BattleCharacterView::BattleCharacterView(string n, int x, int y, int cHealth, in
     shieldLabel.setColor(255,255,255);
     
     //init green health bar
-    healthBar = StatBar(x, y + 30, currentHealth, maxHealth, "Health", 0, 255, 0, 255);
+    healthBar = StatBar(x, y + 20, currentHealth, maxHealth, "Health", 0, 255, 0, 255);
     
     //init blue PP bar
-    PPBar = StatBar(x, y + 60, currentPP, maxPP, "PP", 0, 0, 255, 255);
+    PPBar = StatBar(x, y + 50, currentPP, maxPP, "PP", 0, 0, 255, 255);
     
 }
 
@@ -48,6 +49,16 @@ void BattleCharacterView::draw() {
     shieldLabel.draw(renderer);
     healthBar.draw(renderer);
     PPBar.draw(renderer);
+}
+
+void BattleCharacterView::animate() {
+    if(image.getDegs()>3) {
+        animateDelta = -0.7;
+    }
+    else if(image.getDegs() < -3) {
+        animateDelta = 0.7;
+    }
+    image.setDegs(image.getDegs() + animateDelta);
 }
 
 //SETTERS / GETTERS

@@ -12,24 +12,43 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     mainChars = chars;
     enemies = enem;
     
-    //plot characters around circle
+    //plot main characters around circle
     vector<Character *> tempVector(mainChars.begin(), mainChars.end());
-    mainCharViews = plotViewsAroundCircle(750, 140, 165, tempVector);
+    mainCharViews = plotViewsAroundCircle(775, 140, 165, tempVector);
     
     //repeat for enemies
+    vector<Character *> tempVector2(enemies.begin(), enemies.end());
+    enemyViews = plotViewsAroundCircle(200, 140, 165, tempVector2);
     
     //load background too
     
     backgroundImage = ImageView(0, 0, pathForFile("Images/arendelle.jpg"), renderer);
+
+    
+    //init move labels
     //move labels
-    move1 = TextLabel(550, 575, "Icy Wind", defaultFont, 24);
-    move2 = TextLabel(550, 625, "Healing Salve", defaultFont, 24);
-    move3 = TextLabel(850, 575, "Explosion", defaultFont, 24);
-    move4 = TextLabel(850, 625, "Ronnicus Explodicus", defaultFont, 24);
-    move1.setColor(255, 255, 255);
-    move2.setColor(255, 255, 255);
-    move3.setColor(255, 255, 255);
-    move4.setColor(255, 255, 255);
+    activeMoves[0] = TextLabel(565, 530, "1: ", defaultFont, 24);
+    activeMoves[1] = TextLabel(565, 580, "2: ", defaultFont, 24);
+    activeMoves[2] = TextLabel(875, 530, "3: ", defaultFont, 24);
+    activeMoves[3] = TextLabel(875, 580, "4: ", defaultFont, 24);
+    activeMoves[0].setColor(0, 0, 0);
+    activeMoves[1].setColor(0, 0, 0);
+    activeMoves[2].setColor(0, 0, 0);
+    activeMoves[3].setColor(0, 0, 0);
+    
+    //init active character
+    activeCharacter = *mainChars.begin();
+    activeCharacterView = &*mainCharViews.begin();
+    
+    drawActiveMoves();
+    
+    //music!
+    Mix_Music *music;
+    
+    string pathName = pathForFile("Audio/FFXIIIBattle.wav");
+    music = Mix_LoadMUS(pathName.c_str());
+    
+    Mix_PlayMusic(music, -1);
 
 }
 
@@ -56,6 +75,31 @@ vector<BattleCharacterView> BattleViewController::plotViewsAroundCircle(int x, i
     return views;
 }
 
+void BattleViewController::drawActiveMoves() {
+    
+    //clear old moves
+    activeMoves[0].setText("1: ");
+    activeMoves[1].setText("2: ");
+    activeMoves[2].setText("3: ");
+    activeMoves[3].setText("4: ");
+
+    vector<string> moves = activeCharacter->getMoves();
+    
+    //update labels
+    for (int i = 0; i < moves.size(); i++) {
+        stringstream text;
+        text << i+1 << ": " << moves[i];
+        activeMoves[i].setText(text.str());
+    }
+    //draw
+    activeMoves[0].draw(renderer);
+    activeMoves[1].draw(renderer);
+    activeMoves[2].draw(renderer);
+    activeMoves[3].draw(renderer);
+
+}
+
+
 int BattleViewController::draw(SDL_Event e) {
     
     if(ViewController::draw(e)==0) { //returns 0 if this view controller should not draw
@@ -63,8 +107,11 @@ int BattleViewController::draw(SDL_Event e) {
     }
     //draw!
 
+    //draw the background
     backgroundImage.draw();
 
+    //animate active character
+    activeCharacterView->animate();
     
     //draw the mainCharacters
     typename vector<BattleCharacterView>::iterator iter;
@@ -73,17 +120,20 @@ int BattleViewController::draw(SDL_Event e) {
     }
     
     //draw the enemies
-    
-    //draw the background
+    typename vector<BattleCharacterView>::iterator iter2;
+    for (iter2 = enemyViews.begin(); iter2 != enemyViews.end(); ++iter2) {
+        iter2->draw();
+    }
     
     
     //draw the moves of the active character
-    move1.draw(renderer);
-    move2.draw(renderer);
-    move3.draw(renderer);
-    move4.draw(renderer);
+    drawActiveMoves();
     
+    //check for user input
     
     
     return 1;
 }
+
+
+
