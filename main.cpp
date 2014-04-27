@@ -123,7 +123,7 @@ bool init(){
 
 //------------------------------------------------------------------------------
 void close(){
-
+    
     
 	//Destroy window
 	SDL_DestroyRenderer( gRenderer );
@@ -154,50 +154,51 @@ int main( int argc, char* args[] )
 		printf( "Failed to initialize!\n" );
 	}
 	else{
-
-			//Main loop flag
-			bool quit = false;
-
-            //Event handler
-			SDL_Event e;
-            SDL_Event empty;
-
-            //temporary character stuff
-            vector<MainCharacter *> chars;
-            vector<Enemy *> enemies;
         
-            OpenWorldViewController baseVC(gRenderer);
-            //ExampleViewController baseVC(gRenderer);
-
-            //While application is running
-			while( !quit )
-			{
-
-				//Handle events on queue
-				SDL_PollEvent( &e );
-				
-
-					//User requests quit
-					if( e.type == SDL_QUIT )
-					{
-						quit = true;
-					}
-                    
-                    baseVC.draw(e);
-                    
-                    
-                 //Update screen
-                SDL_RenderPresent( gRenderer );
-                SDL_Delay(4);
-                e = empty;
-
+        //Main loop flag
+        bool quit = false;
+        
+        //Event handler
+        SDL_Event e;
+        SDL_Event empty;
+        
+        //temporary character stuff
+        vector<MainCharacter *> chars;
+        vector<Enemy *> enemies;
+        
+        
+        OpenWorldViewController baseVC(gRenderer);
+        //ExampleViewController baseVC(gRenderer);
+        
+        //While application is running
+        while( !quit )
+        {
             
+            //Handle events on queue
+            SDL_PollEvent( &e );
+            
+            
+            //User requests quit
+            if( e.type == SDL_QUIT )
+            {
+                quit = true;
             }
-	
-    cout<<"Closing the application"<<endl;
-    
-	//Free resources and close SDL
-	close();
+            
+            baseVC.draw(e);
+            
+            
+            //Update screen
+            SDL_RenderPresent( gRenderer );
+            SDL_Delay(4);
+            e = empty;
+            
+            
+        }
+        
+        cout<<"Closing the application"<<endl;
+        
+        //Free resources and close SDL
+        close();
     }
     
 	return 0;
