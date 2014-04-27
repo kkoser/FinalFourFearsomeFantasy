@@ -38,6 +38,7 @@ private:
     Character *activeCharacter;
     BattleCharacterView *activeCharacterView;
     string selectedMove;
+    int selectedPos;
     
     
     ImageView backgroundImage;
@@ -51,6 +52,7 @@ private:
     void animateActiveCharacter();
     
     void handleEvent(SDL_Event e);
+    void nextCharacer();
     
     
 public:

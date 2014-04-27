@@ -39,6 +39,8 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     //init active character
     activeCharacter = *mainChars.begin();
     activeCharacterView = &*mainCharViews.begin();
+    selectedPos = 0;
+    selectedMove = "";
     
     drawActiveMoves();
     
@@ -50,7 +52,7 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     
     Mix_PlayMusic(music, -1);
     
-    selectedMove = "";
+
 
 }
 
@@ -139,6 +141,13 @@ int BattleViewController::draw(SDL_Event e) {
 }
 
 void BattleViewController::handleEvent(SDL_Event e) {
+    if (selectedPos >= mainChars.size()) {
+        //this is an enemy character, so we dont get their move, they choose
+        vector<Character *> chars = vector<Character *>(mainChars.begin(), mainChars.end());
+        ((Enemy *)activeCharacter)->actOnCharacters(chars);
+        nextCharacer();
+        return;
+    }
     if (e.type == SDL_KEYDOWN) {
         if (selectedMove.compare("") == 0) {
             //there is no selected move, so they are selecting one
@@ -158,27 +167,48 @@ void BattleViewController::handleEvent(SDL_Event e) {
         }
         else {
             //they have selected a move, now select a character to act it on
+            int selected = -1;
             Character *target;
             switch (e.key.keysym.sym) {
                 case SDLK_1:
-                    target = enemies[0];
+                    selected = 0;
                     break;
                 case SDLK_2:
-                    target = enemies[1];
+                    selected = 1;
                     break;
                 case SDLK_3:
-                    target = enemies[2];
+                    selected = 2;
                     break;
                 default:
                     break;
             }
+            target = enemies[selected];
             vector<Character *> targets;
             targets.push_back(target);
             activeCharacter->actMoveOnTarget(selectedMove, targets);
             
-            //now clear up and switch to the next character
-            selectedMove = "";
+            //update the CharacterViews here
+            BattleCharacterView charView = enemyViews[selected];
+            charView.setCurrentHealth(target->getCurrentHealth());
+            
+            nextCharacer();
+            
         }
+    }
+}
+
+void BattleViewController::nextCharacer() {
+    //now clear up and switch to the next character
+    selectedMove = "";
+    selectedPos++;
+    selectedPos = selectedPos > (mainChars.size() + enemies.size()-1) ? 0 : selectedPos;
+    if (selectedPos >= mainChars.size()) {
+        activeCharacter = enemies[selectedPos-mainChars.size()];
+        activeCharacterView = &enemyViews[selectedPos -mainChars.size()];
+    }
+    else {
+        activeCharacter = mainChars[selectedPos];
+        activeCharacterView = &mainCharViews[selectedPos];
     }
 }
 

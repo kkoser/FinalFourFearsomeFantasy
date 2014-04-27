@@ -102,10 +102,10 @@ void Character::actMoveOnTarget(string moveName, vector<Character *> targets) {
     
     string fileName = pathForFile("Moves/" + moveName + ".move");
     //open file
-    ifstream file(moveName.c_str());
+    ifstream file(fileName.c_str());
     //check for open
     if (!file) {
-        cout<<"File "<<moveName<<" failed to open"<<endl;
+        cout<<"File "<<fileName<<" failed to open"<<endl;
         return;
     }
     
