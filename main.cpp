@@ -143,6 +143,11 @@ void close(){
 //------------------------------------------------------------------------------
 int main( int argc, char* args[] )
 {
+    
+    //create a test character
+    
+    MainCharacter elsa(pathForFile("/Characters/Elsa.character"));
+    
 	//Start up SDL and create window
 	if( !init() )
 	{

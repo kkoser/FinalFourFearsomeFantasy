@@ -73,8 +73,9 @@ Character::Character(string fileName) {
     file >> maxPP;
     file >> standardPPRegen;
     file >> currentHealth; //CHANGE?
-    file >> spriteName;
     file >> exp;
+    file >> spriteName;
+
     
     
     string moveList;
