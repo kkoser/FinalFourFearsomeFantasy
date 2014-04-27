@@ -18,15 +18,6 @@ TextLabel::TextLabel(int cx, int cy, string str, string fontName, int size) {
     textColor = {0,0,0};
 }
 
-TextLabel::TextLabel() {
-    x = 0;
-    y = 0;
-    text = "";
-    
-    font = NULL;
-    textColor = {0,0,0};
-}
-
 void TextLabel::draw(SDL_Renderer *ren) {
     texture.loadFromRenderedText(text, textColor, ren, font);
     texture.render(ren, x, y);

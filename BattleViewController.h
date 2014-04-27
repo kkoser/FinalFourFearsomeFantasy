@@ -17,6 +17,7 @@
 #include "Settings.h"
 #include "TextLabel.h"
 #include "ImageView.h"
+#include "StatBar.h"
 
 
 class BattleViewController : public ViewController {
@@ -40,6 +41,8 @@ private:
     TextLabel move2;
     TextLabel move3;
     TextLabel move4;
+    
+    StatBar testStatBar;
 
 public:
     BattleViewController(vector<MainCharacter *> chars, vector<Enemy *> enem, string locName, SDL_Renderer *ren);

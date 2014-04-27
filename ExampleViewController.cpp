@@ -9,10 +9,8 @@
 #include "ExampleViewController.h"
 
 ExampleViewController::ExampleViewController(SDL_Renderer *r) : ViewController(r) {
-    //load textures here
-    
-    label = TextLabel(10, 10, "Hello World!", defaultFont, 16);
-    img = ImageView(200, 200, pathForFile("Images/elsaBattle.png"), renderer);
+
+    testBattle = BattleCharacterView("Elsa", 300, 300, 75, 100, 18, 20, 5, false, pathForFile("Images/elsaBattle.png"), renderer);
     
 }
 
@@ -21,10 +19,7 @@ int ExampleViewController::draw(SDL_Event e) {
         return 0;
     }
     
-    img.moveRel(4,0);
-    
-    img.draw(renderer);
-    label.draw(renderer);
+    testBattle.draw();
     
     if (e.type == SDL_KEYDOWN) {
         if(e.key.keysym.sym == SDLK_RETURN){

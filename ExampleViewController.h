@@ -12,12 +12,13 @@
 #include "ViewController.h"
 #include "TextLabel.h"
 #include "ImageView.h"
+#include "StatBar.h"
+#include "BattleCharacterView.h"
 
 #include <iostream>
 class ExampleViewController : public ViewController {
 private:
-    TextLabel label;
-    ImageView img;
+    BattleCharacterView testBattle;
 public:
     ExampleViewController(SDL_Renderer *ren);
     

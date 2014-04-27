@@ -40,23 +40,10 @@ int BattleViewController::draw(SDL_Event e) {
         return 0;
     }
     //draw!
-    
-    SDL_Rect healthBar;
-    healthBar.x = 10;
-    healthBar.y = 10;
-    healthBar.w = 100;
-    healthBar.h = 50;
-    
-    backgroundImage.draw();
-    
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-    
-    SDL_RenderDrawRect(renderer, &healthBar);
-    SDL_RenderFillRect(renderer, &healthBar);
-    
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
-    
+    backgroundImage.draw();
+
+    testStatBar.draw(renderer);
     
     //draw the mainCharacters
     typename vector<CharacterView *>::const_iterator iter;

@@ -31,10 +31,7 @@ private:
     SDL_Color textColor;
         
 public:
-    TextLabel(int x, int y, string str, string fontName, int size);
-    TextLabel(int x, int y, string str); //uses default font and size
-    TextLabel(int x, int y, string str, int size); //default font, custom size
-    TextLabel();
+    TextLabel(int x = 0, int y = 0, string str = "none", string fontName = defaultFont, int size = 16);
     void draw(SDL_Renderer *ren);
     
     string getText();
