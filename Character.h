@@ -54,7 +54,6 @@ protected:
     int isIncap;
     
 	string name;
-    string file;
 	
     vector<string> moves;
     vector<Status> statuses;
@@ -62,9 +61,12 @@ protected:
 	string spriteName;
     
     string displayLog;
+    
+    int exp;
         
 public:
 	Character();
+    Character(string fileName);
     
     void actMoveOnTarget(string moveName, vector<Character *> targets);
     
@@ -81,6 +83,10 @@ public:
     void setCurrentPPRegen(int PPRegen);
     int getCurrentShield();
     void setCurrentShield(int shield);
+    vector<string> getMoves();
+    int ppCostForMove(string move);
+    
+    string getSpriteFile();
     
     string getName();
     

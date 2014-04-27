@@ -9,6 +9,8 @@
 #include "Character.h"
 
 Character::Character() {
+    
+    
 
     maxHealth = 100;
     standardPower = 10;
@@ -20,10 +22,80 @@ Character::Character() {
     currentPower = 10;
     currentHealth = 100;
     currentShield = 0;
+    
+}
+
+Character::Character(string fileName) {
+    
+    ifstream file;
+    file.open(fileName.c_str());
+    
+    if (!file) {
+        cout<<"File "<<fileName<<" failed to open"<<endl;
+        return;
+    }
+    
+    /*
+    for (int i = 0; i < 10; i++) {
+        int val;
+        file >> val;
+        
+        //the only things in the save file are the 4 base values and the health, which persists
+        //characters are read in line by line in this order
+        //pp and statuses do NOT persist from battle to battle, so aren't written to file
+        switch (i) {
+            case 0:
+                maxHealth = val;
+                break;
+            case 1:
+                standardPower = val;
+                break;
+            case 2:
+                maxPP = val;
+                break;
+            case 3:
+                standardPPRegen = val;
+                break;
+            case 4:
+                currentHealth = val;
+                break;
+            case 5:
+                spriteName = val;
+                
+            default:
+                break;
+        }
+    }*/
+    
+    file >> name;
+    file >> maxHealth;
+    file >> standardPower;
+    file >> maxPP;
+    file >> standardPPRegen;
+    file >> currentHealth; //CHANGE?
+    file >> spriteName;
+    file >> exp;
+    
+    
+    string moveList;
+    file >> moveList;
+    istringstream stream(moveList);
+    string move;
+    
+    while (getline(stream, move, ',')) {
+        moves.push_back(move);
+    }
+    
+    
+    currentPower = standardPower;
+    currentPPRegen = standardPPRegen;
+    currentPP = maxPP;
+    currentShield = 0;
 }
 
 void Character::actMoveOnTarget(string moveName, vector<Character *> targets) {
     
+    string fileName = pathForFile("Moves/" + moveName + ".move");
     //open file
     ifstream file(moveName.c_str());
     //check for open
@@ -305,7 +377,8 @@ string Character::displayStringForMove(string com, Character *target, int target
 
 bool Character::canCastMove(string moveName) {
     //open file
-    ifstream file(moveName.c_str());
+    string fileName = pathForFile("Moves/" + moveName + ".move");
+    ifstream file(fileName.c_str());
     //check for open
     if (!file) {
         cout<<"File "<<moveName<<" failed to open"<<endl;
@@ -331,6 +404,34 @@ bool Character::canCastMove(string moveName) {
         }
     }
     return true; //enough pp!
+}
+
+int Character::ppCostForMove(string move) {
+    string fileName = pathForFile("Moves/" + move + ".move");
+    ifstream file(fileName.c_str());
+    //check for open
+    if (!file) {
+        cout<<"File "<<move<<" failed to open"<<endl;
+        return 0;
+    }
+    
+    //get each line from file
+    string line;
+    while (getline(file, line)) {
+        istringstream issline(line);
+        string word;
+        while (getline(issline, word, ' ')) {
+            if (word=="Actor") {
+                getline(issline, word, ' ');
+                if (word=="PP") {
+                    getline(issline, word, ' ');
+                    int val = getValueForCommand(word, getCurrentPP(), 1);
+                    return val;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 //---------------------
@@ -400,4 +501,12 @@ void Character::setCurrentShield(int shield) {
 
 string Character::getName() {
     return name;
+}
+
+vector<string> Character::getMoves() {
+    return moves;
+}
+
+string Character::getSpriteFile() {
+    return spriteName;
 }

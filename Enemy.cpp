@@ -8,7 +8,7 @@
 
 #include "Enemy.h"
 
-Enemy::Enemy(string file) : Character() {
+Enemy::Enemy(string file) : Character(file) {
     
 }
 

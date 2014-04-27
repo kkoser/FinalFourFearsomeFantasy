@@ -40,6 +40,8 @@ private:
     string dialogueSpriteName;
     string movementSpriteName;
     
+    string fileName;
+    
     
 public:
 	MainCharacter(string fileName);
