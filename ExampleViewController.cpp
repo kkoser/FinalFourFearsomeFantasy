@@ -10,7 +10,7 @@
 
 ExampleViewController::ExampleViewController(SDL_Renderer *r) : ViewController(r) {
 
-    testBattle = BattleCharacterView("Elsa", 300, 300, 75, 100, 18, 20, 5, false, pathForFile("Images/elsaBattle.png"), renderer);
+    testBattle = BattleCharacterView("Elsa", 300, 300, 10, 100, 18, 20, 5, false, pathForFile("Images/elsaBattle.png"), renderer);
     
 }
 

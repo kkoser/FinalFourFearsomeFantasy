@@ -75,16 +75,19 @@ public:
     //setters and getters, these adjust for <0 or >max inputs
     int getCurrentHealth();
     void setCurrentHealth(int health);
+    int getMaxHealth();
     int getCurrentPower();
     void setCurrentPower(int power);
     int getCurrentPP();
     void setCurrentPP(int PP);
+    int getMaxPP();
     int getCurrentPPRegen();
     void setCurrentPPRegen(int PPRegen);
     int getCurrentShield();
     void setCurrentShield(int shield);
     vector<string> getMoves();
     int ppCostForMove(string move);
+    int getIsIncap();
     
     string getSpriteFile();
     

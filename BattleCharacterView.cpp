@@ -26,11 +26,13 @@ BattleCharacterView::BattleCharacterView(string n, int x, int y, int cHealth, in
     
     //init name
     nameLabel = TextLabel(x,y + 205, name, defaultFont, 24);
+    nameLabel.setColor(255, 255, 255);
 
     //init shield text
     stringstream shieldText;
     shieldText << currentShield << " Shield";
     shieldLabel = TextLabel(x, y, shieldText.str());
+    shieldLabel.setColor(255,255,255);
     
     //init green health bar
     healthBar = StatBar(x, y + 30, currentHealth, maxHealth, "Health", 0, 255, 0, 255);

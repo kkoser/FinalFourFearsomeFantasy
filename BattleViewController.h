@@ -17,16 +17,16 @@
 #include "Settings.h"
 #include "TextLabel.h"
 #include "ImageView.h"
-#include "StatBar.h"
-
+#include "BattleCharacterView.h"
+#include <cmath>
 
 class BattleViewController : public ViewController {
 private:
     LTexture bgText;
     LTexture text;
     
-    vector<CharacterView *> mainCharViews;
-    vector<CharacterView *> enemyViews;
+    vector<BattleCharacterView> mainCharViews;
+    vector<BattleCharacterView> enemyViews;
     
     vector<MainCharacter *> mainChars;
     vector<Enemy *> enemies;
@@ -41,9 +41,10 @@ private:
     TextLabel move2;
     TextLabel move3;
     TextLabel move4;
-    
-    StatBar testStatBar;
 
+    vector<BattleCharacterView> plotViewsAroundCircle(int x, int y, int radius, vector<Character *> chars);
+    
+    vector<BattleCharacterView> characterViews;
 public:
     BattleViewController(vector<MainCharacter *> chars, vector<Enemy *> enem, string locName, SDL_Renderer *ren);
     

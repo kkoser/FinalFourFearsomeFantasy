@@ -12,10 +12,9 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     mainChars = chars;
     enemies = enem;
     
-    typename vector<MainCharacter *>::const_iterator iter;
-    for (iter = mainChars.begin(); iter != mainChars.end(); ++iter) {
-        //find the sprites!
-    }
+    //plot characters around circle
+    vector<Character *> tempVector(mainChars.begin(), mainChars.end());
+    mainCharViews = plotViewsAroundCircle(750, 140, 165, tempVector);
     
     //repeat for enemies
     
@@ -34,6 +33,29 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
 
 }
 
+vector<BattleCharacterView> BattleViewController::plotViewsAroundCircle(int x, int y, int radius, vector<Character *> chars) {
+    //calculate position of character along circle
+    int deltaAngle = (2*M_PI)/mainChars.size(); //get fraction of circle per person
+    
+    //center of character "circle"
+    int angle = 0;
+    
+    //make vector
+    vector<BattleCharacterView> views;
+    
+    vector<Character *>::iterator currentChar;
+    for (currentChar = chars.begin(); currentChar != chars.end(); ++currentChar) {
+        
+        //make view
+        BattleCharacterView charView((*currentChar)->getName(), x+radius*cos(angle),y + radius*sin(angle), (*currentChar)->getCurrentHealth(), (*currentChar)->getMaxHealth(), (*currentChar)->getCurrentPP(), (*currentChar)->getMaxPP(), (*currentChar)->getCurrentShield(), (*currentChar)->getIsIncap(), (*currentChar)->getSpriteFile(), renderer);
+        
+        //add to vector
+        views.push_back(charView);
+        angle = angle + deltaAngle; //update position on circle
+    }
+    return views;
+}
+
 int BattleViewController::draw(SDL_Event e) {
     
     if(ViewController::draw(e)==0) { //returns 0 if this view controller should not draw
@@ -43,12 +65,11 @@ int BattleViewController::draw(SDL_Event e) {
 
     backgroundImage.draw();
 
-    testStatBar.draw(renderer);
     
     //draw the mainCharacters
-    typename vector<CharacterView *>::const_iterator iter;
+    typename vector<BattleCharacterView>::iterator iter;
     for (iter = mainCharViews.begin(); iter != mainCharViews.end(); ++iter) {
-        //iter->draw(renderer);
+        iter->draw();
     }
     
     //draw the enemies

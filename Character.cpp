@@ -511,3 +511,15 @@ vector<string> Character::getMoves() {
 string Character::getSpriteFile() {
     return spriteName;
 }
+
+int Character::getMaxHealth() {
+    return maxHealth;
+}
+
+int Character::getMaxPP() {
+    return maxPP;
+}
+
+int Character::getIsIncap() {
+    return isIncap;
+}

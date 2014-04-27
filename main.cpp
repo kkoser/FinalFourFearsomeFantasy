@@ -166,8 +166,12 @@ int main( int argc, char* args[] )
         vector<MainCharacter *> chars;
         vector<Enemy *> enemies;
         
-        
-        OpenWorldViewController baseVC(gRenderer);
+        MainCharacter Elsa(pathForFile("Characters/Elsa.character"));
+        chars.push_back(&Elsa);
+        chars.push_back(&Elsa);
+        chars.push_back(&Elsa);
+        BattleViewController baseVC(chars, enemies, pathForFile("Images/arendelle.jpg"), gRenderer);
+        //OpenWorldViewController baseVC(gRenderer);
         //ExampleViewController baseVC(gRenderer);
         
         //While application is running
@@ -194,9 +198,7 @@ int main( int argc, char* args[] )
             
             
         }
-        
-        cout<<"Closing the application"<<endl;
-        
+                
         //Free resources and close SDL
         close();
     }

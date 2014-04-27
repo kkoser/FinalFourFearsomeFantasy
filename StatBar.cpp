@@ -37,7 +37,7 @@ StatBar::StatBar(int px, int py, int cStat, int mStat, string statName, Uint8 r,
     labelText = labelTemp.str();
 
     statLabel = TextLabel(x + maxWidth + 10, y, labelText);
-    
+    statLabel.setColor(255,255,255);
 }
 
 void StatBar::draw(SDL_Renderer *renderer) {
@@ -81,11 +81,11 @@ void StatBar::setColor(Uint8 r, Uint8 g, Uint8 b, Uint8 alpha) {
 void StatBar::updateColorOnContext() {
     //change color to yellow/red based on fraction gone
     float fractionOfStat = (float)currentStat/(float)maxStat;
-    if (fractionOfStat < 0.66) {
-        setColor(255, 255, 0, 255);
-    }
-    else if(fractionOfStat < 0.33) {
+    if(fractionOfStat < 0.33) {
         setColor(255, 0, 0, 255);
+    }
+    else if (fractionOfStat < 0.66) {
+        setColor(255, 255, 0, 255);
     }
     else {
         setColor(fullBarRed, fullBarGreen, fullBarBlue, fullBarAlpha);
