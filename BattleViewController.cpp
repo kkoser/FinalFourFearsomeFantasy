@@ -145,6 +145,11 @@ void BattleViewController::handleEvent(SDL_Event e) {
         //this is an enemy character, so we dont get their move, they choose
         vector<Character *> chars = vector<Character *>(mainChars.begin(), mainChars.end());
         ((Enemy *)activeCharacter)->actOnCharacters(chars);
+        //need to update all of the mainChar views
+        for (int i = 0; i < mainChars.size(); i++) {
+            mainCharViews[i].setCurrentHealth(mainChars[i]->getCurrentHealth());
+            //BattleCharacterView view = mainCharViews[i];
+        }
         nextCharacer();
         return;
     }
@@ -154,16 +159,20 @@ void BattleViewController::handleEvent(SDL_Event e) {
             switch (e.key.keysym.sym) {
                 case SDLK_1:
                     selectedMove = activeCharacter->getMoves()[0];
+                    activeMoves[0].setColor(255,0,0);
                     break;
                 case SDLK_2:
                     selectedMove = activeCharacter->getMoves()[1];
+                    activeMoves[1].setColor(255,0,0);
                     break;
                 case SDLK_3:
                     selectedMove = activeCharacter->getMoves()[2];
+                    activeMoves[2].setColor(255,0,0);
                     break;
                 default:
                     break;
             }
+            
         }
         else {
             //they have selected a move, now select a character to act it on
@@ -189,7 +198,7 @@ void BattleViewController::handleEvent(SDL_Event e) {
             
             //update the CharacterViews here
             BattleCharacterView charView = enemyViews[selected];
-            charView.setCurrentHealth(target->getCurrentHealth());
+            //charView.setCurrentHealth(target->getCurrentHealth());
             
             nextCharacer();
             
@@ -209,6 +218,11 @@ void BattleViewController::nextCharacer() {
     else {
         activeCharacter = mainChars[selectedPos];
         activeCharacterView = &mainCharViews[selectedPos];
+    }
+    
+    //clear out the selected move labels
+    for (int i = 0; i < 4; i++) {
+        activeMoves[i].setColor(0, 0, 0);
     }
 }
 

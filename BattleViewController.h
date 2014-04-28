@@ -38,7 +38,7 @@ private:
     Character *activeCharacter;
     BattleCharacterView *activeCharacterView;
     string selectedMove;
-    int selectedPos;
+    int selectedPos; //keeps track of what player is selected. Cannot use iterator because they are different classes
     
     
     ImageView backgroundImage;
