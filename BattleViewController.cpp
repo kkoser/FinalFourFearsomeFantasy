@@ -41,6 +41,7 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     //init active character
     activeCharacter = *mainChars.begin();
     activeCharacterView = &*mainCharViews.begin();
+    activeCharacterView->setIsAnimating(true);
     selectedPos = 0;
     selectedMove = "";
     
@@ -116,9 +117,6 @@ int BattleViewController::draw(SDL_Event e) {
     //draw the background
     backgroundImage.draw();
     displayLabel.draw(renderer);
-
-    //animate active character
-    activeCharacterView->animate();
     
     //draw the mainCharacters
     typename vector<BattleCharacterView>::iterator iter;
@@ -169,6 +167,9 @@ void BattleViewController::handleEvent(SDL_Event e) {
     if (e.type == SDL_KEYDOWN) {
         if (displayText.size() > 0) {
             displayNextLine();
+            if (displayText.size() == 0) {
+                nextCharacer();
+            }
         }
         else if (selectedMove.compare("") == 0) {
             //there is no selected move, so they are selecting one
@@ -222,9 +223,10 @@ void BattleViewController::handleEvent(SDL_Event e) {
                         }
                         
                         displayNextLine();
+                        activeCharacterView->setIsAnimating(false);
                         
                         
-                        nextCharacer();
+                        //nextCharacer();
                     }
                     break;
                 default:
@@ -251,15 +253,21 @@ void BattleViewController::nextCharacer() {
     //now clear up and switch to the next character
     selectedMove = "";
     selectedPos++;
+    
+    activeCharacterView->setIsAnimating(false);
+    
     selectedPos = selectedPos > (mainChars.size() + enemies.size()-1) ? 0 : selectedPos;
     if (selectedPos >= mainChars.size()) {
         activeCharacter = enemies[selectedPos-mainChars.size()];
         activeCharacterView = &enemyViews[selectedPos -mainChars.size()];
+        
     }
     else {
         activeCharacter = mainChars[selectedPos];
         activeCharacterView = &mainCharViews[selectedPos];
     }
+    
+    activeCharacterView->setIsAnimating(true);
     
     //clear out the selected move labels
     for (int i = 0; i < 4; i++) {
