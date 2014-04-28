@@ -39,7 +39,7 @@ private:
     BattleCharacterView *activeCharacterView;
     string selectedMove;
     int selectedPos; //keeps track of what player is selected. Cannot use iterator because they are different classes
-                     //its the index
+                     //its the index of the array of the character choosing their move
     vector<Character *> targets;
     
     

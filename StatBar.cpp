@@ -8,13 +8,14 @@
 
 #include "StatBar.h"
 
-StatBar::StatBar(int px, int py, int cStat, int mStat, string statName, Uint8 r, Uint8 g, Uint8 b, Uint8 a, int h, int w) {
+StatBar::StatBar(int px, int py, int cStat, int mStat, string sName, Uint8 r, Uint8 g, Uint8 b, Uint8 a, int h, int w) {
     x = px;
     y = py;
     currentStat = cStat;
     maxStat = mStat;
     height = h;
     maxWidth = w;
+    statName = sName;
     
     bar.x = x;
     bar.y = y;
@@ -32,9 +33,7 @@ StatBar::StatBar(int px, int py, int cStat, int mStat, string statName, Uint8 r,
     fullBarAlpha = a;
     
     //init label
-    stringstream labelTemp;
-    labelTemp << currentStat << "/" << maxStat << " " << statName;
-    labelText = labelTemp.str();
+    labelText = to_string(currentStat) + "/" + to_string(maxStat) + " " + statName;
 
     statLabel = TextLabel(x + maxWidth + 10, y, labelText);
     statLabel.setColor(255,255,255);
@@ -102,9 +101,7 @@ int StatBar::getCurrentWidth() {
 void StatBar::setCurrentStat(int cStat) {
     //make stat fraction
     currentStat = cStat;
-    stringstream labelTemp;
-    labelTemp << currentStat << "/" << maxStat << statName;
-    labelText = labelTemp.str();
+    labelText = to_string(currentStat) + "/" + to_string(maxStat) + " " + statName;
     statLabel.setText(labelText);
 }
 

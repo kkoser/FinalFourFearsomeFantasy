@@ -17,7 +17,7 @@
 class StatBar {
 public:
     //height and width should be left at default
-    StatBar(int px = 0, int py = 0, int cStat = 50, int mStat = 100, string = "", Uint8 r = 0, Uint8 g = 255, Uint8 b = 0, Uint8 a = 255,  int h = 20, int w = 125);
+    StatBar(int px = 0, int py = 0, int cStat = 50, int mStat = 100, string sName = "", Uint8 r = 0, Uint8 g = 255, Uint8 b = 0, Uint8 a = 255,  int h = 20, int w = 125);
     void setColor(Uint8 r, Uint8 g, Uint8 b, Uint8 alpha);
     void draw(SDL_Renderer *renderer);
     void setCurrentStat(int cStat);
