@@ -152,6 +152,7 @@ void BattleViewController::handleEvent(SDL_Event e) {
         
         displayText = vector<string>();
         istringstream stream(activeCharacter->getDisplayLog());
+        activeCharacter->clearDisplayLog();
         string line;
         while (getline(stream, line, '\n')) {
             displayText.push_back(line);
@@ -160,10 +161,8 @@ void BattleViewController::handleEvent(SDL_Event e) {
         displayNextLine();
         
         //need to update all of the mainChar views
-        for (int i = 0; i < mainChars.size(); i++) {
-            mainCharViews[i].setCurrentHealth(mainChars[i]->getCurrentHealth());
-            //BattleCharacterView view = mainCharViews[i];
-        }
+        updateCharacterViews();
+        
         nextCharacter();
         return;
     }
@@ -200,6 +199,21 @@ void BattleViewController::handleEvent(SDL_Event e) {
                     break;
             }
             
+            if (selectedMove.compare("") != 0) {
+                //they selected a move this time, so update the display label
+                int numTargets = activeCharacter->numTargetsForMove(selectedMove);
+                stringstream stream;
+                stream << selectedMove << " takes ";
+                if (numTargets == 0) {
+                    stream << "all";
+                }
+                else {
+                    stream << numTargets;
+                }
+                stream << " targets"<<endl;
+                displayLabel.setText(stream.str());
+            }
+            
         }
         else {
             //they have selected a move, now select a character to act it on
@@ -229,14 +243,13 @@ void BattleViewController::handleEvent(SDL_Event e) {
                     //this one actually does the move
                     if (targets.size() > 0) {
                         activeCharacter->actMoveOnTarget(selectedMove, targets);
-                        activeCharacterView->setCurrentPP(activeCharacter->getCurrentPP());
-                        for (int i = 0; i < enemies.size(); i++) {
-                            enemyViews[i].setCurrentHealth(enemies[i]->getCurrentHealth());
-                            enemyViews[i].setIsAnimating(false);
-                        }
+                        
+                        updateCharacterViews();
+                        
                         //displayLabel.setText(activeCharacter->getDisplayLog());
                         displayText = vector<string>();
                         istringstream stream(activeCharacter->getDisplayLog());
+                        activeCharacter->clearDisplayLog();
                         string line;
                         while (getline(stream, line, '\n')) {
                             displayText.push_back(line);
@@ -298,11 +311,33 @@ void BattleViewController::nextCharacter() {
         activeMoves[i].setColor(0, 0, 0);
     }
     
+    activeCharacter->regenPP();
+    activeCharacterView->setCurrentPP(activeCharacter->getCurrentPP());
+    
     targets = vector<Character *>();
+    
+    if (activeCharacter->getCurrentHealth() <= 0 || activeCharacter->getIsIncap()) {
+        //nextCharacter();
+    }
 }
 
 void BattleViewController::displayNextLine() {
     displayLabel.setText(displayText[0]);
     displayText.erase(displayText.begin());
+}
+
+void BattleViewController::updateCharacterViews() {
+    for (int i = 0; i < mainChars.size(); i++) {
+        mainCharViews[i].setCurrentHealth(mainChars[i]->getCurrentHealth());
+        mainCharViews[i].setCurrentPP(mainChars[i]->getCurrentPP());
+        mainCharViews[i].setCurrentShield(mainChars[i]->getCurrentShield());
+        mainCharViews[i].setIsAnimating(false);
+    }
+    for (int i = 0; i < enemyViews.size(); i++) {
+        enemyViews[i].setCurrentHealth(enemies[i]->getCurrentHealth());
+        enemyViews[i].setCurrentPP(enemies[i]->getCurrentPP());
+        enemyViews[i].setCurrentShield(enemies[i]->getCurrentShield());
+        enemyViews[i].setIsAnimating(false);
+    }
 }
 

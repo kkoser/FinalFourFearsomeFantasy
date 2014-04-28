@@ -59,6 +59,7 @@ private:
     
     void handleEvent(SDL_Event e);
     void nextCharacter();
+    void updateCharacterViews();
     
     void displayNextLine();
     
