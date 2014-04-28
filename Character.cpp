@@ -151,15 +151,15 @@ void Character::actMoveOnTarget(string moveName, vector<Character *> targets) {
                 }
                 else if (word=="Health") {
                     getline(iss, word);
-                    
+                    int oldVal = ch->getCurrentHealth();
                     int val = getValueForCommand(word, ch->getCurrentHealth(), ch->getCurrentPower());
                     ch->changeHealth(val);
                     
                     if (ch == this) {
-                        actorDamage = val;
+                        actorDamage = oldVal-val;
                     }
                     else {
-                        targetDamage = val;
+                        targetDamage = oldVal-val;
                     }
                 }
                 else if (word=="Power") {
@@ -273,7 +273,9 @@ void Character::changeHealth(int newHealth) {
 }
 
 int Character::numTargetsForMove(string moveName) {
-    ifstream file(moveName.c_str());
+    string fileName = pathForFile("Moves/" + moveName + ".move");
+    //open file
+    ifstream file(fileName.c_str());
     
     if (!file) {
         cout<<"File "<<moveName<<" failed to open"<<endl;
