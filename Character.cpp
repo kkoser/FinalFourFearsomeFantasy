@@ -544,3 +544,7 @@ string Character::getDisplayLog() {
 void Character::clearDisplayLog() {
     displayLog = "";
 }
+
+void Character::regenPP()   {
+    setCurrentPP(getCurrentPP()+getCurrentPPRegen());
+}

@@ -92,6 +92,8 @@ public:
     string getDisplayLog();
     void clearDisplayLog();
     
+    void regenPP();
+    
     string getSpriteFile(); //returns full path
     
     string getName();

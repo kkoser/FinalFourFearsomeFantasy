@@ -149,6 +149,7 @@ void BattleViewController::handleEvent(SDL_Event e) {
         
         displayText = vector<string>();
         istringstream stream(activeCharacter->getDisplayLog());
+        activeCharacter->clearDisplayLog();
         string line;
         while (getline(stream, line, '\n')) {
             displayText.push_back(line);
@@ -230,6 +231,7 @@ void BattleViewController::handleEvent(SDL_Event e) {
                         //displayLabel.setText(activeCharacter->getDisplayLog());
                         displayText = vector<string>();
                         istringstream stream(activeCharacter->getDisplayLog());
+                        activeCharacter->clearDisplayLog();
                         string line;
                         while (getline(stream, line, '\n')) {
                             displayText.push_back(line);
@@ -286,6 +288,9 @@ void BattleViewController::nextCharacter() {
     for (int i = 0; i < 4; i++) {
         activeMoves[i].setColor(0, 0, 0);
     }
+    
+    activeCharacter->regenPP();
+    activeCharacterView->setCurrentPP(activeCharacter->getCurrentPP());
     
     targets = vector<Character *>();
     
