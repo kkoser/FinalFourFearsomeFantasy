@@ -20,6 +20,7 @@ BattleCharacterView::BattleCharacterView(string n, int x, int y, int cHealth, in
     isIncap = incap;
     spriteLocation = spriteLoc;
     renderer = rend;
+    isAnimating = 0; //init no animate
     
     //init image
     image = ImageView(x, y + 75, spriteLoc, renderer);

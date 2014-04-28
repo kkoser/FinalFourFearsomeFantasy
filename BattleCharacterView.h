@@ -35,7 +35,6 @@ public:
     void setIsIncap(bool incap);
     void setIsAnimating(bool anim);
     bool getIsAnimating();
-    void animate();
     
     void draw();
     
@@ -52,7 +51,8 @@ private:
     
     bool isAnimating;
     double animateDelta; //amount to change animation by
-    
+    void animate();
+
     string name;
     string spriteLocation;
     
