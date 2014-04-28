@@ -57,12 +57,8 @@ private:
     void animateActiveCharacter();
     
     void handleEvent(SDL_Event e);
-<<<<<<< HEAD
-    void nextCharacer();
-    void updateCharacterViews();
-=======
     void nextCharacter();
->>>>>>> FETCH_HEAD
+    void updateCharacterViews();
     
     void displayNextLine();
     

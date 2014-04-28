@@ -157,18 +157,9 @@ void BattleViewController::handleEvent(SDL_Event e) {
         displayNextLine();
         
         //need to update all of the mainChar views
-<<<<<<< HEAD
         updateCharacterViews();
         
-        
-        nextCharacer();
-=======
-        for (int i = 0; i < mainChars.size(); i++) {
-            mainCharViews[i].setCurrentHealth(mainChars[i]->getCurrentHealth());
-            //BattleCharacterView view = mainCharViews[i];
-        }
         nextCharacter();
->>>>>>> FETCH_HEAD
         return;
     }
     if (e.type == SDL_KEYDOWN) {
@@ -299,7 +290,7 @@ void BattleViewController::nextCharacter() {
     targets = vector<Character *>();
     
     if (activeCharacter->getCurrentHealth() <= 0 || activeCharacter->getIsIncap()) {
-        //nextCharacer();
+        //nextCharacter();
     }
 }
 
