@@ -36,7 +36,7 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     activeMoves[2].setColor(0, 0, 0);
     activeMoves[3].setColor(0, 0, 0);
     
-    displayLabel = TextLabel(0,530, "test", defaultFont, 24);
+    displayLabel = TextLabel(0,530, "", defaultFont, 24);
     
     //init active character
     activeCharacter = *mainChars.begin();
@@ -169,6 +169,7 @@ void BattleViewController::handleEvent(SDL_Event e) {
             displayNextLine();
             if (displayText.size() == 0) {
                 nextCharacer();
+                //displayLabel.setText("");
             }
         }
         else if (selectedMove.compare("") == 0) {
@@ -196,15 +197,15 @@ void BattleViewController::handleEvent(SDL_Event e) {
             switch (e.key.keysym.sym) {
                 case SDLK_1:
                     targets.push_back(enemies[0]);
-                    //enemyViews[0].animate();
+                    enemyViews[0].setIsAnimating(true);
                     break;
                 case SDLK_2:
                     targets.push_back(enemies[1]);
-                    //enemyViews[1].animate();
+                    enemyViews[1].setIsAnimating(true);
                     break;
                 case SDLK_3:
                     targets.push_back(enemies[2]);
-                    //enemyViews[2].animate();
+                    enemyViews[2].setIsAnimating(true);
                     break;
                 case SDLK_RETURN:
                     //this one actually does the move
@@ -213,6 +214,7 @@ void BattleViewController::handleEvent(SDL_Event e) {
                         activeCharacterView->setCurrentPP(activeCharacter->getCurrentPP());
                         for (int i = 0; i < enemies.size(); i++) {
                             enemyViews[i].setCurrentHealth(enemies[i]->getCurrentHealth());
+                            enemyViews[i].setIsAnimating(false);
                         }
                         //displayLabel.setText(activeCharacter->getDisplayLog());
                         displayText = vector<string>();
