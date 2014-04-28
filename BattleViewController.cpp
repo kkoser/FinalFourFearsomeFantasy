@@ -195,10 +195,12 @@ void BattleViewController::handleEvent(SDL_Event e) {
             vector<Character *> targets;
             targets.push_back(target);
             activeCharacter->actMoveOnTarget(selectedMove, targets);
+            activeCharacterView->setCurrentPP(activeCharacter->getCurrentPP());
             
             //update the CharacterViews here
-            BattleCharacterView charView = enemyViews[selected];
+            //BattleCharacterView charView = enemyViews[selected];
             //charView.setCurrentHealth(target->getCurrentHealth());
+            enemyViews[selected].setCurrentHealth(target->getCurrentHealth());
             
             nextCharacer();
             

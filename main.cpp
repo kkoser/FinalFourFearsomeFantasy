@@ -163,13 +163,16 @@ int main( int argc, char* args[] )
         vector<Enemy *> enemies;
         
         MainCharacter Elsa(pathForFile("Characters/Elsa.character"));
+        MainCharacter Elsa2(pathForFile("Characters/Elsa.character"));
+        MainCharacter Elsa3(pathForFile("Characters/Elsa.character"));
         chars.push_back(&Elsa);
-        chars.push_back(&Elsa);
-        chars.push_back(&Elsa);
+        chars.push_back(&Elsa2);
+        chars.push_back(&Elsa3);
         
         Enemy goblin(pathForFile("Characters/Goblin.character"));
+        Enemy goblin2(pathForFile("Characters/Goblin.character"));
         enemies.push_back(&goblin);
-        enemies.push_back(&goblin);
+        enemies.push_back(&goblin2);
 
         BattleViewController baseVC(chars, enemies, pathForFile("Images/arendelle.jpg"), gRenderer);
         //OpenWorldViewController baseVC(gRenderer);

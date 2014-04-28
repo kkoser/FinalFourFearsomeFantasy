@@ -78,14 +78,19 @@ int BattleCharacterView::getYPos() {
 
 void BattleCharacterView::setCurrentHealth(int cHealth) {
     currentHealth = cHealth;
+    healthBar.setCurrentStat(currentHealth);
 }
 
 void BattleCharacterView::setCurrentPP(int cPP) {
     currentPP = cPP;
+    PPBar.setCurrentStat(currentPP);
 }
 
 void BattleCharacterView::setCurrentShield(int cShield) {
     currentShield = cShield;
+    stringstream shieldText;
+    shieldText << currentShield << " Shield";
+    shieldLabel.setText(shieldText.str());
 }
 
 void BattleCharacterView::setIsIncap(bool incap) {
