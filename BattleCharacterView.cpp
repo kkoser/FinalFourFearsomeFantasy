@@ -49,6 +49,9 @@ void BattleCharacterView::draw() {
     shieldLabel.draw(renderer);
     healthBar.draw(renderer);
     PPBar.draw(renderer);
+    if (isAnimating) {
+        animate();
+    }
 }
 
 void BattleCharacterView::animate() {
@@ -62,6 +65,14 @@ void BattleCharacterView::animate() {
 }
 
 //SETTERS / GETTERS
+
+void BattleCharacterView::setIsAnimating(bool anim) {
+    isAnimating = anim;
+}
+
+bool BattleCharacterView::getIsAnimating() {
+    return isAnimating;
+}
 
 void BattleCharacterView::setPos(int x, int y) {
     xpos = x;

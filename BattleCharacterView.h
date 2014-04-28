@@ -33,11 +33,13 @@ public:
     void setCurrentPP(int cPP);
     void setCurrentShield(int cShield);
     void setIsIncap(bool incap);
-    
+    void setIsAnimating(bool anim);
+    bool getIsAnimating();
     void animate();
     
     void draw();
     
+
 private:
     int xpos;
     int ypos;
@@ -48,6 +50,7 @@ private:
     int currentShield;
     bool isIncap;
     
+    bool isAnimating;
     double animateDelta; //amount to change animation by
     
     string name;
