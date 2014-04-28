@@ -383,7 +383,7 @@ string Character::displayStringForMove(string com, Character *target, int target
         
     }
     
-    
+    output<<endl;
     return output.str();
 }
 
@@ -533,4 +533,12 @@ int Character::getMaxPP() {
 
 int Character::getIsIncap() {
     return isIncap;
+}
+
+string Character::getDisplayLog() {
+    return displayLog;
+}
+
+void Character::clearDisplayLog() {
+    displayLog = "";
 }

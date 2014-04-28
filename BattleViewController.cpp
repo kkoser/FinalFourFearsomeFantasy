@@ -36,6 +36,8 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     activeMoves[2].setColor(0, 0, 0);
     activeMoves[3].setColor(0, 0, 0);
     
+    displayLabel = TextLabel(0,530, "test", defaultFont, 24);
+    
     //init active character
     activeCharacter = *mainChars.begin();
     activeCharacterView = &*mainCharViews.begin();
@@ -113,6 +115,7 @@ int BattleViewController::draw(SDL_Event e) {
 
     //draw the background
     backgroundImage.draw();
+    displayLabel.draw(renderer);
 
     //animate active character
     activeCharacterView->animate();
@@ -145,6 +148,7 @@ void BattleViewController::handleEvent(SDL_Event e) {
         //this is an enemy character, so we dont get their move, they choose
         vector<Character *> chars = vector<Character *>(mainChars.begin(), mainChars.end());
         ((Enemy *)activeCharacter)->actOnCharacters(chars);
+        displayLabel.setText(activeCharacter->getDisplayLog());
         //need to update all of the mainChar views
         for (int i = 0; i < mainChars.size(); i++) {
             mainCharViews[i].setCurrentHealth(mainChars[i]->getCurrentHealth());
@@ -197,6 +201,7 @@ void BattleViewController::handleEvent(SDL_Event e) {
                         for (int i = 0; i < enemies.size(); i++) {
                             enemyViews[i].setCurrentHealth(enemies[i]->getCurrentHealth());
                         }
+                       // displayLabel.setText(activeCharacter->getDisplayLog());
                         nextCharacer();
                     }
                     break;

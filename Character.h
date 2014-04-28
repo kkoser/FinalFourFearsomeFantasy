@@ -89,6 +89,8 @@ public:
     vector<string> getMoves();
     int ppCostForMove(string move);
     int getIsIncap();
+    string getDisplayLog();
+    void clearDisplayLog();
     
     string getSpriteFile(); //returns full path
     

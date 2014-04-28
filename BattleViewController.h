@@ -45,6 +45,7 @@ private:
     ImageView backgroundImage;
     
     TextLabel activeMoves[4];
+    TextLabel displayLabel;
     
     void drawActiveMoves();
     
