@@ -109,6 +109,11 @@ void Character::actMoveOnTarget(string moveName, vector<Character *> targets) {
         return;
     }
     
+    //keep track of the most recent damage dealt
+    //used for display
+    int actorDamage = 0;
+    int targetDamage = 0;
+    
     //get each line from file
     string line;
     while (getline(file, line)) {
@@ -116,6 +121,8 @@ void Character::actMoveOnTarget(string moveName, vector<Character *> targets) {
         Character *ch = this;
         
         int hasRun = 0; //for once keyword
+        
+
         
         //iterate through targets
         typename vector<Character *>::iterator currentTarget;
@@ -125,10 +132,7 @@ void Character::actMoveOnTarget(string moveName, vector<Character *> targets) {
             istringstream iss(line);
             string word;
             
-            //keep track of the most recent damage dealt
-            //used for display
-            int actorDamage = 0;
-            int targetDamage = 0;
+            
             
             while (getline(iss, word, ' ')) {
                 if (word=="Once") {
@@ -137,11 +141,10 @@ void Character::actMoveOnTarget(string moveName, vector<Character *> targets) {
                     }
                 }
                 else if (word=="Display") {
-                    displayLog = this->displayStringForMove(line, targets[0], actorDamage, targetDamage);
+                    displayLog =  displayLog + this->displayStringForMove(line, targets[0], targetDamage, actorDamage);
                 }
                 else if (word=="Target") {
                     ch = *currentTarget;
-                    
                 }
                 else if (word=="Actor") {
                     ch = this;
@@ -339,11 +342,13 @@ string Character::displayStringForMove(string com, Character *target, int target
     istringstream iss(com);
     string word;
     
-    int isFirst = 1;
+    int foundDisplay = 0;
     while (getline(iss, word, ' ')) {
         //skip the first line, becuase it is the keyword Display
-        if (isFirst == 1) {
-            isFirst = 0;
+        if (foundDisplay == 0) {
+            if (word.compare("Display") == 0) {
+                foundDisplay = 1;
+            }
             continue;
         }
         
@@ -373,6 +378,8 @@ string Character::displayStringForMove(string com, Character *target, int target
             }
             
         }
+        
+        output << " ";
         
     }
     
