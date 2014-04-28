@@ -27,6 +27,14 @@ ImageView::ImageView(int x, int y, string fileName, SDL_Renderer *ren) {
     
 }
 
+ImageView::ImageView(ImageView const &other) {
+    xLoc = other.xLoc;
+    yLoc = other.yLoc;
+    textFile = other.textFile;
+    renderer = other.renderer;
+
+}
+
 void ImageView::load() {
     if (!(texture.getWidth() > 0)) {
         texture.loadFromFile(textFile, renderer);

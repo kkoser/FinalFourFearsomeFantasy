@@ -27,7 +27,7 @@ private:
     string text;
     LTexture texture;
     int x, y;
-    TTF_Font *font;
+    TTF_Font *font = NULL;
     SDL_Color textColor;
         
 public:
