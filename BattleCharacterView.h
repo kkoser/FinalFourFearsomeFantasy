@@ -35,6 +35,10 @@ public:
     void setIsIncap(bool incap);
     void setIsAnimating(bool anim);
     bool getIsAnimating();
+    void setIsTargeted(bool targ);
+    bool getIsTargeted();
+    void setHasCursor(bool curs);
+    bool getHasCursor();
     
     void draw();
     
@@ -52,7 +56,11 @@ private:
     bool isAnimating;
     double animateDelta; //amount to change animation by
     void animate();
-
+    
+    bool isTargeted;
+    
+    bool hasCursor;
+    
     string name;
     string spriteLocation;
     
@@ -62,6 +70,7 @@ private:
     TextLabel shieldLabel;
     StatBar healthBar;
     StatBar PPBar;
+    ImageView cursor;
     
     SDL_Renderer *renderer;
     

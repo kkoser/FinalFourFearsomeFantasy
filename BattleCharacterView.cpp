@@ -21,10 +21,15 @@ BattleCharacterView::BattleCharacterView(string n, int x, int y, int cHealth, in
     spriteLocation = spriteLoc;
     renderer = rend;
     isAnimating = 0; //init no animate
+    isTargeted = 0;
+    hasCursor = 0;
     
     //init image
     image = ImageView(x, y + 75, spriteLoc, renderer);
     animateDelta = 0.7;
+    
+    //initCursor
+    cursor = ImageView(x-48, y, pathForFile("Images/FF7Cursor.png"), renderer);
     
     //init name
     nameLabel = TextLabel(x,y + 195, name, defaultFont, 24);
@@ -53,6 +58,16 @@ void BattleCharacterView::draw() {
     if (isAnimating) {
         animate();
     }
+    if (isTargeted) {
+        nameLabel.setColor(255, 0, 0);
+    }
+    else {
+        nameLabel.setColor(255, 255, 255);
+    }
+    
+    if (hasCursor) {
+        cursor.draw(renderer);
+    }
 }
 
 void BattleCharacterView::animate() {
@@ -66,6 +81,22 @@ void BattleCharacterView::animate() {
 }
 
 //SETTERS / GETTERS
+
+void BattleCharacterView::setHasCursor(bool curs) {
+    hasCursor = curs;
+}
+
+bool BattleCharacterView::getHasCursor() {
+    return hasCursor;
+}
+
+void BattleCharacterView::setIsTargeted(bool targ) {
+    isTargeted = targ;
+}
+
+bool BattleCharacterView::getIsTargeted() {
+    return isTargeted;
+}
 
 void BattleCharacterView::setIsAnimating(bool anim) {
     isAnimating = anim;

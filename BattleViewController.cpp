@@ -12,6 +12,7 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     mainChars = chars;
     enemies = enem;
     
+    
     //plot main characters around circle
     vector<Character *> tempVector(mainChars.begin(), mainChars.end());
     mainCharViews = plotViewsAroundCircle(775, 140, 165, tempVector);
@@ -44,6 +45,7 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     activeCharacterView->setIsAnimating(true);
     selectedPos = 0;
     selectedMove = "";
+    arrowSelectedPos = 0;
     
     drawActiveMoves();
     
@@ -142,6 +144,7 @@ int BattleViewController::draw(SDL_Event e) {
 }
 
 void BattleViewController::handleEvent(SDL_Event e) {
+    //if an enemy is acting and not a player character
     if (selectedPos >= mainChars.size()) {
         //this is an enemy character, so we dont get their move, they choose
         vector<Character *> chars = vector<Character *>(mainChars.begin(), mainChars.end());
@@ -164,7 +167,9 @@ void BattleViewController::handleEvent(SDL_Event e) {
         nextCharacter();
         return;
     }
+    //otherwise get player input
     if (e.type == SDL_KEYDOWN) {
+        //is there text on the screen?
         if (displayText.size() > 0) {
             displayNextLine();
             if (displayText.size() == 0) {
@@ -187,6 +192,10 @@ void BattleViewController::handleEvent(SDL_Event e) {
                     selectedMove = activeCharacter->getMoves()[2];
                     activeMoves[2].setColor(255,0,0);
                     break;
+                case SDLK_4:
+                    selectedMove = activeCharacter->getMoves()[3];
+                    activeMoves[3].setColor(255,0,0);
+                    break;
                 default:
                     break;
             }
@@ -206,6 +215,15 @@ void BattleViewController::handleEvent(SDL_Event e) {
                 case SDLK_3:
                     targets.push_back(enemies[2]);
                     enemyViews[2].setIsAnimating(true);
+                    break;
+                case SDLK_LEFT:
+                    arrowSelectedPos-=1;
+                    break;
+                case SDLK_RIGHT:
+                    arrowSelectedPos+=1;
+                    break;
+                case SDLK_SPACE:
+                    //push back selected arrow if move allows it
                     break;
                 case SDLK_RETURN:
                     //this one actually does the move
@@ -249,6 +267,10 @@ void BattleViewController::handleEvent(SDL_Event e) {
             
         }
     }
+}
+
+int updateCursorForSelectedCharacter() {
+    
 }
 
 void BattleViewController::nextCharacter() {
