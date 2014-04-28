@@ -45,7 +45,9 @@ private:
     ImageView backgroundImage;
     
     TextLabel activeMoves[4];
+    
     TextLabel displayLabel;
+    vector<string>displayText;
     
     void drawActiveMoves();
     
@@ -55,6 +57,8 @@ private:
     
     void handleEvent(SDL_Event e);
     void nextCharacer();
+    
+    void displayNextLine();
     
     
 public:

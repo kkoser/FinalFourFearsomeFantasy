@@ -148,7 +148,16 @@ void BattleViewController::handleEvent(SDL_Event e) {
         //this is an enemy character, so we dont get their move, they choose
         vector<Character *> chars = vector<Character *>(mainChars.begin(), mainChars.end());
         ((Enemy *)activeCharacter)->actOnCharacters(chars);
-        displayLabel.setText(activeCharacter->getDisplayLog());
+        
+        displayText = vector<string>();
+        istringstream stream(activeCharacter->getDisplayLog());
+        string line;
+        while (getline(stream, line, '\n')) {
+            displayText.push_back(line);
+        }
+        
+        displayNextLine();
+        
         //need to update all of the mainChar views
         for (int i = 0; i < mainChars.size(); i++) {
             mainCharViews[i].setCurrentHealth(mainChars[i]->getCurrentHealth());
@@ -158,7 +167,10 @@ void BattleViewController::handleEvent(SDL_Event e) {
         return;
     }
     if (e.type == SDL_KEYDOWN) {
-        if (selectedMove.compare("") == 0) {
+        if (displayText.size() > 0) {
+            displayNextLine();
+        }
+        else if (selectedMove.compare("") == 0) {
             //there is no selected move, so they are selecting one
             switch (e.key.keysym.sym) {
                 case SDLK_1:
@@ -201,7 +213,17 @@ void BattleViewController::handleEvent(SDL_Event e) {
                         for (int i = 0; i < enemies.size(); i++) {
                             enemyViews[i].setCurrentHealth(enemies[i]->getCurrentHealth());
                         }
-                       // displayLabel.setText(activeCharacter->getDisplayLog());
+                        //displayLabel.setText(activeCharacter->getDisplayLog());
+                        displayText = vector<string>();
+                        istringstream stream(activeCharacter->getDisplayLog());
+                        string line;
+                        while (getline(stream, line, '\n')) {
+                            displayText.push_back(line);
+                        }
+                        
+                        displayNextLine();
+                        
+                        
                         nextCharacer();
                     }
                     break;
@@ -245,5 +267,10 @@ void BattleViewController::nextCharacer() {
     }
     
     targets = vector<Character *>();
+}
+
+void BattleViewController::displayNextLine() {
+    displayLabel.setText(displayText[0]);
+    displayText.erase(displayText.begin());
 }
 
