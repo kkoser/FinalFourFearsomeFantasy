@@ -176,33 +176,45 @@ void BattleViewController::handleEvent(SDL_Event e) {
         }
         else {
             //they have selected a move, now select a character to act it on
-            int selected = -1;
-            Character *target;
             switch (e.key.keysym.sym) {
                 case SDLK_1:
-                    selected = 0;
+                    targets.push_back(enemies[0]);
+                    //enemyViews[0].animate();
                     break;
                 case SDLK_2:
-                    selected = 1;
+                    targets.push_back(enemies[1]);
+                    //enemyViews[1].animate();
                     break;
                 case SDLK_3:
-                    selected = 2;
+                    targets.push_back(enemies[2]);
+                    //enemyViews[2].animate();
+                    break;
+                case SDLK_RETURN:
+                    //this one actually does the move
+                    if (targets.size() > 0) {
+                        activeCharacter->actMoveOnTarget(selectedMove, targets);
+                        activeCharacterView->setCurrentPP(activeCharacter->getCurrentPP());
+                        for (int i = 0; i < enemies.size(); i++) {
+                            enemyViews[i].setCurrentHealth(enemies[i]->getCurrentHealth());
+                        }
+                        nextCharacer();
+                    }
                     break;
                 default:
                     break;
             }
-            target = enemies[selected];
-            vector<Character *> targets;
-            targets.push_back(target);
-            activeCharacter->actMoveOnTarget(selectedMove, targets);
-            activeCharacterView->setCurrentPP(activeCharacter->getCurrentPP());
+//            target = enemies[selected];
+//            vector<Character *> targets;
+//            targets.push_back(target);
+//            activeCharacter->actMoveOnTarget(selectedMove, targets);
+//            activeCharacterView->setCurrentPP(activeCharacter->getCurrentPP());
             
             //update the CharacterViews here
             //BattleCharacterView charView = enemyViews[selected];
             //charView.setCurrentHealth(target->getCurrentHealth());
-            enemyViews[selected].setCurrentHealth(target->getCurrentHealth());
+            //
             
-            nextCharacer();
+            //nextCharacer();
             
         }
     }
@@ -226,5 +238,7 @@ void BattleViewController::nextCharacer() {
     for (int i = 0; i < 4; i++) {
         activeMoves[i].setColor(0, 0, 0);
     }
+    
+    targets = vector<Character *>();
 }
 
