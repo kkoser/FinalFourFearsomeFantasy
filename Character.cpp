@@ -137,7 +137,7 @@ void Character::actMoveOnTarget(string moveName, vector<Character *> targets) {
             while (getline(iss, word, ' ')) {
                 if (word=="Once") {
                     if (hasRun == 1) {
-                        continue; //skips whole line if prefaced with "Once" and it has already been done to one target this move
+                        break; //skips whole line if prefaced with "Once" and it has already been done to one target this move
                     }
                 }
                 else if (word=="Display") {
