@@ -57,7 +57,7 @@ private:
     void animateActiveCharacter();
     
     void handleEvent(SDL_Event e);
-    void nextCharacer();
+    void nextCharacter();
     
     void displayNextLine();
     

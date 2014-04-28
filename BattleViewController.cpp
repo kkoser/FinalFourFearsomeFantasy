@@ -61,7 +61,7 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
 
 vector<BattleCharacterView> BattleViewController::plotViewsAroundCircle(int x, int y, int radius, vector<Character *> chars) {
     //calculate position of character along circle
-    int deltaAngle = (2*M_PI)/mainChars.size(); //get fraction of circle per person
+    int deltaAngle = (2*M_PI)/chars.size(); //get fraction of circle per person
     
     //center of character "circle"
     int angle = 0;
@@ -161,14 +161,14 @@ void BattleViewController::handleEvent(SDL_Event e) {
             mainCharViews[i].setCurrentHealth(mainChars[i]->getCurrentHealth());
             //BattleCharacterView view = mainCharViews[i];
         }
-        nextCharacer();
+        nextCharacter();
         return;
     }
     if (e.type == SDL_KEYDOWN) {
         if (displayText.size() > 0) {
             displayNextLine();
             if (displayText.size() == 0) {
-                nextCharacer();
+                nextCharacter();
                 //displayLabel.setText("");
             }
         }
@@ -228,7 +228,7 @@ void BattleViewController::handleEvent(SDL_Event e) {
                         activeCharacterView->setIsAnimating(false);
                         
                         
-                        //nextCharacer();
+                        //nextCharacter();
                     }
                     break;
                 default:
@@ -245,13 +245,13 @@ void BattleViewController::handleEvent(SDL_Event e) {
             //charView.setCurrentHealth(target->getCurrentHealth());
             //
             
-            //nextCharacer();
+            //nextCharacter();
             
         }
     }
 }
 
-void BattleViewController::nextCharacer() {
+void BattleViewController::nextCharacter() {
     //now clear up and switch to the next character
     selectedMove = "";
     selectedPos++;
