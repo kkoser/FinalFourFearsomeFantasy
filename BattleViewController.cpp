@@ -176,24 +176,41 @@ void BattleViewController::handleEvent(SDL_Event e) {
                 //displayLabel.setText("");
             }
         }
-        else if (selectedMove.compare("") == 0) {
+        else if (!moveFinal) {
             //there is no selected move, so they are selecting one
             switch (e.key.keysym.sym) {
                 case SDLK_1:
+                    for (int i = 0; i < 4; i++) {
+                        activeMoves[i].setColor(0,0,0);
+                    }
                     selectedMove = activeCharacter->getMoves()[0];
                     activeMoves[0].setColor(255,0,0);
                     break;
                 case SDLK_2:
+                    for (int i = 0; i < 4; i++) {
+                        activeMoves[i].setColor(0,0,0);
+                    }
                     selectedMove = activeCharacter->getMoves()[1];
                     activeMoves[1].setColor(255,0,0);
                     break;
                 case SDLK_3:
+                    for (int i = 0; i < 4; i++) {
+                        activeMoves[i].setColor(0,0,0);
+                    }
                     selectedMove = activeCharacter->getMoves()[2];
                     activeMoves[2].setColor(255,0,0);
                     break;
                 case SDLK_4:
+                    for (int i = 0; i < 4; i++) {
+                        activeMoves[i].setColor(0,0,0);
+                    }
                     selectedMove = activeCharacter->getMoves()[3];
                     activeMoves[3].setColor(255,0,0);
+                    break;
+                case SDLK_RETURN:
+                    if (selectedMove.compare("") != 0) {
+                        moveFinal = true;
+                    }
                     break;
                 default:
                     break;
@@ -213,7 +230,11 @@ void BattleViewController::handleEvent(SDL_Event e) {
                 stream << " targets"<<endl;
                 displayLabel.setText(stream.str());
                 //get cursor showing
-                getViewForIndex(arrowSelectedPos)->setHasCursor(true);
+                if (moveFinal) {
+                    //they selected a final move, so show the selector
+                    getViewForIndex(arrowSelectedPos)->setHasCursor(true);
+                }
+                
                 
             }
             
@@ -279,6 +300,11 @@ void BattleViewController::handleEvent(SDL_Event e) {
                         
                         //nextCharacter();
                     }
+                    else {
+                        //they are confirming the move they want to use
+                        getViewForIndex(arrowSelectedPos)->setHasCursor(true);
+                    }
+                    
                     break;
                 default:
                     break;

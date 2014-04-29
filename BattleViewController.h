@@ -38,6 +38,7 @@ private:
     Character *activeCharacter;
     BattleCharacterView *activeCharacterView;
     string selectedMove;
+    bool moveFinal = false;
     int selectedPos; //keeps track of what player is selected. Cannot use iterator because they are different classes
                      //its the index of the array of the character choosing their move
     int arrowSelectedPos; //the index of characters+enemies that the arrow keys are hovering over
