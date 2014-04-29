@@ -48,12 +48,6 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     selectedMove = "";
     arrowSelectedPos = 0;
     
-    /*
-    //test
-    activeCharacterView->setHasStatus(true);
-    activeCharacterView->setIsIncap(true);
-     */
-    
     updateActiveMoves();
     drawActiveMoves();
     
@@ -420,6 +414,7 @@ void BattleViewController::nextCharacter() {
     
     if (activeCharacter->getCurrentHealth() <= 0 || activeCharacter->getIsIncap()) {
         //nextCharacter();
+        cout << "HE DEAD"<<endl;
     }
 }
 

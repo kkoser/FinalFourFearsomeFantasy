@@ -551,5 +551,5 @@ void Character::regenPP()   {
 }
 
 int Character::getNumberOfStatuses() {
-    return statuses.size();
+    return (int)statuses.size();
 }
