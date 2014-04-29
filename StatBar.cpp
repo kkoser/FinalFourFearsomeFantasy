@@ -83,7 +83,7 @@ void StatBar::updateColorOnContext() {
     if(fractionOfStat < 0.33) {
         setColor(255, 0, 0, 255);
     }
-    else if (fractionOfStat < 0.66) {
+    else if (fractionOfStat < 0.5) {
         setColor(255, 255, 0, 255);
     }
     else {

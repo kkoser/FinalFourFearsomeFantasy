@@ -29,7 +29,7 @@ BattleCharacterView::BattleCharacterView(string n, int x, int y, int cHealth, in
     animateDelta = 0.7;
     
     //initCursor
-    cursor = ImageView(x-48, y, pathForFile("Images/FF7Cursor.png"), renderer);
+    cursor = ImageView(x-50, y, pathForFile("Images/FF7Cursor.png"), renderer);
     
     //init name
     nameLabel = TextLabel(x,y + 195, name, defaultFont, 24);
@@ -58,6 +58,7 @@ void BattleCharacterView::draw() {
     if (isAnimating) {
         animate();
     }
+    //set red if targeted
     if (isTargeted) {
         nameLabel.setColor(255, 0, 0);
     }

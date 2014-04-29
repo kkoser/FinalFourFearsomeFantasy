@@ -135,7 +135,7 @@ int BattleViewController::draw(SDL_Event e) {
     
     //draw the moves of the active character
     drawActiveMoves();
-    
+        
     //check for user input
     handleEvent(e);
     
@@ -212,6 +212,9 @@ void BattleViewController::handleEvent(SDL_Event e) {
                 }
                 stream << " targets"<<endl;
                 displayLabel.setText(stream.str());
+                //get cursor showing
+                getViewForIndex(arrowSelectedPos)->setHasCursor(true);
+                
             }
             
         }
@@ -231,12 +234,27 @@ void BattleViewController::handleEvent(SDL_Event e) {
                     enemyViews[2].setIsAnimating(true);
                     break;
                 case SDLK_LEFT:
-                    arrowSelectedPos-=1;
+                    getViewForIndex(arrowSelectedPos)->setHasCursor(false);
+                    changeArrowSelectedPos(-1);
+                    getViewForIndex(arrowSelectedPos)->setHasCursor(true);
+                    
+                    
                     break;
                 case SDLK_RIGHT:
-                    arrowSelectedPos+=1;
+                    getViewForIndex(arrowSelectedPos)->setHasCursor(false);
+                    changeArrowSelectedPos(+1);
+                    getViewForIndex(arrowSelectedPos)->setHasCursor(true);
+                    
                     break;
                 case SDLK_SPACE:
+                    if (arrowSelectedPos >= mainCharViews.size()) {
+                        enemyViews[arrowSelectedPos - mainChars.size()].setIsTargeted(true);
+                        targets.push_back(enemies[arrowSelectedPos - mainChars.size()]);
+                    }
+                    else {
+                        mainCharViews[arrowSelectedPos].setIsTargeted(true);
+                        targets.push_back(mainChars[arrowSelectedPos]);
+                    }
                     //push back selected arrow if move allows it
                     break;
                 case SDLK_RETURN:
@@ -282,9 +300,32 @@ void BattleViewController::handleEvent(SDL_Event e) {
     }
 }
 
-int updateCursorForSelectedCharacter() {
-    
+BattleCharacterView* BattleViewController::getViewForIndex(int index) {
+    BattleCharacterView* chosenView;
+    if (index >= mainCharViews.size()) {
+        chosenView = &enemyViews[index - mainCharViews.size()];
+    }
+    else {
+        chosenView = &mainCharViews[index];
+    }
+    return chosenView;
 }
+
+void BattleViewController::changeArrowSelectedPos(int delta) {
+    arrowSelectedPos += delta;
+    //if greater
+    if (arrowSelectedPos == (mainCharViews.size() + enemyViews.size())) {
+        arrowSelectedPos = 0;
+    }
+    else if (arrowSelectedPos == -1) {
+        arrowSelectedPos = (mainCharViews.size() + enemyViews.size()-1);
+    }
+    else {
+        cout << "Cursor error; moved by more than one." <<endl;
+    }
+}
+
+
 
 void BattleViewController::nextCharacter() {
     //now clear up and switch to the next character
@@ -315,6 +356,16 @@ void BattleViewController::nextCharacter() {
     activeCharacterView->setCurrentPP(activeCharacter->getCurrentPP());
     
     targets = vector<Character *>();
+    
+    //clear targets and cursors
+    for (int i = 0; i < mainCharViews.size(); i++) {
+        mainCharViews[i].setIsTargeted(false);
+        mainCharViews[i].setHasCursor(false);
+    }
+    for (int i = 0; i < enemyViews.size(); i++) {
+        enemyViews[i].setIsTargeted(false);
+        enemyViews[i].setHasCursor(false);
+    }
     
     if (activeCharacter->getCurrentHealth() <= 0 || activeCharacter->getIsIncap()) {
         //nextCharacter();

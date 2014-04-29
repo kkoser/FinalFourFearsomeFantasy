@@ -63,6 +63,9 @@ private:
     
     void displayNextLine();
     
+    BattleCharacterView* getViewForIndex(int index); //gets view corresponding to character + enemies array
+    void changeArrowSelectedPos(int delta); //+1 or -1
+    
     
 public:
     BattleViewController(vector<MainCharacter *> chars, vector<Enemy *> enem, string locName, SDL_Renderer *ren);
