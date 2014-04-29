@@ -29,10 +29,14 @@ private:
     int x, y;
     TTF_Font *font = NULL;
     SDL_Color textColor;
+    SDL_Renderer *renderer;
         
 public:
-    TextLabel(int x = 0, int y = 0, string str = "none", string fontName = defaultFont, int size = 16);
+    TextLabel(int x = 0, int y = 0, string str = "none", string fontName = defaultFont, int size = 16, SDL_Renderer *ren = NULL);
+    ~TextLabel();
     void draw(SDL_Renderer *ren);
+    void draw(); //uses the last renderer
+    
     
     string getText();
     void setText(string str);

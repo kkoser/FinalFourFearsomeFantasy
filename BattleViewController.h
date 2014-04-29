@@ -71,6 +71,7 @@ private:
     
 public:
     BattleViewController(vector<MainCharacter *> chars, vector<Enemy *> enem, string locName, SDL_Renderer *ren);
+    ~BattleViewController();
     
     virtual int draw(SDL_Event e);
 };

@@ -34,6 +34,7 @@ public:
     ImageView();
     ImageView( ImageView const &other);
     ImageView(int x, int y, string fileName, SDL_Renderer *ren);
+    ~ImageView();
     
     int getX();
     int getY();

@@ -8,20 +8,35 @@
 
 #include "TextLabel.h"
 
-TextLabel::TextLabel(int cx, int cy, string str, string fontName, int size) {
+TextLabel::TextLabel(int cx, int cy, string str, string fontName, int size, SDL_Renderer *ren) {
     x = cx;
     y = cy;
     text = str;
+    renderer = ren;
     
     font = TTF_OpenFont(fontName.c_str(), size);
     if(font == NULL) printf("font fail: %s\n", TTF_GetError());
     textColor = {0,0,0};
 }
 
-void TextLabel::draw(SDL_Renderer *ren) {
-    texture.loadFromRenderedText(text, textColor, ren, font);
-    texture.render(ren, x, y);
+TextLabel::~TextLabel() {
+    texture.free();
+    //TTF_CloseFont(font);
+}
 
+void TextLabel::draw(SDL_Renderer *ren) {
+    //texture.loadFromRenderedText(text, textColor, ren, font);
+    renderer = ren;
+    draw();
+
+}
+
+void TextLabel::draw() {
+    if (texture.getHeight() <= 0) {
+        texture.loadFromRenderedText(text, textColor, renderer, font);
+    }
+    texture.render(renderer, x, y);
+    
 }
 
 string TextLabel::getText() {
@@ -30,6 +45,7 @@ string TextLabel::getText() {
 
 void TextLabel::setText(string str) {
     text = str;
+    texture.loadFromRenderedText(text, textColor, renderer, font);
 }
 
 int TextLabel::getX() {
@@ -54,6 +70,7 @@ SDL_Color TextLabel::getColor() {
 
 void TextLabel::setColor(SDL_Color col) {
     textColor = col;
+    texture.loadFromRenderedText(text, textColor, renderer, font);
 }
 
 void TextLabel::setColor(Uint8 r, Uint8 g, Uint8 b) {

@@ -57,9 +57,20 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     music = Mix_LoadMUS(pathName.c_str());
     
     Mix_PlayMusic(music, -1);
-    
 
+}
 
+BattleViewController::~BattleViewController() {
+    while (enemies.size() > 0) {
+        Enemy* enemy = enemies[0];
+        enemies.erase(enemies.begin() + 0);
+        delete enemy;
+    }
+    while (mainChars.size() > 0) {
+        MainCharacter* character = mainChars[0];
+        mainChars.erase(mainChars.begin() + 0);
+        delete character;
+    }
 }
 
 vector<BattleCharacterView> BattleViewController::plotViewsAroundCircle(int x, int y, int radius, vector<Character *> chars) {
@@ -243,6 +254,9 @@ void BattleViewController::handleEvent(SDL_Event e) {
                     if (selectedMove.compare("") != 0) {
                         moveFinal = true;
                     }
+                    break;
+                case SDLK_ESCAPE:
+                    dismiss();
                     break;
                 default:
                     break;

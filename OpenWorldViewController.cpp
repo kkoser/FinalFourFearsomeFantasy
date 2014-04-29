@@ -557,17 +557,17 @@ int OpenWorldViewController::draw(SDL_Event e) {
             vector<MainCharacter *> chars;
             vector<Enemy *> enemies;
             
-            MainCharacter Elsa(pathForFile("Characters/Elsa.character"));
-            MainCharacter Elsa2(pathForFile("Characters/Elsa.character"));
-            MainCharacter Elsa3(pathForFile("Characters/Elsa.character"));
-            chars.push_back(&Elsa);
-            chars.push_back(&Elsa2);
-            chars.push_back(&Elsa3);
+            MainCharacter *Elsa = new MainCharacter(pathForFile("Characters/Elsa.character"));
+            MainCharacter *Elsa2 = new MainCharacter(pathForFile("Characters/Elsa.character"));
+            MainCharacter *Elsa3 = new MainCharacter(pathForFile("Characters/Elsa.character"));
+            chars.push_back(Elsa);
+            chars.push_back(Elsa2);
+            chars.push_back(Elsa3);
             
-            Enemy goblin(pathForFile("Characters/Goblin.character"));
-            Enemy goblin2(pathForFile("Characters/Troll.character"));
-            enemies.push_back(&goblin);
-            enemies.push_back(&goblin2);
+            Enemy *goblin = new Enemy(pathForFile("Characters/Goblin.character"));
+            Enemy *goblin2 = new Enemy(pathForFile("Characters/Troll.character"));
+            enemies.push_back(goblin);
+            enemies.push_back(goblin2);
             
             BattleViewController *vc = new BattleViewController(chars, enemies, pathForFile("Images/arendelle.jpg"), renderer);
 

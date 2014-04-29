@@ -34,6 +34,9 @@ ImageView::ImageView(ImageView const &other) {
     renderer = other.renderer;
 
 }
+ImageView::~ImageView() {
+    texture.free();
+}
 
 void ImageView::load() {
     if (!(texture.getWidth() > 0)) {
