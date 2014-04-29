@@ -12,6 +12,10 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     mainChars = chars;
     enemies = enem;
     
+    //init vc
+    victory = 0;
+    defeat = 0;
+    finalText = TextLabel(300, 300, "", defaultFont, 48);
     
     //plot main characters around circle
     vector<Character *> tempVector(mainChars.begin(), mainChars.end());
@@ -37,7 +41,7 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     activeMoves[2].setColor(0, 0, 0);
     activeMoves[3].setColor(0, 0, 0);
 
-    displayLabel = TextLabel(0,530, "", defaultFont, 24);
+    displayLabel = TextLabel(0,530, "", defaultFont, 24, renderer);
     
     //init active character
     activeCharacter = *mainChars.begin();
@@ -130,28 +134,36 @@ int BattleViewController::draw(SDL_Event e) {
     if(ViewController::draw(e)==0) { //returns 0 if this view controller should not draw
         return 0;
     }
-    //draw!
+    //display ending screen
+    if (victory || defeat) {
+        finalText.draw();
+        SDL_Delay(1000);
+        dismiss();
+    }
+    else {
+        //draw!
 
-    //draw the background
-    backgroundImage.draw();
-    displayLabel.draw(renderer);
-    
-    //draw the mainCharacters
-    typename vector<BattleCharacterView>::iterator iter;
-    for (iter = mainCharViews.begin(); iter != mainCharViews.end(); ++iter) {
-        iter->draw();
-    }
-    
-    //draw the enemies
-    typename vector<BattleCharacterView>::iterator iter2;
-    for (iter2 = enemyViews.begin(); iter2 != enemyViews.end(); ++iter2) {
-        iter2->draw();
-    }
-    
-    
-    //draw the moves of the active character
-    drawActiveMoves();
+        //draw the background
+        backgroundImage.draw();
+        displayLabel.draw(renderer);
         
+        //draw the mainCharacters
+        typename vector<BattleCharacterView>::iterator iter;
+        for (iter = mainCharViews.begin(); iter != mainCharViews.end(); ++iter) {
+            iter->draw();
+        }
+        
+        //draw the enemies
+        typename vector<BattleCharacterView>::iterator iter2;
+        for (iter2 = enemyViews.begin(); iter2 != enemyViews.end(); ++iter2) {
+            iter2->draw();
+        }
+        
+        
+        //draw the moves of the active character
+        drawActiveMoves();
+        
+    }
     //check for user input
     handleEvent(e);
     
@@ -404,6 +416,24 @@ void BattleViewController::handleEvent(SDL_Event e) {
     }
 }
 
+bool BattleViewController::arePlayersDead() {
+    for (int i = 0; i < mainChars.size(); i++) {
+        if (mainChars[i]->getCurrentHealth() > 0) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+bool BattleViewController::areEnemiesDead() {
+    for (int i = 0; i < enemies.size(); i++) {
+        if (enemies[i]->getCurrentHealth() > 0) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
 BattleCharacterView* BattleViewController::getViewForIndex(int index) {
     BattleCharacterView* chosenView;
     if (index >= mainCharViews.size()) {
@@ -477,6 +507,18 @@ void BattleViewController::nextCharacter() {
     updateCharacterViews();
     
     moveFinal = false;
+    
+    //check for victory
+    if (arePlayersDead()) {
+        defeat = 1;
+        finalText.setText("You lose the game.");
+        finalText.setColor(255, 0, 0);
+    }
+    else if (areEnemiesDead()) {
+        victory = 1;
+        finalText.setText("You win the battle!");
+        finalText.setColor(0, 255, 0);
+    }
     
     if (activeCharacter->getCurrentHealth() <= 0 || activeCharacter->getIsIncap()) {
         displayLabel.setText(activeCharacter->getName() + " is unable to battle this turn");

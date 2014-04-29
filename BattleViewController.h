@@ -42,6 +42,11 @@ private:
     int selectedPos; //keeps track of what player is selected. Cannot use iterator because they are different classes
                      //its the index of the array of the character choosing their move
     int arrowSelectedPos; //the index of characters+enemies that the arrow keys are hovering over
+    
+    bool victory;
+    bool defeat;
+    TextLabel finalText;
+    
     vector<Character *> targets;
     
     
@@ -68,6 +73,8 @@ private:
     BattleCharacterView* getViewForIndex(int index); //gets view corresponding to character + enemies array
     void changeArrowSelectedPos(int delta); //+1 or -1
     
+    bool arePlayersDead(); //returns 1 if all friendlies dead
+    bool areEnemiesDead(); //returns 1 if all enemies dead
     
 public:
     BattleViewController(vector<MainCharacter *> chars, vector<Enemy *> enem, string locName, SDL_Renderer *ren);
