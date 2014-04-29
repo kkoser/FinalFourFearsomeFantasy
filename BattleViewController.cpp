@@ -402,6 +402,8 @@ void BattleViewController::nextCharacter() {
     
     updateActiveMoves();
     
+    moveFinal = false;
+    
     if (activeCharacter->getCurrentHealth() <= 0 || activeCharacter->getIsIncap()) {
         //nextCharacter();
     }
