@@ -23,13 +23,19 @@ BattleCharacterView::BattleCharacterView(string n, int x, int y, int cHealth, in
     isAnimating = 0; //init no animate
     isTargeted = 0;
     hasCursor = 0;
+    hasStatus = 0;
+    
     
     //init image
     image = ImageView(x, y + 75, spriteLoc, renderer);
     animateDelta = 0.7;
     
-    //initCursor
-    cursor = ImageView(x-50, y, pathForFile("Images/FF7Cursor.png"), renderer);
+    //init Cursor, status, dead, incap
+    cursorImage = ImageView(x-50, y, pathForFile("Images/FF7Cursor.png"), renderer);
+    statusImage = ImageView(x, y + 220, pathForFile("Images/statusIcon.png"), renderer);
+    incapImage = ImageView(x + 20, y + 220, pathForFile("Images/incapIcon.png"), renderer);
+    deadImage = ImageView(x + 40, y + 220, pathForFile("Images/deadIcon.png"), renderer);
+    
     
     //init name
     nameLabel = TextLabel(x,y + 195, name, defaultFont, 24);
@@ -66,8 +72,15 @@ void BattleCharacterView::draw() {
         nameLabel.setColor(255, 255, 255);
     }
     
+    //various icons
     if (hasCursor) {
-        cursor.draw(renderer);
+        cursorImage.draw(renderer);
+    }
+    if (hasStatus) {
+        statusImage.draw(renderer);
+    }
+    if (isIncap) {
+        incapImage.draw();
     }
 }
 
@@ -82,6 +95,14 @@ void BattleCharacterView::animate() {
 }
 
 //SETTERS / GETTERS
+
+void BattleCharacterView::setHasStatus(bool stat) {
+    hasStatus = stat;
+}
+
+bool BattleCharacterView::gethasStatus() {
+    return hasStatus;
+}
 
 void BattleCharacterView::setHasCursor(bool curs) {
     hasCursor = curs;

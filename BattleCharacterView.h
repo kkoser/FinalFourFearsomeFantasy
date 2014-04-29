@@ -39,6 +39,8 @@ public:
     bool getIsTargeted();
     void setHasCursor(bool curs);
     bool getHasCursor();
+    void setHasStatus(bool stat);
+    bool gethasStatus();
     
     void draw();
     
@@ -51,16 +53,16 @@ private:
     int currentPP;
     int maxPP;
     int currentShield;
-    bool isIncap;
     
     bool isAnimating;
     double animateDelta; //amount to change animation by
     void animate();
     
     bool isTargeted;
-    
     bool hasCursor;
-    
+    bool hasStatus;
+    bool isIncap;
+
     string name;
     string spriteLocation;
     
@@ -70,7 +72,10 @@ private:
     TextLabel shieldLabel;
     StatBar healthBar;
     StatBar PPBar;
-    ImageView cursor;
+    ImageView cursorImage;
+    ImageView statusImage;
+    ImageView incapImage;
+    ImageView deadImage;
     
     SDL_Renderer *renderer;
     
