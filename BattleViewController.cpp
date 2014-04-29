@@ -368,10 +368,6 @@ void BattleViewController::handleEvent(SDL_Event e) {
                         
                         //nextCharacter();
                     }
-                    else {
-                        //they are confirming the move they want to use
-                        getViewForIndex(arrowSelectedPos)->setHasCursor(true);
-                    }
                     
                     break;
                 default:

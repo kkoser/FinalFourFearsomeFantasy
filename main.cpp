@@ -174,9 +174,11 @@ int main( int argc, char* args[] )
         enemies.push_back(&goblin);
         enemies.push_back(&goblin2);
 
-        BattleViewController baseVC(chars, enemies, pathForFile("Images/arendelle.jpg"), gRenderer);
+        //BattleViewController baseVC(chars, enemies, pathForFile("Images/arendelle.jpg"), gRenderer);
         //OpenWorldViewController baseVC(gRenderer);
         //ExampleViewController baseVC(gRenderer);
+        
+        MainMenuViewController baseVC(gRenderer);
         
         //While application is running
         while( !quit )
