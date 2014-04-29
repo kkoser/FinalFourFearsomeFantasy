@@ -308,10 +308,15 @@ void BattleViewController::handleEvent(SDL_Event e) {
                             displayText.push_back(line);
                         }
                         
-                        displayNextLine();
+                        
                         activeCharacterView->setIsAnimating(false);
                         moveFinal = false;
                         selectedMove = "";
+                        
+                        displayNextLine();
+                        if (displayText.size() == 0) {
+                            nextCharacter();
+                        }
                         
                         
                         //nextCharacter();
@@ -394,6 +399,7 @@ void BattleViewController::nextCharacter() {
         activeMoves[i].setColor(0, 0, 0);
     }
     
+    activeCharacter->updateStatuses();
     activeCharacter->regenPP();
     activeCharacterView->setCurrentPP(activeCharacter->getCurrentPP());
     
@@ -412,8 +418,6 @@ void BattleViewController::nextCharacter() {
     updateActiveMoves();
     
     moveFinal = false;
-    
-    activeCharacter->updateStatuses();
     
     if (activeCharacter->getCurrentHealth() <= 0 || activeCharacter->getIsIncap()) {
         //nextCharacter();
