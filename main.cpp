@@ -170,7 +170,7 @@ int main( int argc, char* args[] )
         chars.push_back(&Elsa3);
         
         Enemy goblin(pathForFile("Characters/Goblin.character"));
-        Enemy goblin2(pathForFile("Characters/Goblin.character"));
+        Enemy goblin2(pathForFile("Characters/Troll.character"));
         enemies.push_back(&goblin);
         enemies.push_back(&goblin2);
 

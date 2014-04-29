@@ -15,11 +15,11 @@ Enemy::Enemy(string file) : Character(file) {
 //the basic implementation simply acts the first move on the first character
 void Enemy::actOnCharacters(vector<Character *> enemies, vector<Character *> team) {
     Character *target = enemies[0];
-    string move = moves[0];
+    //string move = moves[0];
     vector<Character *> targets(1);
     string selMove = this->selectMove(enemies, team);
     targets[0] = target;
-    this->actMoveOnTarget(move, targets);
+    this->actMoveOnTarget(selMove, targets);
 }
 
 string Enemy::selectMove(vector<Character *> enemies, vector<Character *> team){

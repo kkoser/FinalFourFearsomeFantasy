@@ -273,6 +273,9 @@ void Character::changeHealth(int newHealth) {
     else setCurrentHealth(newHealth); // no shield or not damaging
 }
 
+//0 means all characters
+//-1 is all Friendlies
+//-2 is all enemies
 int Character::numTargetsForMove(string moveName) {
     string fileName = pathForFile("Moves/" + moveName + ".move");
     //open file
@@ -296,6 +299,12 @@ int Character::numTargetsForMove(string moveName) {
                 getline(iss, word, ' ');
                 if (word=="ALL") {
                     return 0;
+                }
+                else if (word == "ALL_FRIENDS") {
+                    return -1;
+                }
+                else if (word == "ALL_ENEMIES") {
+                    return -2;
                 }
                 else {
                     return atoi(word.c_str()); //convert to int

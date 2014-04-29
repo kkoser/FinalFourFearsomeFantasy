@@ -37,7 +37,6 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     activeMoves[2].setColor(0, 0, 0);
     activeMoves[3].setColor(0, 0, 0);
 
-    
     displayLabel = TextLabel(0,530, "", defaultFont, 24);
     
     //init active character
@@ -150,6 +149,19 @@ int BattleViewController::draw(SDL_Event e) {
 }
 
 void BattleViewController::handleEvent(SDL_Event e) {
+    
+    //is there text on the screen?
+    if (displayText.size() > 0) {
+        if (e.type == SDL_KEYDOWN) {
+            displayNextLine();
+            if (displayText.size() == 0) {
+                nextCharacter();
+                //displayLabel.setText("");
+            }
+        }
+        
+        return;
+    }
     //if an enemy is acting and not a player character
     if (selectedPos >= mainChars.size()) {
         //this is an enemy character, so we dont get their move, they choose
@@ -164,26 +176,27 @@ void BattleViewController::handleEvent(SDL_Event e) {
         while (getline(stream, line, '\n')) {
             displayText.push_back(line);
         }
+        displayText.push_back("");
         
         displayNextLine();
         
         //need to update all of the mainChar views
         updateCharacterViews();
         
-        nextCharacter();
-        return;
+        //nextCharacter();
+        //return;
     }
     //otherwise get player input
     if (e.type == SDL_KEYDOWN) {
         //is there text on the screen?
-        if (displayText.size() > 0) {
-            displayNextLine();
-            if (displayText.size() == 0) {
-                nextCharacter();
-                //displayLabel.setText("");
-            }
-        }
-        else if (!moveFinal) {
+//        if (displayText.size() > 0) {
+//            displayNextLine();
+//            if (displayText.size() == 0) {
+//                nextCharacter();
+//                //displayLabel.setText("");
+//            }
+//        }
+        if (!moveFinal) {
             //there is no selected move, so they are selecting one
             switch (e.key.keysym.sym) {
                 case SDLK_1:
@@ -243,6 +256,12 @@ void BattleViewController::handleEvent(SDL_Event e) {
                 if (numTargets == 0) {
                     stream << "all";
                 }
+                else if (numTargets == -1) {
+                    stream << "all friendly";
+                }
+                else if (numTargets == -2) {
+                    stream << "all enemy";
+                }
                 else {
                     stream << numTargets;
                 }
@@ -251,7 +270,33 @@ void BattleViewController::handleEvent(SDL_Event e) {
                 //get cursor showing
                 if (moveFinal) {
                     //they selected a final move, so show the selector
-                    getViewForIndex(arrowSelectedPos)->setHasCursor(true);
+                    //if the move takes an ALL target, select it for them
+                    int numTargets = activeCharacter->numTargetsForMove(selectedMove);
+                    if (numTargets == 0) {
+                        targets.insert(targets.end(),mainChars.begin(), mainChars.end());
+                        targets.insert(targets.end(), enemies.begin(), enemies.end());
+                        for (int i = 0; i < mainCharViews.size(); i++) {
+                            mainCharViews[i].setIsTargeted(true);
+                        }
+                        for (int i = 0; i < enemyViews.size(); i++) {
+                            enemyViews[i].setIsTargeted(true);
+                        }
+                    }
+                    else if (numTargets == -1){
+                        targets.insert(targets.end(),mainChars.begin(), mainChars.end());
+                        for (int i = 0; i < mainCharViews.size(); i++) {
+                            mainCharViews[i].setIsTargeted(true);
+                        }
+                    }
+                    else if (numTargets == -2) {
+                        targets.insert(targets.end(), enemies.begin(), enemies.end());
+                        for (int i = 0; i < enemyViews.size(); i++) {
+                            enemyViews[i].setIsTargeted(true);
+                        }
+                    }
+                    else {
+                        getViewForIndex(arrowSelectedPos)->setHasCursor(true);
+                    }
                 }
                 
                 
@@ -307,6 +352,8 @@ void BattleViewController::handleEvent(SDL_Event e) {
                         while (getline(stream, line, '\n')) {
                             displayText.push_back(line);
                         }
+                        
+                        displayText.push_back("");
                         
                         
                         activeCharacterView->setIsAnimating(false);
@@ -422,7 +469,8 @@ void BattleViewController::nextCharacter() {
     moveFinal = false;
     
     if (activeCharacter->getCurrentHealth() <= 0 || activeCharacter->getIsIncap()) {
-        //nextCharacter();
+        displayLabel.setText(activeCharacter->getName() + " is unable to battle this turn");
+        nextCharacter();
         cout << "HE DEAD"<<endl;
     }
 }
