@@ -36,6 +36,7 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     activeMoves[1].setColor(0, 0, 0);
     activeMoves[2].setColor(0, 0, 0);
     activeMoves[3].setColor(0, 0, 0);
+
     
     displayLabel = TextLabel(0,530, "", defaultFont, 24);
     
@@ -47,9 +48,13 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     selectedMove = "";
     arrowSelectedPos = 0;
     
+<<<<<<< HEAD
     //test
     activeCharacterView->setHasStatus(true);
     activeCharacterView->setIsIncap(true);
+=======
+    updateActiveMoves();
+>>>>>>> FETCH_HEAD
     
     drawActiveMoves();
     
@@ -89,21 +94,6 @@ vector<BattleCharacterView> BattleViewController::plotViewsAroundCircle(int x, i
 }
 
 void BattleViewController::drawActiveMoves() {
-    
-    //clear old moves
-    activeMoves[0].setText("1: ");
-    activeMoves[1].setText("2: ");
-    activeMoves[2].setText("3: ");
-    activeMoves[3].setText("4: ");
-
-    vector<string> moves = activeCharacter->getMoves();
-    
-    //update labels
-    for (int i = 0; i < moves.size(); i++) {
-        stringstream text;
-        text << i+1 << ": " << moves[i];
-        activeMoves[i].setText(text.str());
-    }
     //draw
     activeMoves[0].draw(renderer);
     activeMoves[1].draw(renderer);
@@ -111,6 +101,25 @@ void BattleViewController::drawActiveMoves() {
     activeMoves[3].draw(renderer);
 
 }
+
+void BattleViewController::updateActiveMoves() {
+    //clear old moves
+    activeMoves[0].setText("1: ");
+    activeMoves[1].setText("2: ");
+    activeMoves[2].setText("3: ");
+    activeMoves[3].setText("4: ");
+    
+    vector<string> moves = activeCharacter->getMoves();
+    
+    //update labels
+    for (int i = 0; i < moves.size(); i++) {
+        int pp = activeCharacter->ppCostForMove(moves[i]);
+        stringstream text;
+        text << i+1 << ": " << moves[i] << ", PP: "<<pp;
+        activeMoves[i].setText(text.str());
+    }
+}
+
 
 
 int BattleViewController::draw(SDL_Event e) {
@@ -180,24 +189,41 @@ void BattleViewController::handleEvent(SDL_Event e) {
                 //displayLabel.setText("");
             }
         }
-        else if (selectedMove.compare("") == 0) {
+        else if (!moveFinal) {
             //there is no selected move, so they are selecting one
             switch (e.key.keysym.sym) {
                 case SDLK_1:
+                    for (int i = 0; i < 4; i++) {
+                        activeMoves[i].setColor(0,0,0);
+                    }
                     selectedMove = activeCharacter->getMoves()[0];
                     activeMoves[0].setColor(255,0,0);
                     break;
                 case SDLK_2:
+                    for (int i = 0; i < 4; i++) {
+                        activeMoves[i].setColor(0,0,0);
+                    }
                     selectedMove = activeCharacter->getMoves()[1];
                     activeMoves[1].setColor(255,0,0);
                     break;
                 case SDLK_3:
+                    for (int i = 0; i < 4; i++) {
+                        activeMoves[i].setColor(0,0,0);
+                    }
                     selectedMove = activeCharacter->getMoves()[2];
                     activeMoves[2].setColor(255,0,0);
                     break;
                 case SDLK_4:
+                    for (int i = 0; i < 4; i++) {
+                        activeMoves[i].setColor(0,0,0);
+                    }
                     selectedMove = activeCharacter->getMoves()[3];
                     activeMoves[3].setColor(255,0,0);
+                    break;
+                case SDLK_RETURN:
+                    if (selectedMove.compare("") != 0) {
+                        moveFinal = true;
+                    }
                     break;
                 default:
                     break;
@@ -217,7 +243,11 @@ void BattleViewController::handleEvent(SDL_Event e) {
                 stream << " targets"<<endl;
                 displayLabel.setText(stream.str());
                 //get cursor showing
-                getViewForIndex(arrowSelectedPos)->setHasCursor(true);
+                if (moveFinal) {
+                    //they selected a final move, so show the selector
+                    getViewForIndex(arrowSelectedPos)->setHasCursor(true);
+                }
+                
                 
             }
             
@@ -283,6 +313,11 @@ void BattleViewController::handleEvent(SDL_Event e) {
                         
                         //nextCharacter();
                     }
+                    else {
+                        //they are confirming the move they want to use
+                        getViewForIndex(arrowSelectedPos)->setHasCursor(true);
+                    }
+                    
                     break;
                 default:
                     break;
@@ -370,6 +405,10 @@ void BattleViewController::nextCharacter() {
         enemyViews[i].setIsTargeted(false);
         enemyViews[i].setHasCursor(false);
     }
+    
+    updateActiveMoves();
+    
+    moveFinal = false;
     
     if (activeCharacter->getCurrentHealth() <= 0 || activeCharacter->getIsIncap()) {
         //nextCharacter();
