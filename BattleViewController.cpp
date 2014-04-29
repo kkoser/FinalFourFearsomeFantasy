@@ -441,7 +441,7 @@ void BattleViewController::updateCharacterViews() {
         mainCharViews[i].setIsIncap(mainChars[i]->getIsIncap());
         mainCharViews[i].setHasStatus(mainChars[i]->getNumberOfStatuses());
     }
-    for (int i = 0; i < enemyViews.size(); i++) {
+    for (int i = 0; i < enemies.size(); i++) {
         enemyViews[i].setCurrentHealth(enemies[i]->getCurrentHealth());
         enemyViews[i].setCurrentPP(enemies[i]->getCurrentPP());
         enemyViews[i].setCurrentShield(enemies[i]->getCurrentShield());
