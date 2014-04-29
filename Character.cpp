@@ -440,7 +440,7 @@ int Character::ppCostForMove(string move) {
                 getline(issline, word, ' ');
                 if (word=="PP") {
                     getline(issline, word, ' ');
-                    int val = getValueForCommand(word, getCurrentPP(), 1);
+                    int val = currentPP - getValueForCommand(word, getCurrentPP(), 1);
                     return val;
                 }
             }
@@ -548,4 +548,8 @@ void Character::clearDisplayLog() {
 
 void Character::regenPP()   {
     setCurrentPP(getCurrentPP()+getCurrentPPRegen());
+}
+
+int Character::getNumberOfStatuses() {
+    return statuses.size();
 }

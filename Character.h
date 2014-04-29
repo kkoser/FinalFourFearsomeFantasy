@@ -91,6 +91,7 @@ public:
     int getIsIncap();
     string getDisplayLog();
     void clearDisplayLog();
+    int getNumberOfStatuses();
     
     void regenPP();
     

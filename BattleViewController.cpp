@@ -195,29 +195,41 @@ void BattleViewController::handleEvent(SDL_Event e) {
                     for (int i = 0; i < 4; i++) {
                         activeMoves[i].setColor(0,0,0);
                     }
-                    selectedMove = activeCharacter->getMoves()[0];
-                    activeMoves[0].setColor(255,0,0);
+                    if(activeCharacter->canCastMove(activeCharacter->getMoves()[0])) {
+                        selectedMove = activeCharacter->getMoves()[0];
+                        activeMoves[0].setColor(255,0,0);
+                    }
+                    else displayLabel.setText("Not enough PP");
                     break;
                 case SDLK_2:
                     for (int i = 0; i < 4; i++) {
                         activeMoves[i].setColor(0,0,0);
                     }
-                    selectedMove = activeCharacter->getMoves()[1];
-                    activeMoves[1].setColor(255,0,0);
+                    if(activeCharacter->canCastMove(activeCharacter->getMoves()[1])) {
+                        selectedMove = activeCharacter->getMoves()[1];
+                        activeMoves[1].setColor(255,0,0);
+                    }
+                    else displayLabel.setText("Not enough PP");
                     break;
                 case SDLK_3:
                     for (int i = 0; i < 4; i++) {
                         activeMoves[i].setColor(0,0,0);
                     }
-                    selectedMove = activeCharacter->getMoves()[2];
-                    activeMoves[2].setColor(255,0,0);
+                    if(activeCharacter->canCastMove(activeCharacter->getMoves()[2])) {
+                        selectedMove = activeCharacter->getMoves()[2];
+                        activeMoves[2].setColor(255,0,0);
+                    }
+                    else displayLabel.setText("Not enough PP");
                     break;
                 case SDLK_4:
                     for (int i = 0; i < 4; i++) {
                         activeMoves[i].setColor(0,0,0);
                     }
-                    selectedMove = activeCharacter->getMoves()[3];
-                    activeMoves[3].setColor(255,0,0);
+                    if(activeCharacter->canCastMove(activeCharacter->getMoves()[3])) {
+                        selectedMove = activeCharacter->getMoves()[3];
+                        activeMoves[3].setColor(255,0,0);
+                    }
+                    else displayLabel.setText("Not enough PP");
                     break;
                 case SDLK_RETURN:
                     if (selectedMove.compare("") != 0) {
@@ -239,7 +251,7 @@ void BattleViewController::handleEvent(SDL_Event e) {
                 else {
                     stream << numTargets;
                 }
-                stream << " targets"<<endl;
+                stream << " targets."<<endl;
                 displayLabel.setText(stream.str());
                 //get cursor showing
                 if (moveFinal) {
@@ -254,41 +266,36 @@ void BattleViewController::handleEvent(SDL_Event e) {
         else {
             //they have selected a move, now select a character to act it on
             switch (e.key.keysym.sym) {
-                case SDLK_1:
-                    targets.push_back(enemies[0]);
-                    enemyViews[0].setIsAnimating(true);
-                    break;
-                case SDLK_2:
-                    targets.push_back(enemies[1]);
-                    enemyViews[1].setIsAnimating(true);
-                    break;
-                case SDLK_3:
-                    targets.push_back(enemies[2]);
-                    enemyViews[2].setIsAnimating(true);
-                    break;
                 case SDLK_LEFT:
-                    getViewForIndex(arrowSelectedPos)->setHasCursor(false);
-                    changeArrowSelectedPos(-1);
-                    getViewForIndex(arrowSelectedPos)->setHasCursor(true);
-                    
-                    
-                    break;
-                case SDLK_RIGHT:
                     getViewForIndex(arrowSelectedPos)->setHasCursor(false);
                     changeArrowSelectedPos(+1);
                     getViewForIndex(arrowSelectedPos)->setHasCursor(true);
-                    
+                    break;
+                case SDLK_RIGHT:
+                    getViewForIndex(arrowSelectedPos)->setHasCursor(false);
+                    changeArrowSelectedPos(-1);
+                    getViewForIndex(arrowSelectedPos)->setHasCursor(true);
                     break;
                 case SDLK_SPACE:
-                    if (arrowSelectedPos >= mainCharViews.size()) {
-                        enemyViews[arrowSelectedPos - mainChars.size()].setIsTargeted(true);
-                        targets.push_back(enemies[arrowSelectedPos - mainChars.size()]);
-                    }
-                    else {
-                        mainCharViews[arrowSelectedPos].setIsTargeted(true);
-                        targets.push_back(mainChars[arrowSelectedPos]);
-                    }
                     //push back selected arrow if move allows it
+                    if (targets.size() < activeCharacter->numTargetsForMove(selectedMove)) {
+                        if (arrowSelectedPos >= mainCharViews.size()) {
+                            enemyViews[arrowSelectedPos - mainChars.size()].setIsTargeted(true);
+                            
+                            //if not already there
+                            if (find(targets.begin(), targets.end(), enemies[arrowSelectedPos - mainChars.size()]) == targets.end()) {
+                                targets.push_back(enemies[arrowSelectedPos - mainChars.size()]);
+                            }
+                        }
+                        else {
+                            mainCharViews[arrowSelectedPos].setIsTargeted(true);
+                            if (find(targets.begin(), targets.end(), mainChars[arrowSelectedPos]) == targets.end()) {
+                                targets.push_back(mainChars[arrowSelectedPos]);
+                            }
+                        }
+                    }
+                    else displayLabel.setText("Max targets reached. Press Return to cast");
+
                     break;
                 case SDLK_RETURN:
                     //this one actually does the move
@@ -356,7 +363,7 @@ void BattleViewController::changeArrowSelectedPos(int delta) {
         arrowSelectedPos = 0;
     }
     else if (arrowSelectedPos == -1) {
-        arrowSelectedPos = (mainCharViews.size() + enemyViews.size()-1);
+        arrowSelectedPos = ((int)mainCharViews.size() + (int)enemyViews.size()-1);
     }
     else {
         cout << "Cursor error; moved by more than one." <<endl;
@@ -427,12 +434,16 @@ void BattleViewController::updateCharacterViews() {
         mainCharViews[i].setCurrentPP(mainChars[i]->getCurrentPP());
         mainCharViews[i].setCurrentShield(mainChars[i]->getCurrentShield());
         mainCharViews[i].setIsAnimating(false);
+        mainCharViews[i].setIsIncap(mainChars[i]->getIsIncap());
+        mainCharViews[i].setHasStatus(mainChars[i]->getNumberOfStatuses());
     }
     for (int i = 0; i < enemyViews.size(); i++) {
         enemyViews[i].setCurrentHealth(enemies[i]->getCurrentHealth());
         enemyViews[i].setCurrentPP(enemies[i]->getCurrentPP());
         enemyViews[i].setCurrentShield(enemies[i]->getCurrentShield());
         enemyViews[i].setIsAnimating(false);
+        enemyViews[i].setIsIncap(enemies[i]->getIsIncap());
+        enemyViews[i].setHasStatus(enemies[i]->getNumberOfStatuses());
     }
 }
 

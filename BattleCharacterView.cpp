@@ -82,6 +82,9 @@ void BattleCharacterView::draw() {
     if (isIncap) {
         incapImage.draw();
     }
+    if (currentHealth <= 0) {
+        deadImage.draw(renderer);
+    }
 }
 
 void BattleCharacterView::animate() {
