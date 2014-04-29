@@ -399,10 +399,11 @@ void BattleViewController::nextCharacter() {
         activeMoves[i].setColor(0, 0, 0);
     }
     
-    activeCharacter->updateStatuses();
-    activeCharacter->regenPP();
-    activeCharacterView->setCurrentPP(activeCharacter->getCurrentPP());
-    
+      activeCharacter->updateStatuses();
+      activeCharacter->regenPP();
+//    activeCharacterView->setCurrentPP(activeCharacter->getCurrentPP());
+//    activeCharacterView->setIsIncap(activeCharacter->getIsIncap());
+
     targets = vector<Character *>();
     
     //clear targets and cursors
@@ -416,6 +417,7 @@ void BattleViewController::nextCharacter() {
     }
     
     updateActiveMoves();
+    updateCharacterViews();
     
     moveFinal = false;
     
@@ -435,7 +437,7 @@ void BattleViewController::updateCharacterViews() {
         mainCharViews[i].setCurrentHealth(mainChars[i]->getCurrentHealth());
         mainCharViews[i].setCurrentPP(mainChars[i]->getCurrentPP());
         mainCharViews[i].setCurrentShield(mainChars[i]->getCurrentShield());
-        mainCharViews[i].setIsAnimating(false);
+        //mainCharViews[i].setIsAnimating(false);
         mainCharViews[i].setIsIncap(mainChars[i]->getIsIncap());
         mainCharViews[i].setHasStatus(mainChars[i]->getNumberOfStatuses());
     }
@@ -443,7 +445,7 @@ void BattleViewController::updateCharacterViews() {
         enemyViews[i].setCurrentHealth(enemies[i]->getCurrentHealth());
         enemyViews[i].setCurrentPP(enemies[i]->getCurrentPP());
         enemyViews[i].setCurrentShield(enemies[i]->getCurrentShield());
-        enemyViews[i].setIsAnimating(false);
+        //enemyViews[i].setIsAnimating(false);
         enemyViews[i].setIsIncap(enemies[i]->getIsIncap());
         enemyViews[i].setHasStatus(enemies[i]->getNumberOfStatuses());
     }
