@@ -153,8 +153,9 @@ void BattleViewController::handleEvent(SDL_Event e) {
     //if an enemy is acting and not a player character
     if (selectedPos >= mainChars.size()) {
         //this is an enemy character, so we dont get their move, they choose
-        vector<Character *> chars = vector<Character *>(mainChars.begin(), mainChars.end());
-        ((Enemy *)activeCharacter)->actOnCharacters(chars);
+        vector<Character *> enems = vector<Character *>(enemies.begin(), enemies.end());
+        vector<Character *> mains = vector<Character *>(mainChars.begin(), mainChars.end());
+        ((Enemy *)activeCharacter)->actOnCharacters(mains, enems);
         
         displayText = vector<string>();
         istringstream stream(activeCharacter->getDisplayLog());
@@ -309,6 +310,8 @@ void BattleViewController::handleEvent(SDL_Event e) {
                         
                         displayNextLine();
                         activeCharacterView->setIsAnimating(false);
+                        moveFinal = false;
+                        selectedMove = "";
                         
                         
                         //nextCharacter();

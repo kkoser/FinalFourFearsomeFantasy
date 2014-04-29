@@ -19,8 +19,9 @@ public:
     
     //AI decision function. Recieves all of the valid Character targets, and chooses what move to act on what target(s)
     //Subclasses override this for specific AI behavior
-    void actOnCharacters(vector<Character *> chars);
+    void actOnCharacters(vector<Character *> enemies, vector<Character *>team);
 private:
+    string selectMove(vector<Character *>enemies, vector<Character *> team);
     
 };
 
