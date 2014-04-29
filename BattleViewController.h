@@ -53,6 +53,7 @@ private:
     vector<string>displayText;
     
     void drawActiveMoves();
+    void updateActiveMoves();
     
     vector<BattleCharacterView> plotViewsAroundCircle(int x, int y, int radius, vector<Character *> chars);
     

@@ -36,6 +36,7 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     activeMoves[1].setColor(0, 0, 0);
     activeMoves[2].setColor(0, 0, 0);
     activeMoves[3].setColor(0, 0, 0);
+
     
     displayLabel = TextLabel(0,530, "", defaultFont, 24);
     
@@ -46,6 +47,8 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     selectedPos = 0;
     selectedMove = "";
     arrowSelectedPos = 0;
+    
+    updateActiveMoves();
     
     drawActiveMoves();
     
@@ -85,21 +88,6 @@ vector<BattleCharacterView> BattleViewController::plotViewsAroundCircle(int x, i
 }
 
 void BattleViewController::drawActiveMoves() {
-    
-    //clear old moves
-    activeMoves[0].setText("1: ");
-    activeMoves[1].setText("2: ");
-    activeMoves[2].setText("3: ");
-    activeMoves[3].setText("4: ");
-
-    vector<string> moves = activeCharacter->getMoves();
-    
-    //update labels
-    for (int i = 0; i < moves.size(); i++) {
-        stringstream text;
-        text << i+1 << ": " << moves[i];
-        activeMoves[i].setText(text.str());
-    }
     //draw
     activeMoves[0].draw(renderer);
     activeMoves[1].draw(renderer);
@@ -107,6 +95,25 @@ void BattleViewController::drawActiveMoves() {
     activeMoves[3].draw(renderer);
 
 }
+
+void BattleViewController::updateActiveMoves() {
+    //clear old moves
+    activeMoves[0].setText("1: ");
+    activeMoves[1].setText("2: ");
+    activeMoves[2].setText("3: ");
+    activeMoves[3].setText("4: ");
+    
+    vector<string> moves = activeCharacter->getMoves();
+    
+    //update labels
+    for (int i = 0; i < moves.size(); i++) {
+        int pp = activeCharacter->ppCostForMove(moves[i]);
+        stringstream text;
+        text << i+1 << ": " << moves[i] << ", PP: "<<pp;
+        activeMoves[i].setText(text.str());
+    }
+}
+
 
 
 int BattleViewController::draw(SDL_Event e) {
@@ -392,6 +399,8 @@ void BattleViewController::nextCharacter() {
         enemyViews[i].setIsTargeted(false);
         enemyViews[i].setHasCursor(false);
     }
+    
+    updateActiveMoves();
     
     if (activeCharacter->getCurrentHealth() <= 0 || activeCharacter->getIsIncap()) {
         //nextCharacter();
