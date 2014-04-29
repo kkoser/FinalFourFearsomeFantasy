@@ -48,14 +48,13 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     selectedMove = "";
     arrowSelectedPos = 0;
     
-<<<<<<< HEAD
+    /*
     //test
     activeCharacterView->setHasStatus(true);
     activeCharacterView->setIsIncap(true);
-=======
-    updateActiveMoves();
->>>>>>> FETCH_HEAD
+     */
     
+    updateActiveMoves();
     drawActiveMoves();
     
     //music!

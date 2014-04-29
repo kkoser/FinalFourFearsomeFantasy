@@ -96,6 +96,7 @@ Character::Character(string fileName) {
     currentPPRegen = standardPPRegen;
     currentPP = maxPP;
     currentShield = 0;
+    isIncap = 0;
 }
 
 void Character::actMoveOnTarget(string moveName, vector<Character *> targets) {
