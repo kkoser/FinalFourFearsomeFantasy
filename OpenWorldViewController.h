@@ -15,6 +15,8 @@
 #include "Dot.h"
 #include "ImageView.h"
 #include <cmath>
+#include "TextLabel.h"
+#include <string>
 
 class OpenWorldViewController : public ViewController {
 private:
@@ -115,6 +117,17 @@ private:
     //1 is Kat, 2 is Albus, 3 is Elsa, 4 is Jack
     
     int charIterator;
+    int dragonBallCount;
+    int dragonBallFound[7];
+    int dragonBallJustFound;
+    
+    string dragonBallFoundString;
+    string dragonBallCountString;
+    string allDragonBallsFoundString;
+    
+    TextLabel dragonBallCountText;
+    TextLabel dragonBallFoundText;
+    TextLabel allDragonBallsFoundText;
     
     BattleViewController* createBattleViewController(string backgroundLocation, vector<string> enemyFileLocations);
     

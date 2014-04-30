@@ -42,6 +42,20 @@ OpenWorldViewController::OpenWorldViewController(SDL_Renderer *ren, int charLeft
             break;
     }
     charIterator=0;
+    dragonBallCount=0;
+    for(int q=0; q<7; q++) dragonBallFound[q]=0;
+    dragonBallJustFound=0;
+    dragonBallFoundString="";
+    dragonBallCountString="";
+    dragonBallFoundText = TextLabel(360, 320, dragonBallFoundString, defaultFont, 48, renderer);
+    dragonBallCountText = TextLabel(16, 610, dragonBallCountString, defaultFont, 24, renderer);
+    dragonBallFoundText.setColor(0,0,0);
+    dragonBallCountText.setColor(0,0,0);
+    
+    allDragonBallsFoundString = "All Dragon Balls Found! Journey to the Castle.";
+    allDragonBallsFoundText = TextLabel(120, 420, allDragonBallsFoundString, defaultFont, 24, renderer);
+    allDragonBallsFoundText.setColor(0,0,0);
+
     
 
     blank = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
@@ -306,8 +320,13 @@ int OpenWorldViewController::draw(SDL_Event e) {
         if( e.type == SDL_KEYDOWN ){
                 switch( e.key.keysym.sym )
                 {
+                    case SDLK_SPACE:
+                        dragonBallJustFound=0;
+                        break;
+                        
                         //cycle through characters
                     case SDLK_RETURN:
+                        
                         if(characterLeftBehind==1){ //kat
                             switch(charIterator){
                                 case 0:
@@ -560,6 +579,72 @@ int OpenWorldViewController::draw(SDL_Event e) {
                         Mix_HaltMusic();
                         break;
                         
+                        //DRAGON BALLS
+                    case 40:
+                        if(dragonBallJustFound) dragonBallFoundString="City Dragon Ball Found!";
+                        else dragonBallFoundString="";
+                        if(!dragonBallFound[0]){ //only if you haven't found it yet
+                            dragonBallCount++;
+                            dragonBallFound[0]=1;
+                            dragonBallJustFound=1;
+                        }
+                        break;
+                    case 41:
+                        if(dragonBallJustFound) dragonBallFoundString="Mustafar Dragon Ball Found!";
+                        else dragonBallFoundString="";
+                        if(!dragonBallFound[1]){ //only if you haven't found it yet
+                            dragonBallCount++;
+                            dragonBallFound[1]=1;
+                            dragonBallJustFound=1;
+                        }
+                        break;
+                    case 42:
+                        if(dragonBallJustFound) dragonBallFoundString="Forbidden Forest Dragon Ball Found!";
+                        else dragonBallFoundString="";
+                        if(!dragonBallFound[2]){ //only if you haven't found it yet
+                            dragonBallCount++;
+                            dragonBallFound[2]=1;
+                            dragonBallJustFound=1;
+                        }
+                        break;
+                    case 43:
+                        if(dragonBallJustFound) dragonBallFoundString="Forbidden Forest Dragon Ball Found!";
+                        else dragonBallFoundString="";
+                        if(!dragonBallFound[3]){ //only if you haven't found it yet
+                            dragonBallCount++;
+                            dragonBallFound[3]=1;
+                            dragonBallJustFound=1;
+                        }
+                        break;
+                    case 44:
+                        if(dragonBallJustFound) dragonBallFoundString="Cave Dragon Ball Found!";
+                        else dragonBallFoundString="";
+                        if(!dragonBallFound[4]){ //only if you haven't found it yet
+                            dragonBallCount++;
+                            dragonBallFound[4]=1;
+                            dragonBallJustFound=1;
+                        }
+                        break;
+                    case 45:
+                        if(dragonBallJustFound) dragonBallFoundString="Lonely Island Dragon Ball Found!";
+                        else dragonBallFoundString="";
+                        if(!dragonBallFound[5]){ //only if you haven't found it yet
+                            dragonBallCount++;
+                            dragonBallFound[5]=1;
+                            dragonBallJustFound=1;
+                        }
+                        break;
+                    case 46:
+                        if(dragonBallJustFound) dragonBallFoundString="Desert Dragon Ball Found!";
+                        else dragonBallFoundString="";
+                        
+                        if(!dragonBallFound[6]){ //only if you haven't found it yet
+                            dragonBallCount++;
+                            dragonBallFound[6]=1;
+                            dragonBallJustFound=1;
+                        }
+                        break;
+                        
                     case 31: //treasure1
                         
                         break;
@@ -592,7 +677,7 @@ int OpenWorldViewController::draw(SDL_Event e) {
         leader.moveSmooth(zone,mapNumber); //move character ahead
         mapScout.moveSmooth(zone,mapNumber); //move scout ahead, too
         
-        cout<<zone<<endl;
+        //cout<<zone<<endl;
         
         //Center the camera over the dot
         camera[mapNumber].x = ( leader.getPosX() + Dot::DOT_WIDTH / 2 ) - SCREEN_WIDTH / 2;
@@ -691,6 +776,48 @@ int OpenWorldViewController::draw(SDL_Event e) {
             else if (charDir==DOWN) leader.renderRel( renderer, camera[mapNumber].x, camera[mapNumber].y, &jackSpriteFront, SDL_FLIP_NONE );
             else if (charDir==LEFT) leader.renderRel( renderer, camera[mapNumber].x, camera[mapNumber].y, &jackSpriteSide, SDL_FLIP_NONE );
             else if (charDir==RIGHT) leader.renderRel( renderer, camera[mapNumber].x, camera[mapNumber].y, &jackSpriteSide, SDL_FLIP_HORIZONTAL );
+        }
+        
+        //display dragon ball count ALWAYS
+        switch (dragonBallCount){
+            case 0:
+                dragonBallCountString = "Dragon Balls: 0/7";
+                break;
+            case 1:
+                dragonBallCountString = "Dragon Balls: 1/7";
+                break;
+            case 2:
+                dragonBallCountString = "Dragon Balls: 2/7";
+                break;
+            case 3:
+                dragonBallCountString = "Dragon Balls: 3/7";
+                break;
+            case 4:
+                dragonBallCountString = "Dragon Balls: 4/7";
+                break;
+            case 5:
+                dragonBallCountString = "Dragon Balls: 5/7";
+                break;
+            case 6:
+                dragonBallCountString = "Dragon Balls: 6/7";
+                break;
+            case 7:
+                dragonBallCountString = "Dragon Balls: 7/7";
+                break;
+        }
+        
+        //display dragon ball found until you hit enter
+        dragonBallFoundText.setText(dragonBallFoundString);
+        if(dragonBallJustFound){
+            dragonBallFoundText.draw();
+        }
+        
+        dragonBallCountText.setText(dragonBallCountString);
+        dragonBallCountText.draw();
+        
+        //display all dragon balls found
+        if(dragonBallCount==7){
+            allDragonBallsFoundText.draw();
         }
         
         //CHECK FOR BATTLE SWITCHING
