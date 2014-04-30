@@ -563,13 +563,13 @@ int OpenWorldViewController::draw(SDL_Event e) {
             vector<Enemy *> enemies;
             
             MainCharacter *Elsa = new MainCharacter(pathForFile("Characters/Elsa.character"));
-            MainCharacter *Elsa2 = new MainCharacter(pathForFile("Characters/Elsa.character"));
-            MainCharacter *Elsa3 = new MainCharacter(pathForFile("Characters/Elsa.character"));
+            MainCharacter *Elsa2 = new MainCharacter(pathForFile("Characters/Albus.character"));
+            MainCharacter *Elsa3 = new MainCharacter(pathForFile("Characters/Kat.character"));
             chars.push_back(Elsa);
             chars.push_back(Elsa2);
             chars.push_back(Elsa3);
             
-            Enemy *goblin = new Enemy(pathForFile("Characters/Goblin.character"));
+            Enemy *goblin = new Enemy(pathForFile("Characters/GoblinArcher.character"));
             Enemy *goblin2 = new Enemy(pathForFile("Characters/Troll.character"));
             enemies.push_back(goblin);
             enemies.push_back(goblin2);

@@ -7,6 +7,7 @@
 //
 
 #include "Enemy.h"
+#include <math.h>
 
 Enemy::Enemy(string file) : Character(file) {
     
@@ -161,7 +162,7 @@ vector<Character *> Enemy::targetSelect(vector<Character *> enemies, vector<Char
 		targetVals[i]=0;
 		double enemPercentHP = (double)(*currentTarget)->getCurrentHealth()/(double)(*currentTarget)->getMaxHealth();
 		double enemPercentPP = (double)(*currentTarget)->getCurrentPP()/(double)(*currentTarget)->getMaxPP();
-		targetVals[i]+= (int)(enemPercentHP*10);
+		targetVals[i]+= (int)ceil(enemPercentHP*10);
 		if (targetVals[i]>0) targetVals[i]+= (int)(enemPercentPP*4);
 		currentTarget++;
 	}
@@ -240,7 +241,7 @@ vector<Character *> Enemy::targetSelect(vector<Character *> enemies, vector<Char
 		default: //some number of Targets
 			currentTarget = enemiesSorted.begin();
 			for (int i=0; i<enemiesSorted.size(); i++){
-				if(i<=targetCode){
+				if(i<targetCode){
 					targets.push_back(*currentTarget);
 					currentTarget++;
 				}
