@@ -48,6 +48,12 @@ OpenWorldViewController::OpenWorldViewController(SDL_Renderer *ren) : ViewContro
     startPosY[3]=304;
     startPosX[4]=65;
     startPosY[4]=25;
+    startPosX[5]=250;
+    startPosY[5]=1250;
+    startPosX[6]=1680;
+    startPosY[6]=30;
+    startPosX[7]=1570;
+    startPosY[7]=1065;
     
     for(int q=0; q<8; q++) returnPosX[q]=50;
     for(int q=0; q<8; q++) returnPosY[q]=50;
@@ -60,6 +66,12 @@ OpenWorldViewController::OpenWorldViewController(SDL_Renderer *ren) : ViewContro
     returnPosY[3]=605;
     returnPosX[4]=535;
     returnPosY[4]=575;
+    returnPosX[5]=1100;
+    returnPosY[5]=400;
+    returnPosX[6]=15;
+    returnPosY[6]=260;
+    returnPosX[7]=30;
+    returnPosY[7]=400;
     
     isReturning = 0;
     mapReturningFrom=0;
@@ -173,6 +185,21 @@ bool OpenWorldViewController::loadTextures() {
     if( !mapTexture[4].loadFromFile( pathForFile("Images/map4.png"), renderer ) )
 	{
 		printf( "Failed to load map4 background texture image!\n" );
+		success = false;
+	}
+    if( !mapTexture[5].loadFromFile( pathForFile("Images/map5.png"), renderer ) )
+	{
+		printf( "Failed to load map5 background texture image!\n" );
+		success = false;
+	}
+    if( !mapTexture[6].loadFromFile( pathForFile("Images/map6.png"), renderer ) )
+	{
+		printf( "Failed to load map5 background texture image!\n" );
+		success = false;
+	}
+    if( !mapTexture[7].loadFromFile( pathForFile("Images/map7.png"), renderer ) )
+	{
+		printf( "Failed to load map5 background texture image!\n" );
 		success = false;
 	}
     //Load music
@@ -360,10 +387,23 @@ int OpenWorldViewController::draw(SDL_Event e) {
                         mapScout.initializeMap(5);
                         Mix_HaltMusic();
                         break;
-                    case 10:
-                        //layout=BATTLE_LAYOUT;
-                        //layoutReset=1;
+                    case 6:
+                        mapNumber=6;
+                        layoutReset=1;
+                        isReturning=0;
+                        mapScout.initializeMap(6);
                         Mix_HaltMusic();
+                        break;
+                    case 7:
+                        mapNumber=7;
+                        layoutReset=1;
+                        isReturning=0;
+                        mapScout.initializeMap(7);
+                        Mix_HaltMusic();
+                        break;
+                    case 10: //INITIAL MAIN BATTLE
+                        
+                        
                         break;
                     case 11:
                         mapNumber=0;
@@ -379,6 +419,10 @@ int OpenWorldViewController::draw(SDL_Event e) {
                         isReturning=1;
                         mapScout.initializeMap(0);
                         Mix_HaltMusic();
+                        break;
+                    case 16: //FINAL BATTLE
+
+                        
                         break;
                     case 17:
                         mapNumber=0;
@@ -412,6 +456,41 @@ int OpenWorldViewController::draw(SDL_Event e) {
                         mapScout.initializeMap(0);
                         Mix_HaltMusic();
                         break;
+                    case 21:
+                        mapNumber=0;
+                        mapReturningFrom=5;
+                        layoutReset=1;
+                        isReturning=1;
+                        mapScout.initializeMap(0);
+                        Mix_HaltMusic();
+                        break;
+                    case 22:
+                        mapNumber=0;
+                        mapReturningFrom=6;
+                        layoutReset=1;
+                        isReturning=1;
+                        mapScout.initializeMap(0);
+                        Mix_HaltMusic();
+                        break;
+                    case 23:
+                        mapNumber=6;
+                        mapReturningFrom=7;
+                        layoutReset=1;
+                        isReturning=1;
+                        mapScout.initializeMap(6);
+                        Mix_HaltMusic();
+                        break;
+                        
+                    case 31: //treasure1
+                        
+                        break;
+                    case 32: //treasure2
+                        
+                        break;
+                    case 33: //treasure3
+                        
+                        break;
+                        
                         
                     default: break;
                 }
@@ -434,6 +513,7 @@ int OpenWorldViewController::draw(SDL_Event e) {
         leader.moveSmooth(zone,mapNumber); //move character ahead
         mapScout.moveSmooth(zone,mapNumber); //move scout ahead, too
         
+        cout<<zone<<endl;
         
         //Center the camera over the dot
         camera[mapNumber].x = ( leader.getPosX() + Dot::DOT_WIDTH / 2 ) - SCREEN_WIDTH / 2;
@@ -481,18 +561,6 @@ int OpenWorldViewController::draw(SDL_Event e) {
                     break;
             }
         }
-        
-//        //Top viewport
-//        topViewport.x = 0;
-//        topViewport.y = SCREEN_HEIGHT / 4;
-//        topViewport.w = SCREEN_WIDTH;
-//        topViewport.h = SCREEN_HEIGHT;
-//        
-//        //Bottom viewport
-//        bottomViewport.x = 0;
-//        bottomViewport.y = 0;
-//        bottomViewport.w = SCREEN_WIDTH;
-//        bottomViewport.h = SCREEN_HEIGHT / 4;
         
         //fullViewport
         fullViewport.x = 0;
@@ -549,7 +617,7 @@ int OpenWorldViewController::draw(SDL_Event e) {
         //CHECK FOR BATTLE SWITCHING
         
         //int battleSteps = 10 + rand()%20;
-        if(stepCount>25 && mapNumber!=0){
+        if(stepCount>250 && mapNumber!=0){
             stepCount=0;
             //Mix_HaltMusic();
             cout<<"Switch to Battle Mode"<<endl;

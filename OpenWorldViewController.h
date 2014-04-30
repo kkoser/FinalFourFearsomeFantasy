@@ -98,8 +98,8 @@ private:
     
     bool quit;
     
-    const int LEVEL_WIDTH[8] = {1200,1312,1312,1792,1344,1312,1312,1312};
-    const int LEVEL_HEIGHT[8] = {656,880,2400,704,1248,2400,2400,2400};
+    const int LEVEL_WIDTH[8] = {1200,1312,1312,1792,1344,1600,1712,1600};
+    const int LEVEL_HEIGHT[8] = {656,880,2400,704,1248,1440,880,1280};
 
     const int SCREEN_WIDTH = 1200;
     const int SCREEN_HEIGHT = 650;

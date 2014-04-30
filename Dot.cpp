@@ -50,14 +50,14 @@ Dot::Dot()
     mapHeight[4]=78+2;
     mapWidth[4]=84+2;
     
-    mapHeight[5]=150;
-    mapWidth[5]=82;
+    mapHeight[5]=90+2;
+    mapWidth[5]=100+2;
     
-    mapHeight[6]=150;
-    mapWidth[6]=82;
+    mapHeight[6]=55+2;
+    mapWidth[6]=107+2;
     
-    mapHeight[7]=150;
-    mapWidth[7]=82;
+    mapHeight[7]=80+2;
+    mapWidth[7]=100+2;
     
     keyPressed=0;
     
@@ -89,14 +89,14 @@ Dot::Dot(int PosX, int PosY)
     mapHeight[4]=78+2;
     mapWidth[4]=84+2;
     
-    mapHeight[5]=150;
-    mapWidth[5]=82;
+    mapHeight[5]=90+2;
+    mapWidth[5]=100+2;
     
-    mapHeight[6]=150;
-    mapWidth[6]=82;
+    mapHeight[6]=55+2;
+    mapWidth[6]=107+2;
     
-    mapHeight[7]=150;
-    mapWidth[7]=82;
+    mapHeight[7]=80+2;
+    mapWidth[7]=100+2;
     
     keyPressed=0;
     
@@ -335,13 +335,13 @@ void Dot::initializeMap(int mapNumber){
             filename="MapFiles/map4.csv";
             break;
         case 5:
-            filename="MapFiles/map2.csv";
+            filename="MapFiles/map5.csv";
             break;
         case 6:
-            filename="MapFiles/map2.csv";
+            filename="MapFiles/map6.csv";
             break;
         case 7:
-            filename="MapFiles/map2.csv";
+            filename="MapFiles/map7.csv";
             break;
     }
     
@@ -361,7 +361,7 @@ void Dot::initializeMap(int mapNumber){
                 //cout<<mapArray[y][x];
                 //if(x<mapWidth[mapNumber]-1) cout<<",";
             }
-            //cout<<endl;
+            cout<<endl;
         }
         myfile.close();
     }
