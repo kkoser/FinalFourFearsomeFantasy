@@ -33,7 +33,7 @@ int MainMenuViewController::draw(SDL_Event e) {
     backgroundImage.draw();
     
     if (e.key.keysym.sym == SDLK_RETURN) {
-        OpenWorldViewController *vc = new OpenWorldViewController(renderer);
+        CCViewController *vc = new CCViewController(renderer);
         
         pushViewController(vc);
     }

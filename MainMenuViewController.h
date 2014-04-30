@@ -16,6 +16,7 @@
 #include "ImageView.h"
 #include "LTexture.h"
 #include "OpenWorldViewController.h"
+#include "CCViewController.h"
 
 
 

@@ -7,7 +7,6 @@
 //
 
 #include "OpenWorldViewController.h"
-#include "BattleViewController.h"
 #include "ExampleViewController.h"
 #include "Dot.h"
 #include "SDL2_mixer/SDL_mixer.h"
@@ -17,7 +16,7 @@
 
 //---------------------------------------------------------
 
-OpenWorldViewController::OpenWorldViewController(SDL_Renderer *ren) : ViewController(ren) {
+OpenWorldViewController::OpenWorldViewController(SDL_Renderer *ren, int charLeftBehind) : ViewController(ren) {
     
     //srand (time(NULL));
     
@@ -27,6 +26,8 @@ OpenWorldViewController::OpenWorldViewController(SDL_Renderer *ren) : ViewContro
     activeCharacter=ELSA;
     charDir=DOWN;
     stepCount=0;
+    characterLeftBehind = charLeftBehind;
+    
 
     blank = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
     for(int q=0;q<8;q++) camera[q]= blank;
@@ -559,23 +560,11 @@ int OpenWorldViewController::draw(SDL_Event e) {
             //Mix_HaltMusic();
             cout<<"Switch to Battle Mode"<<endl;
             
-            vector<MainCharacter *> chars;
-            vector<Enemy *> enemies;
-            
-            MainCharacter *Elsa = new MainCharacter(pathForFile("Characters/Elsa.character"));
-            MainCharacter *Elsa2 = new MainCharacter(pathForFile("Characters/Albus.character"));
-            MainCharacter *Elsa3 = new MainCharacter(pathForFile("Characters/Kat.character"));
-            chars.push_back(Elsa);
-            chars.push_back(Elsa2);
-            chars.push_back(Elsa3);
-            
-            Enemy *goblin = new Enemy(pathForFile("Characters/GoblinArcher.character"));
-            Enemy *goblin2 = new Enemy(pathForFile("Characters/Troll.character"));
-            enemies.push_back(goblin);
-            enemies.push_back(goblin2);
-            
-            BattleViewController *vc = new BattleViewController(chars, enemies, pathForFile("Images/arendelle.jpg"), renderer);
-
+            vector<string> enemyFileLocations;
+            enemyFileLocations.push_back(pathForFile("Characters/GoblinArsonist.character"));
+            enemyFileLocations.push_back(pathForFile("Characters/Troll.character"));
+          
+            BattleViewController *vc = createBattleViewController(pathForFile("Images/arendelle.jpg"), enemyFileLocations);
             pushViewController(vc);
             
         }
@@ -584,6 +573,41 @@ int OpenWorldViewController::draw(SDL_Event e) {
 }
 
 //------------------------------------------------------------------------------------------
+
+BattleViewController* OpenWorldViewController::createBattleViewController(string backgroundLocation, vector<string> enemyFileLocations) {
+    
+    
+    vector<MainCharacter *> chars;
+    vector<Enemy *> enemies;
+    
+    //make main characters
+    if (characterLeftBehind != 1) {
+        MainCharacter *Kat = new MainCharacter(pathForFile("Characters/Kat.character"));
+        chars.push_back(Kat);
+    }
+    if (characterLeftBehind != 2) {
+        MainCharacter *Albus = new MainCharacter(pathForFile("Characters/Albus.character"));
+        chars.push_back(Albus);
+    }
+    if (characterLeftBehind != 3) {
+        MainCharacter *Elsa = new MainCharacter(pathForFile("Characters/Elsa.character"));
+        chars.push_back(Elsa);
+    }
+    if (characterLeftBehind != 4) {
+        MainCharacter *Jack = new MainCharacter(pathForFile("Characters/Jack.character"));
+        chars.push_back(Jack);
+    }
+
+    //make enemies
+    vector<string>::const_iterator currentEnemy;
+    for (currentEnemy = enemyFileLocations.begin(); currentEnemy != enemyFileLocations.end(); ++currentEnemy) {
+        Enemy *enemy = new Enemy(*currentEnemy);
+        enemies.push_back(enemy);
+    }
+    
+    BattleViewController *vc = new BattleViewController(chars, enemies, backgroundLocation, renderer);
+    return vc;
+}
 
 void OpenWorldViewController::pushViewController(ViewController *vc) {
     Mix_PauseMusic();
