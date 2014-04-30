@@ -34,7 +34,7 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     
     //load background too
     
-    backgroundImage = ImageView(0, 0, pathForFile("Images/arendelle.jpg"), renderer);
+    backgroundImage = ImageView(0, 0, pathForFile("Images/desertBattle.jpg"), renderer);
 
     
     //init move labels

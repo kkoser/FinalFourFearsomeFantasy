@@ -37,10 +37,15 @@ private:
     //Background Images
     
     LTexture ArendelleTexture;
-    LTexture NorthMountBGTexture;
-    LTexture CaveBGTexture;
-    LTexture IslandBGTexture;
-    LTexture ForestBGTexture;
+    
+    LTexture northMountainBattleTexture;
+    LTexture caveBattleTexture;
+    LTexture islandBattleTexture;
+    LTexture forbiddenForestBattleTexture;
+    LTexture mustafarBattleTexture;
+    LTexture desertBattleTexture;
+    LTexture castleBattleTexture;
+    
     LTexture BViewTexture; //bottom viewport boxes
     
     //Map Textures
@@ -123,6 +128,7 @@ private:
     int dragonBallFound[7];
     int dragonBallJustFound;
     int displayAllDragonBallsFound;
+    int displayCastleRestriction;
     
     string dragonBallFoundString;
     string dragonBallCountString;
@@ -131,6 +137,7 @@ private:
     TextLabel dragonBallCountText;
     TextLabel dragonBallFoundText;
     TextLabel allDragonBallsFoundText;
+    TextLabel castleRestrictionText;
     
     BattleViewController* createBattleViewController(string backgroundLocation, vector<string> enemyFileLocations);
     

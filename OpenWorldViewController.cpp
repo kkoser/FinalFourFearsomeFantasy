@@ -46,6 +46,7 @@ OpenWorldViewController::OpenWorldViewController(SDL_Renderer *ren, int charLeft
     for(int q=0; q<7; q++) dragonBallFound[q]=0;
     dragonBallJustFound=0;
     displayAllDragonBallsFound=0;
+    displayCastleRestriction=0;
     dragonBallFoundString="";
     dragonBallCountString="";
     dragonBallFoundText = TextLabel(360, 320, dragonBallFoundString, defaultFont, 48, renderer);
@@ -56,6 +57,9 @@ OpenWorldViewController::OpenWorldViewController(SDL_Renderer *ren, int charLeft
     allDragonBallsFoundString = "All Dragon Balls Found! Journey to the Castle.";
     allDragonBallsFoundText = TextLabel(330, 350, allDragonBallsFoundString, defaultFont, 24, renderer);
     allDragonBallsFoundText.setColor(0,0,0);
+    
+    castleRestrictionText = TextLabel(320, 360, "The Castle Entrance Requires All 7 Dragon Balls.", defaultFont, 24, renderer);
+    castleRestrictionText.setColor(0,0,0);
 
     
 
@@ -186,7 +190,37 @@ bool OpenWorldViewController::loadTextures() {
 		printf( "Failed to load north mountain background texture image!\n" );
 		success = false;
 	}
-    if( !NorthMountBGTexture.loadFromFile( pathForFile("Images/battleNorthMountain.jpg"), renderer ) )
+    if( !northMountainBattleTexture.loadFromFile( pathForFile("Images/arendelle.jpg"), renderer ) )
+	{
+		printf( "Failed to load north mountain background texture image!\n" );
+		success = false;
+	}
+    if( !caveBattleTexture.loadFromFile( pathForFile("Images/caveBattle.jpg"), renderer ) )
+	{
+		printf( "Failed to load north mountain background texture image!\n" );
+		success = false;
+	}
+    if( !islandBattleTexture.loadFromFile( pathForFile("Images/islandBattle.jpg"), renderer ) )
+	{
+		printf( "Failed to load north mountain background texture image!\n" );
+		success = false;
+	}
+    if( !forbiddenForestBattleTexture.loadFromFile( pathForFile("Images/forestBattle.jpg"), renderer ) )
+	{
+		printf( "Failed to load north mountain background texture image!\n" );
+		success = false;
+	}
+    if( !mustafarBattleTexture.loadFromFile( pathForFile("Images/mustafarBattle.jpg"), renderer ) )
+	{
+		printf( "Failed to load north mountain background texture image!\n" );
+		success = false;
+	}
+    if( !desertBattleTexture.loadFromFile( pathForFile("Images/desertBattle.jpg"), renderer ) )
+	{
+		printf( "Failed to load north mountain background texture image!\n" );
+		success = false;
+	}
+    if( !castleBattleTexture.loadFromFile( pathForFile("Images/castleBattle.jpg"), renderer ) )
 	{
 		printf( "Failed to load north mountain background texture image!\n" );
 		success = false;
@@ -345,6 +379,7 @@ int OpenWorldViewController::draw(SDL_Event e) {
                     case SDLK_SPACE:
                         dragonBallJustFound=0;
                         displayAllDragonBallsFound=0;
+                        displayCastleRestriction=0;
                         break;
                         
                         //cycle through characters
@@ -523,11 +558,11 @@ int OpenWorldViewController::draw(SDL_Event e) {
                             mapScout.initializeMap(7);
                             Mix_HaltMusic();
                         }
+                        else{
+                            displayCastleRestriction=1;
+                        }
                         break;
-                    case 10: //INITIAL MAIN BATTLE
-                        
-                        
-                        break;
+
                     case 11:
                         mapNumber=0;
                         layoutReset=1;
@@ -543,6 +578,7 @@ int OpenWorldViewController::draw(SDL_Event e) {
                         mapScout.initializeMap(0);
                         Mix_HaltMusic();
                         break;
+                        
                     case 16: //FINAL BATTLE
                         if(dragonBallCount==7){
                             //implement final battle
@@ -930,19 +966,48 @@ int OpenWorldViewController::draw(SDL_Event e) {
             allDragonBallsFoundText.draw();
         }
         
+        //display castle warning
+        if(displayCastleRestriction){
+            castleRestrictionText.draw();
+        }
+        
         //CHECK FOR BATTLE SWITCHING
         
         //int battleSteps = 10 + rand()%20;
         if(stepCount>rand()%40 + 50 && mapNumber!=0){
             stepCount=0;
-            //Mix_HaltMusic();
             cout<<"Switch to Battle Mode"<<endl;
             
             vector<string> enemyFileLocations;
             enemyFileLocations.push_back(pathForFile("Characters/GoblinArsonist.character"));
             enemyFileLocations.push_back(pathForFile("Characters/Troll.character"));
-          
-            BattleViewController *vc = createBattleViewController(pathForFile("Images/arendelle.jpg"), enemyFileLocations);
+            
+            BattleViewController *vc;
+            
+            switch(mapNumber){
+                case 1:
+                    vc = createBattleViewController(pathForFile("Images/mustafarBattle.jpg"), enemyFileLocations);
+                    break;
+                case 2:
+                    vc = createBattleViewController(pathForFile("Images/arendelle.jpg"), enemyFileLocations);
+                    break;
+                case 3:
+                    vc = createBattleViewController(pathForFile("Images/forestBattle.jpg"), enemyFileLocations);
+                    break;
+                case 4:
+                    vc = createBattleViewController(pathForFile("Images/caveBattle.jpg"), enemyFileLocations);
+                    break;
+                case 5:
+                    vc = createBattleViewController(pathForFile("Images/islandBattle.jpg"), enemyFileLocations);
+                    break;
+                case 6:
+                    vc = createBattleViewController(pathForFile("Images/desertBattle.jpg"), enemyFileLocations);
+                    break;
+                case 7:
+                    vc = createBattleViewController(pathForFile("Images/castleBattle.jpg"), enemyFileLocations);
+                    break;
+            }
+            
             pushViewController(vc);
             
         }
