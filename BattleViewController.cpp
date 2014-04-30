@@ -15,7 +15,7 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     //init vc
     victory = 0;
     defeat = 0;
-    finalText = TextLabel(300, 300, "", defaultFont, 24);
+    finalText = TextLabel(360, 320, "", defaultFont, 48, renderer);
     displayingFinalText = 0;
     
     //plot main characters around circle
