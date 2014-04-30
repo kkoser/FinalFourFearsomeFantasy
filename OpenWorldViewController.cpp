@@ -983,6 +983,7 @@ int OpenWorldViewController::draw(SDL_Event e) {
             enemyFileLocations.push_back(pathForFile("Characters/Troll.character"));
             
             BattleViewController *vc;
+            string testString = "nothing";
             
             switch(mapNumber){
                 case 1:
