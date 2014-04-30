@@ -72,7 +72,7 @@ OpenWorldViewController::OpenWorldViewController(SDL_Renderer *ren, int charLeft
     returnPosX[6]=15;
     returnPosY[6]=260;
     returnPosX[7]=30;
-    returnPosY[7]=400;
+    returnPosY[7]=30;
     
     isReturning = 0;
     mapReturningFrom=0;
@@ -188,7 +188,6 @@ bool OpenWorldViewController::loadTextures() {
 		printf( "Failed to load map4 background texture image!\n" );
 		success = false;
 	}
-<<<<<<< HEAD
     if( !mapTexture[5].loadFromFile( pathForFile("Images/map5.png"), renderer ) )
 	{
 		printf( "Failed to load map5 background texture image!\n" );
@@ -204,9 +203,7 @@ bool OpenWorldViewController::loadTextures() {
 		printf( "Failed to load map5 background texture image!\n" );
 		success = false;
 	}
-=======
-    
->>>>>>> FETCH_HEAD
+
     //Load music
     elsaMusic = Mix_LoadMUS( pathForFile("Audio/LetItGo.wav" ).c_str());
     if( elsaMusic == NULL )
