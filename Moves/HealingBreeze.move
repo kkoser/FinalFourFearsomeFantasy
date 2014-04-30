@@ -1,6 +1,5 @@
 Move Healing Breeze
-Targets ALL
-Once Actor PP -20
-Target Status HPT +1 Incap NO Length 5
-Once Display Katniss brought forth a healing breeze from District 11!
-
+Targets ALL_FRIENDS
+Once Actor PP -22
+Target Status HPT +.2 Incap NO Length 5
+Once Display $ACTOR_NAME brought forth a healing breeze from District 11!
