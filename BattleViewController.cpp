@@ -15,7 +15,8 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     //init vc
     victory = 0;
     defeat = 0;
-    finalText = TextLabel(300, 300, "", defaultFont, 48);
+    finalText = TextLabel(300, 300, "", defaultFont, 24);
+    displayingFinalText = 0;
     
     //plot main characters around circle
     vector<Character *> tempVector(mainChars.begin(), mainChars.end());
@@ -137,8 +138,7 @@ int BattleViewController::draw(SDL_Event e) {
     //display ending screen
     if (victory || defeat) {
         finalText.draw();
-        SDL_Delay(1000);
-        dismiss();
+        displayingFinalText = 1;
     }
     else {
         //draw!
@@ -172,6 +172,13 @@ int BattleViewController::draw(SDL_Event e) {
 }
 
 void BattleViewController::handleEvent(SDL_Event e) {
+    
+    //check if should dismiss
+    if (displayingFinalText) {
+        if (e.type == SDL_KEYDOWN) {
+            dismiss();
+        }
+    }
     
     //is there text on the screen?
     if (displayText.size() > 0) {

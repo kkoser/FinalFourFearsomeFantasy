@@ -45,6 +45,7 @@ private:
     
     bool victory;
     bool defeat;
+    bool displayingFinalText;
     TextLabel finalText;
     
     vector<Character *> targets;
