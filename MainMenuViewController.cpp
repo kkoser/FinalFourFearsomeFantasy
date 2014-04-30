@@ -51,10 +51,6 @@ void MainMenuViewController::pushViewController(ViewController *vc) {
 void MainMenuViewController::becomeTop() {
     ViewController::becomeTop();
     //Mix_ResumeMusic();
-    if (music) {
-        Mix_FreeMusic(music);
-        music = NULL;
-    }
     
     Mix_PlayMusic(music, -1);
 }
