@@ -327,6 +327,10 @@ void BattleViewController::handleEvent(SDL_Event e) {
                             enemyViews[i].setIsTargeted(true);
                         }
                     }
+                    else if (numTargets == -3) {
+                        targets.push_back(activeCharacter);
+                        activeCharacterView->setIsTargeted(true);
+                    }
                     else {
                         getViewForIndex(arrowSelectedPos)->setHasCursor(true);
                     }
