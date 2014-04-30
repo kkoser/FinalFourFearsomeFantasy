@@ -138,7 +138,11 @@ string Enemy::selectMove(vector<Character *> enemies, vector<Character *> team){
 	for (int i=0; i<moves.size(); i++){
 		if (moveVals[i]>0) total+=moveVals[i];
 	}
-	int moveSelection=rand()%total;
+    int moveSelection = 0;
+    if (total > 0) {
+        moveSelection=rand()%total;
+    }
+	
 	currentMove=moves.begin();
 	for (int i=0; i<moves.size(); i++){
 		if (moveVals[i]>0){
