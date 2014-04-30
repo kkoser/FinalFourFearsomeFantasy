@@ -45,15 +45,16 @@ OpenWorldViewController::OpenWorldViewController(SDL_Renderer *ren, int charLeft
     dragonBallCount=0;
     for(int q=0; q<7; q++) dragonBallFound[q]=0;
     dragonBallJustFound=0;
+    displayAllDragonBallsFound=0;
     dragonBallFoundString="";
     dragonBallCountString="";
     dragonBallFoundText = TextLabel(360, 320, dragonBallFoundString, defaultFont, 48, renderer);
     dragonBallCountText = TextLabel(16, 610, dragonBallCountString, defaultFont, 24, renderer);
     dragonBallFoundText.setColor(0,0,0);
-    dragonBallCountText.setColor(0,0,0);
+    dragonBallCountText.setColor(255,255,255);
     
     allDragonBallsFoundString = "All Dragon Balls Found! Journey to the Castle.";
-    allDragonBallsFoundText = TextLabel(120, 420, allDragonBallsFoundString, defaultFont, 24, renderer);
+    allDragonBallsFoundText = TextLabel(330, 350, allDragonBallsFoundString, defaultFont, 24, renderer);
     allDragonBallsFoundText.setColor(0,0,0);
 
     
@@ -320,8 +321,18 @@ int OpenWorldViewController::draw(SDL_Event e) {
         if( e.type == SDL_KEYDOWN ){
                 switch( e.key.keysym.sym )
                 {
+                    /*case SDLK_1:
+                        dragonBallJustFound=1;
+                        dragonBallCount=7;
+                        dragonBallFoundString="Desert Dragon Ball Found!";
+                        dragonBallFoundText.setX(290);
+                        dragonBallFoundText.setY(300);
+                        dragonBallFoundText.draw();
+                        break;*/
+                        
                     case SDLK_SPACE:
                         dragonBallJustFound=0;
+                        displayAllDragonBallsFound=0;
                         break;
                         
                         //cycle through characters
@@ -587,6 +598,14 @@ int OpenWorldViewController::draw(SDL_Event e) {
                             dragonBallCount++;
                             dragonBallFound[0]=1;
                             dragonBallJustFound=1;
+                            dragonBallFoundText.setX(340);
+                            dragonBallFoundText.setY(300);
+                            dragonBallFoundText.setColor(0,0,0);
+                            allDragonBallsFoundText.setColor(0,0,0);
+                            
+                        }
+                        if(dragonBallCount==7){
+                            displayAllDragonBallsFound=1;
                         }
                         break;
                     case 41:
@@ -596,15 +615,29 @@ int OpenWorldViewController::draw(SDL_Event e) {
                             dragonBallCount++;
                             dragonBallFound[1]=1;
                             dragonBallJustFound=1;
+                            dragonBallFoundText.setX(270);
+                            dragonBallFoundText.setY(300);
+                            dragonBallFoundText.setColor(255,255,255);
+                            allDragonBallsFoundText.setColor(255,255,255);
+                        }
+                        if(dragonBallCount==7){
+                            displayAllDragonBallsFound=1;
                         }
                         break;
                     case 42:
-                        if(dragonBallJustFound) dragonBallFoundString="Forbidden Forest Dragon Ball Found!";
+                        if(dragonBallJustFound) dragonBallFoundString="North Mountain Dragon Ball Found!";
                         else dragonBallFoundString="";
                         if(!dragonBallFound[2]){ //only if you haven't found it yet
                             dragonBallCount++;
                             dragonBallFound[2]=1;
                             dragonBallJustFound=1;
+                            dragonBallFoundText.setX(200);
+                            dragonBallFoundText.setY(300);
+                            dragonBallFoundText.setColor(0,0,0);
+                            allDragonBallsFoundText.setColor(0,0,0);
+                        }
+                        if(dragonBallCount==7){
+                            displayAllDragonBallsFound=1;
                         }
                         break;
                     case 43:
@@ -614,6 +647,13 @@ int OpenWorldViewController::draw(SDL_Event e) {
                             dragonBallCount++;
                             dragonBallFound[3]=1;
                             dragonBallJustFound=1;
+                            dragonBallFoundText.setX(180);
+                            dragonBallFoundText.setY(300);
+                            dragonBallFoundText.setColor(255,255,255);
+                            allDragonBallsFoundText.setColor(255,255,255);
+                        }
+                        if(dragonBallCount==7){
+                            displayAllDragonBallsFound=1;
                         }
                         break;
                     case 44:
@@ -623,6 +663,13 @@ int OpenWorldViewController::draw(SDL_Event e) {
                             dragonBallCount++;
                             dragonBallFound[4]=1;
                             dragonBallJustFound=1;
+                            dragonBallFoundText.setX(310);
+                            dragonBallFoundText.setY(300);
+                            dragonBallFoundText.setColor(255,255,255);
+                            allDragonBallsFoundText.setColor(255,255,255);
+                        }
+                        if(dragonBallCount==7){
+                            displayAllDragonBallsFound=1;
                         }
                         break;
                     case 45:
@@ -632,6 +679,13 @@ int OpenWorldViewController::draw(SDL_Event e) {
                             dragonBallCount++;
                             dragonBallFound[5]=1;
                             dragonBallJustFound=1;
+                            dragonBallFoundText.setX(240);
+                            dragonBallFoundText.setY(300);
+                            dragonBallFoundText.setColor(0,0,0);
+                            allDragonBallsFoundText.setColor(0,0,0);
+                        }
+                        if(dragonBallCount==7){
+                            displayAllDragonBallsFound=1;
                         }
                         break;
                     case 46:
@@ -642,6 +696,14 @@ int OpenWorldViewController::draw(SDL_Event e) {
                             dragonBallCount++;
                             dragonBallFound[6]=1;
                             dragonBallJustFound=1;
+                            dragonBallFoundText.setX(290);
+                            dragonBallFoundText.setY(300);
+                            dragonBallFoundText.setColor(0,0,0);
+                            allDragonBallsFoundText.setColor(0,0,0);
+                            dragonBallCountText.setColor(0,0,0);
+                        }
+                        if(dragonBallCount==7){
+                            displayAllDragonBallsFound=1;
                         }
                         break;
                         
@@ -806,6 +868,33 @@ int OpenWorldViewController::draw(SDL_Event e) {
                 break;
         }
         
+        switch(mapNumber){
+            case 0:
+                dragonBallCountText.setColor(255,255,255);
+                break;
+            case 1:
+                dragonBallCountText.setColor(255,255,255);
+                break;
+            case 2:
+                dragonBallCountText.setColor(0,0,0);
+                break;
+            case 3:
+                dragonBallCountText.setColor(255,255,255);
+                break;
+            case 4:
+                dragonBallCountText.setColor(255,255,255);
+                break;
+            case 5:
+                dragonBallCountText.setColor(0,0,0);
+                break;
+            case 6:
+                dragonBallCountText.setColor(0,0,0);
+                break;
+            case 7:
+                dragonBallCountText.setColor(0,0,0);
+                break;
+        }
+        
         //display dragon ball found until you hit enter
         dragonBallFoundText.setText(dragonBallFoundString);
         if(dragonBallJustFound){
@@ -816,7 +905,7 @@ int OpenWorldViewController::draw(SDL_Event e) {
         dragonBallCountText.draw();
         
         //display all dragon balls found
-        if(dragonBallCount==7){
+        if(dragonBallCount==7 && displayAllDragonBallsFound){
             allDragonBallsFoundText.draw();
         }
         

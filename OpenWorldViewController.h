@@ -120,6 +120,7 @@ private:
     int dragonBallCount;
     int dragonBallFound[7];
     int dragonBallJustFound;
+    int displayAllDragonBallsFound;
     
     string dragonBallFoundString;
     string dragonBallCountString;
