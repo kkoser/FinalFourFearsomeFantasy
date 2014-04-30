@@ -9,18 +9,21 @@
 #include "BattleViewController.h"
 
 BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector<Enemy *> enem, string locName, SDL_Renderer *ren) : ViewController(ren) {
+    
+    //music!
+    string pathName = pathForFile("Audio/FFXIIIBattle.wav");
+    music = Mix_LoadMUS(pathName.c_str());
+    
+    Mix_PlayMusic(music, -1);
+    
     mainChars = chars;
     enemies = enem;
     
     //init vc
     victory = 0;
     defeat = 0;
-<<<<<<< HEAD
-    finalText = TextLabel(300, 300, "FINAL", defaultFont, 24, renderer);
-    finalText.setColor(0,0,0);
-=======
     finalText = TextLabel(360, 320, "", defaultFont, 48, renderer);
->>>>>>> FETCH_HEAD
+    finalText.setColor(0,0,0);
     displayingFinalText = 0;
     
     //plot main characters around circle
@@ -60,11 +63,7 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     updateActiveMoves();
     drawActiveMoves();
     
-    //music!
-    string pathName = pathForFile("Audio/FFXIIIBattle.wav");
-    music = Mix_LoadMUS(pathName.c_str());
-    
-    Mix_PlayMusic(music, -1);
+
     
     switch(Mix_GetMusicType(NULL))
     {
