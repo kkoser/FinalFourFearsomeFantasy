@@ -593,3 +593,7 @@ void BattleViewController::updateCharacterViews() {
     }
 }
 
+void BattleViewController::dismiss() {
+    Mix_HaltMusic();
+    ViewController::dismiss();
+}
