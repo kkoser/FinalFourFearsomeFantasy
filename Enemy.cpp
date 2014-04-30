@@ -7,6 +7,7 @@
 //
 
 #include "Enemy.h"
+#include <math.h>
 
 Enemy::Enemy(string file) : Character(file) {
     
@@ -14,11 +15,10 @@ Enemy::Enemy(string file) : Character(file) {
 
 //the basic implementation simply acts the first move on the first character
 void Enemy::actOnCharacters(vector<Character *> enemies, vector<Character *> team) {
-    Character *target = enemies[0];
     //string move = moves[0];
-    vector<Character *> targets(1);
+    vector<Character *> targets;
     string selMove = this->selectMove(enemies, team);
-    targets[0] = target;
+    targets = targetSelect(enemies, team, selMove);
     this->actMoveOnTarget(selMove, targets);
 }
 
@@ -144,8 +144,110 @@ string Enemy::selectMove(vector<Character *> enemies, vector<Character *> team){
 		if (moveVals[i]>0){
 			moveSelection-=moveVals[i];
 		}
-		if (total<=0) return *currentMove;
+		if (moveSelection<=0) return *currentMove;
 		currentMove++;
 	}
 	return "Rest"; //Hopefully it never gets here
 }
+
+vector<Character *> Enemy::targetSelect(vector<Character *> enemies, vector<Character *> team, string move){
+	int targetVals[enemies.size()];
+	vector<Character *> targets;
+	vector<Character *> enemiesSorted;
+	typename vector<Character *>::iterator currentTarget;
+	currentTarget = enemies.begin();
+	
+	//Weight Targets on Strength
+	for (int i = 0; i < enemies.size(); i++) {
+		targetVals[i]=0;
+		double enemPercentHP = (double)(*currentTarget)->getCurrentHealth()/(double)(*currentTarget)->getMaxHealth();
+		double enemPercentPP = (double)(*currentTarget)->getCurrentPP()/(double)(*currentTarget)->getMaxPP();
+		targetVals[i]+= (int)ceil(enemPercentHP*10);
+		if (targetVals[i]>0) targetVals[i]+= (int)(enemPercentPP*4);
+		currentTarget++;
+	}
+	
+	ifstream file;
+	file.open(pathForFile("/Moves/" + move + ".move").c_str());
+	
+	if (!file) {
+		cout<<"File "<<move<<" failed to open"<<endl;
+		return targets;
+	}
+	
+	int targetCode = 0;
+	string line;
+	//Begin adding weight to move based on move text and enemies
+	while (getline(file, line)) {
+		//Evaluate each word in line
+		stringstream iss(line);
+		string word;
+		while (getline(iss,word,' ')){
+			if (word=="Targets"){
+				getline(iss,word);
+				if(word=="1") targetCode=1;
+				else if (word=="2") targetCode=2;
+				else if (word=="3") targetCode=3;
+				else if (word=="ALL_ENEMIES") targetCode=4;
+				else if (word=="ALL_FRIENDS") targetCode=5;
+				else if (word=="SELF") targetCode=0;
+			}
+		}
+	}
+	
+	//Sort Enemies
+	for (int j=0; j<enemies.size(); j++){
+		currentTarget = enemies.begin();
+		int EnemyAdded=0;
+		int total=0;
+		for (int i=0; i<enemies.size(); i++){
+			if (targetVals[i]>0) total+=targetVals[i];
+		}
+        if (total>0){
+            int targetSelection=rand()%total;
+            for (int i=0; i<enemies.size(); i++){
+                if (targetVals[i]>0){
+                    targetSelection-=targetVals[i];
+                }
+                if (targetSelection<=0 && EnemyAdded==0) {
+                    enemiesSorted.push_back(*currentTarget);
+                    targetVals[i]=0;
+                    EnemyAdded=1;
+                }
+                currentTarget++;
+            }
+        }
+		
+	}
+	
+	switch(targetCode){
+		case 0: //Self
+			targets.push_back(this);
+			break;
+		case 4: //All enemies
+			currentTarget = enemies.begin();
+			for (int i=0; i<enemies.size(); i++){
+				targets.push_back(*currentTarget);
+				currentTarget++;
+			}
+			break;
+		case 5: //All friends
+			currentTarget = team.begin();
+			for (int i=0; i<team.size(); i++){
+				targets.push_back(*currentTarget);
+				currentTarget++;
+			}
+			break;
+		default: //some number of Targets
+			currentTarget = enemiesSorted.begin();
+			for (int i=0; i<enemiesSorted.size(); i++){
+				if(i<targetCode){
+					targets.push_back(*currentTarget);
+					currentTarget++;
+				}
+			}
+			break;
+	}
+	return targets;
+}
+

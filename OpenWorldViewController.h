@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include "ViewController.h"
+#include "BattleViewController.h"
 #include "Dot.h"
 #include "ImageView.h"
 
@@ -109,12 +110,17 @@ private:
     int isReturning;
     int mapReturningFrom;
     
+    int characterLeftBehind;
+    //1 is Kat, 2 is Albus, 3 is Elsa, 4 is Jack
+    
+    BattleViewController* createBattleViewController(string backgroundLocation, vector<string> enemyFileLocations);
     
 public:
-    OpenWorldViewController(SDL_Renderer *ren);
+    OpenWorldViewController(SDL_Renderer *ren, int charLeftBehind);
     
     virtual void pushViewController(ViewController *vc);
     virtual void becomeTop();
+    virtual void dismiss();
     
     virtual int draw(SDL_Event e);
     

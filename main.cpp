@@ -151,6 +151,8 @@ int main( int argc, char* args[] )
 	}
 	else{
         
+        srand(time(NULL));
+        
         //Main loop flag
         bool quit = false;
         
@@ -179,6 +181,8 @@ int main( int argc, char* args[] )
         //ExampleViewController baseVC(gRenderer);
         
         MainMenuViewController baseVC(gRenderer);
+        baseVC.becomeTop();
+        
         
         //While application is running
         while( !quit )

@@ -9,9 +9,20 @@
 #include "BattleViewController.h"
 
 BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector<Enemy *> enem, string locName, SDL_Renderer *ren) : ViewController(ren) {
+    
+    //music!
+    string pathName = pathForFile("Audio/FFXIIIBattle.wav");
+    music = Mix_LoadMUS(pathName.c_str());
+    
     mainChars = chars;
     enemies = enem;
     
+    //init vc
+    victory = 0;
+    defeat = 0;
+    finalText = TextLabel(360, 320, "", defaultFont, 48, renderer);
+    finalText.setColor(0,0,0);
+    displayingFinalText = 0;
     
     //plot main characters around circle
     vector<Character *> tempVector(mainChars.begin(), mainChars.end());
@@ -37,7 +48,7 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     activeMoves[2].setColor(0, 0, 0);
     activeMoves[3].setColor(0, 0, 0);
 
-    displayLabel = TextLabel(0,530, "", defaultFont, 24);
+    displayLabel = TextLabel(0,530, "", defaultFont, 24, renderer);
     
     //init active character
     activeCharacter = *mainChars.begin();
@@ -50,13 +61,34 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     updateActiveMoves();
     drawActiveMoves();
     
-    //music!
-    Mix_Music *music;
+
     
-    string pathName = pathForFile("Audio/FFXIIIBattle.wav");
-    music = Mix_LoadMUS(pathName.c_str());
-    
-    Mix_PlayMusic(music, -1);
+    switch(Mix_GetMusicType(NULL))
+    {
+        case MUS_NONE:
+        MUS_CMD:
+            printf("Command based music is playing.\n");
+            break;
+        MUS_WAV:
+            printf("WAVE/RIFF music is playing.\n");
+            break;
+        MUS_MOD:
+            printf("MOD music is playing.\n");
+            break;
+        MUS_MID:
+            printf("MIDI music is playing.\n");
+            break;
+        MUS_OGG:
+            printf("OGG music is playing.\n");
+            break;
+        MUS_MP3:
+            printf("MP3 music is playing.\n");
+            break;
+        default:
+            printf("Unknown music is playing.\n");
+            break;
+    }
+     
 
 }
 
@@ -71,6 +103,8 @@ BattleViewController::~BattleViewController() {
         mainChars.erase(mainChars.begin() + 0);
         delete character;
     }
+    
+    Mix_FreeMusic(music);
 }
 
 vector<BattleCharacterView> BattleViewController::plotViewsAroundCircle(int x, int y, int radius, vector<Character *> chars) {
@@ -130,28 +164,35 @@ int BattleViewController::draw(SDL_Event e) {
     if(ViewController::draw(e)==0) { //returns 0 if this view controller should not draw
         return 0;
     }
-    //draw!
+    //display ending screen
+    if (victory || defeat) {
+        finalText.draw();
+        displayingFinalText = 1;
+    }
+    else {
+        //draw!
 
-    //draw the background
-    backgroundImage.draw();
-    displayLabel.draw(renderer);
-    
-    //draw the mainCharacters
-    typename vector<BattleCharacterView>::iterator iter;
-    for (iter = mainCharViews.begin(); iter != mainCharViews.end(); ++iter) {
-        iter->draw();
-    }
-    
-    //draw the enemies
-    typename vector<BattleCharacterView>::iterator iter2;
-    for (iter2 = enemyViews.begin(); iter2 != enemyViews.end(); ++iter2) {
-        iter2->draw();
-    }
-    
-    
-    //draw the moves of the active character
-    drawActiveMoves();
+        //draw the background
+        backgroundImage.draw();
+        displayLabel.draw(renderer);
         
+        //draw the mainCharacters
+        typename vector<BattleCharacterView>::iterator iter;
+        for (iter = mainCharViews.begin(); iter != mainCharViews.end(); ++iter) {
+            iter->draw();
+        }
+        
+        //draw the enemies
+        typename vector<BattleCharacterView>::iterator iter2;
+        for (iter2 = enemyViews.begin(); iter2 != enemyViews.end(); ++iter2) {
+            iter2->draw();
+        }
+        
+        
+        //draw the moves of the active character
+        drawActiveMoves();
+        
+    }
     //check for user input
     handleEvent(e);
     
@@ -160,6 +201,13 @@ int BattleViewController::draw(SDL_Event e) {
 }
 
 void BattleViewController::handleEvent(SDL_Event e) {
+    
+    //check if should dismiss
+    if (displayingFinalText) {
+        if (e.type == SDL_KEYDOWN) {
+            dismiss();
+        }
+    }
     
     //is there text on the screen?
     if (displayText.size() > 0) {
@@ -308,6 +356,10 @@ void BattleViewController::handleEvent(SDL_Event e) {
                             enemyViews[i].setIsTargeted(true);
                         }
                     }
+                    else if (numTargets == -3) {
+                        targets.push_back(activeCharacter);
+                        activeCharacterView->setIsTargeted(true);
+                    }
                     else {
                         getViewForIndex(arrowSelectedPos)->setHasCursor(true);
                     }
@@ -404,6 +456,24 @@ void BattleViewController::handleEvent(SDL_Event e) {
     }
 }
 
+bool BattleViewController::arePlayersDead() {
+    for (int i = 0; i < mainChars.size(); i++) {
+        if (mainChars[i]->getCurrentHealth() > 0) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+bool BattleViewController::areEnemiesDead() {
+    for (int i = 0; i < enemies.size(); i++) {
+        if (enemies[i]->getCurrentHealth() > 0) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
 BattleCharacterView* BattleViewController::getViewForIndex(int index) {
     BattleCharacterView* chosenView;
     if (index >= mainCharViews.size()) {
@@ -478,6 +548,18 @@ void BattleViewController::nextCharacter() {
     
     moveFinal = false;
     
+    //check for victory
+    if (arePlayersDead()) {
+        defeat = 1;
+        finalText.setText("You lose the game.");
+        finalText.setColor(255, 0, 0);
+    }
+    else if (areEnemiesDead()) {
+        victory = 1;
+        finalText.setText("You win the battle!");
+        finalText.setColor(0, 255, 0);
+    }
+    
     if (activeCharacter->getCurrentHealth() <= 0 || activeCharacter->getIsIncap()) {
         displayLabel.setText(activeCharacter->getName() + " is unable to battle this turn");
         nextCharacter();
@@ -509,3 +591,11 @@ void BattleViewController::updateCharacterViews() {
     }
 }
 
+void BattleViewController::becomeTop() {
+    ViewController::becomeTop();
+    Mix_PlayMusic(music, -1);
+}
+void BattleViewController::dismiss() {
+    Mix_HaltMusic();
+    ViewController::dismiss();
+}

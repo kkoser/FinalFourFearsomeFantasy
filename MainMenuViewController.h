@@ -16,6 +16,7 @@
 #include "ImageView.h"
 #include "LTexture.h"
 #include "OpenWorldViewController.h"
+#include "CCViewController.h"
 
 
 
@@ -23,13 +24,13 @@ class MainMenuViewController : public ViewController {
     
 public:
     MainMenuViewController(SDL_Renderer *rend);
+    ~MainMenuViewController();
     virtual int draw(SDL_Event e);
     virtual void pushViewController(ViewController *vc);
     virtual void becomeTop();
     
 private:
-    ImageView backgroundImage;
-    
+    ImageView backgroundImage;    
 };
 
 #endif /* defined(__FFFF__MainMenuViewController__) */

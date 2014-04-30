@@ -153,7 +153,7 @@ void Character::actMoveOnTarget(string moveName, vector<Character *> targets) {
                 else if (word=="Health") {
                     getline(iss, word);
                     int oldVal = ch->getCurrentHealth();
-                    int val = getValueForCommand(word, ch->getCurrentHealth(), ch->getCurrentPower());
+                    int val = getValueForCommand(word, ch->getCurrentHealth(), this->getCurrentPower());
                     ch->changeHealth(val);
                     
                     if (ch == this) {
@@ -166,7 +166,7 @@ void Character::actMoveOnTarget(string moveName, vector<Character *> targets) {
                 else if (word=="Power") {
                     getline(iss, word);
                     
-                    int val = getValueForCommand(word, ch->getCurrentPower(), ch->getCurrentPower());
+                    int val = getValueForCommand(word, ch->getCurrentPower(), this->getCurrentPower());
                     ch->setCurrentPower(val);
                 }
                 else if (word=="PP") {
@@ -178,12 +178,16 @@ void Character::actMoveOnTarget(string moveName, vector<Character *> targets) {
                 else if (word=="PPRegen") {
                     getline(iss, word);
                     
-                    int val = getValueForCommand(word, ch->getCurrentPPRegen(), ch->getCurrentPower());
+                    int val = getValueForCommand(word, ch->getCurrentPPRegen(), this->getCurrentPower());
                     ch->setCurrentPPRegen(val);
                 }
                 else if (word=="Status") {
                     getline(iss, word);
-                    ch->applyStatus(word, getCurrentPower()); //pass in power of caster
+                    ch->applyStatus(word, this->getCurrentPower()); //pass in power of caster
+                }
+                else if (word=="Shield") {
+                    getline(iss, word);
+                    ch->setCurrentShield(getValueForCommand(word, ch->getCurrentShield(), this->getCurrentPower()));
                 }
                 
                 else {
@@ -276,6 +280,7 @@ void Character::changeHealth(int newHealth) {
 //0 means all characters
 //-1 is all Friendlies
 //-2 is all enemies
+//-3 indicates the actor is the target
 int Character::numTargetsForMove(string moveName) {
     string fileName = pathForFile("Moves/" + moveName + ".move");
     //open file
@@ -305,6 +310,9 @@ int Character::numTargetsForMove(string moveName) {
                 }
                 else if (word == "ALL_ENEMIES") {
                     return -2;
+                }
+                else if (word == "SELF") {
+                    return -3;
                 }
                 else {
                     return atoi(word.c_str()); //convert to int
@@ -466,7 +474,7 @@ int Character::getCurrentHealth() {
 }
 
 void Character::setCurrentHealth(int health) {
-    if (health < 0) {
+    if (health <= 0) {
         health = 0;
     }
     else if (health > maxHealth) {

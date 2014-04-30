@@ -7,7 +7,6 @@
 //
 
 #include "OpenWorldViewController.h"
-#include "BattleViewController.h"
 #include "ExampleViewController.h"
 #include "Dot.h"
 #include "SDL2_mixer/SDL_mixer.h"
@@ -17,7 +16,7 @@
 
 //---------------------------------------------------------
 
-OpenWorldViewController::OpenWorldViewController(SDL_Renderer *ren) : ViewController(ren) {
+OpenWorldViewController::OpenWorldViewController(SDL_Renderer *ren, int charLeftBehind) : ViewController(ren) {
     
     //srand (time(NULL));
     
@@ -27,6 +26,8 @@ OpenWorldViewController::OpenWorldViewController(SDL_Renderer *ren) : ViewContro
     activeCharacter=ELSA;
     charDir=DOWN;
     stepCount=0;
+    characterLeftBehind = charLeftBehind;
+    
 
     blank = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
     for(int q=0;q<8;q++) camera[q]= blank;
@@ -187,6 +188,7 @@ bool OpenWorldViewController::loadTextures() {
 		printf( "Failed to load map4 background texture image!\n" );
 		success = false;
 	}
+<<<<<<< HEAD
     if( !mapTexture[5].loadFromFile( pathForFile("Images/map5.png"), renderer ) )
 	{
 		printf( "Failed to load map5 background texture image!\n" );
@@ -202,6 +204,9 @@ bool OpenWorldViewController::loadTextures() {
 		printf( "Failed to load map5 background texture image!\n" );
 		success = false;
 	}
+=======
+    
+>>>>>>> FETCH_HEAD
     //Load music
     elsaMusic = Mix_LoadMUS( pathForFile("Audio/LetItGo.wav" ).c_str());
     if( elsaMusic == NULL )
@@ -217,7 +222,7 @@ bool OpenWorldViewController::loadTextures() {
         success = false;
     }
     
-    katMusic = Mix_LoadMUS( pathForFile("Audio/ArrowsAtTheSky.wav" ).c_str());
+    katMusic = Mix_LoadMUS( pathForFile("Audio/gapraWhitewood.wav" ).c_str());
     if( katMusic == NULL )
     {
         printf( "Failed to load Kat music! SDL_mixer Error: %s\n", Mix_GetError() );
@@ -331,6 +336,10 @@ int OpenWorldViewController::draw(SDL_Event e) {
                     case SDLK_RIGHT:
                         stepCount++;
                         cout<<"Steps: "<<stepCount<<endl;
+                        break;
+                    case SDLK_ESCAPE:
+                        dismiss();
+                        return 1;
                         break;
                         
                 }
@@ -622,23 +631,11 @@ int OpenWorldViewController::draw(SDL_Event e) {
             //Mix_HaltMusic();
             cout<<"Switch to Battle Mode"<<endl;
             
-            vector<MainCharacter *> chars;
-            vector<Enemy *> enemies;
-            
-            MainCharacter *Elsa = new MainCharacter(pathForFile("Characters/Elsa.character"));
-            MainCharacter *Elsa2 = new MainCharacter(pathForFile("Characters/Elsa.character"));
-            MainCharacter *Elsa3 = new MainCharacter(pathForFile("Characters/Elsa.character"));
-            chars.push_back(Elsa);
-            chars.push_back(Elsa2);
-            chars.push_back(Elsa3);
-            
-            Enemy *goblin = new Enemy(pathForFile("Characters/Goblin.character"));
-            Enemy *goblin2 = new Enemy(pathForFile("Characters/Troll.character"));
-            enemies.push_back(goblin);
-            enemies.push_back(goblin2);
-            
-            BattleViewController *vc = new BattleViewController(chars, enemies, pathForFile("Images/arendelle.jpg"), renderer);
-
+            vector<string> enemyFileLocations;
+            enemyFileLocations.push_back(pathForFile("Characters/GoblinArsonist.character"));
+            enemyFileLocations.push_back(pathForFile("Characters/Troll.character"));
+          
+            BattleViewController *vc = createBattleViewController(pathForFile("Images/arendelle.jpg"), enemyFileLocations);
             pushViewController(vc);
             
         }
@@ -648,9 +645,46 @@ int OpenWorldViewController::draw(SDL_Event e) {
 
 //------------------------------------------------------------------------------------------
 
+BattleViewController* OpenWorldViewController::createBattleViewController(string backgroundLocation, vector<string> enemyFileLocations) {
+    
+    
+    vector<MainCharacter *> chars;
+    vector<Enemy *> enemies;
+    
+    //make main characters
+    if (characterLeftBehind != 1) {
+        MainCharacter *Kat = new MainCharacter(pathForFile("Characters/Kat.character"));
+        chars.push_back(Kat);
+    }
+    if (characterLeftBehind != 2) {
+        MainCharacter *Albus = new MainCharacter(pathForFile("Characters/Albus.character"));
+        chars.push_back(Albus);
+    }
+    if (characterLeftBehind != 3) {
+        MainCharacter *Elsa = new MainCharacter(pathForFile("Characters/Elsa.character"));
+        chars.push_back(Elsa);
+    }
+    if (characterLeftBehind != 4) {
+        MainCharacter *Jack = new MainCharacter(pathForFile("Characters/Jack.character"));
+        chars.push_back(Jack);
+    }
+
+    //make enemies
+    vector<string>::const_iterator currentEnemy;
+    for (currentEnemy = enemyFileLocations.begin(); currentEnemy != enemyFileLocations.end(); ++currentEnemy) {
+        Enemy *enemy = new Enemy(*currentEnemy);
+        enemies.push_back(enemy);
+    }
+    
+    BattleViewController *vc = new BattleViewController(chars, enemies, backgroundLocation, renderer);
+    return vc;
+}
+
 void OpenWorldViewController::pushViewController(ViewController *vc) {
+    Mix_PauseMusic();
+    
     ViewController::pushViewController(vc);
-    Mix_HaltMusic();
+    
 }
 
 void OpenWorldViewController::becomeTop() {
@@ -659,7 +693,13 @@ void OpenWorldViewController::becomeTop() {
     leader.clearVels();
     mapScout.clearVels();
     
-    cout<<"X: "<<leader.getPosX()<<" Y: "<<leader.getPosY()<<endl;
+    //cout<<"X: "<<leader.getPosX()<<" Y: "<<leader.getPosY()<<endl;
+    //Mix_ResumeMusic();
 }
 
+void OpenWorldViewController::dismiss() {
+    Mix_HaltMusic();
+    ViewController::dismiss();
+    
+}
 
