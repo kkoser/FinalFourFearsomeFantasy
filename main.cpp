@@ -181,6 +181,7 @@ int main( int argc, char* args[] )
         //ExampleViewController baseVC(gRenderer);
         
         MainMenuViewController baseVC(gRenderer);
+        baseVC.becomeTop();
         
         
         //While application is running

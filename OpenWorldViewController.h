@@ -115,6 +115,7 @@ public:
     
     virtual void pushViewController(ViewController *vc);
     virtual void becomeTop();
+    virtual void dismiss();
     
     virtual int draw(SDL_Event e);
     

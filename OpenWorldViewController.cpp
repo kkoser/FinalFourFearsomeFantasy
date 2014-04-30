@@ -306,6 +306,10 @@ int OpenWorldViewController::draw(SDL_Event e) {
                         stepCount++;
                         cout<<"Steps: "<<stepCount<<endl;
                         break;
+                    case SDLK_ESCAPE:
+                        dismiss();
+                        return 1;
+                        break;
                         
                 }
                 
@@ -582,8 +586,10 @@ int OpenWorldViewController::draw(SDL_Event e) {
 //------------------------------------------------------------------------------------------
 
 void OpenWorldViewController::pushViewController(ViewController *vc) {
-    ViewController::pushViewController(vc);
     Mix_PauseMusic();
+    
+    ViewController::pushViewController(vc);
+    
 }
 
 void OpenWorldViewController::becomeTop() {
@@ -593,7 +599,13 @@ void OpenWorldViewController::becomeTop() {
     mapScout.clearVels();
     
     //cout<<"X: "<<leader.getPosX()<<" Y: "<<leader.getPosY()<<endl;
-    Mix_ResumeMusic();
+    //Mix_ResumeMusic();
 }
 
+void OpenWorldViewController::dismiss() {
+    Mix_HaltMusic();
+    
+    ViewController::dismiss();
+    
+}
 
