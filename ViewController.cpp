@@ -7,6 +7,7 @@
 //
 
 #include "ViewController.h"
+#include <SDL2/SDL.h>
 
 ViewController::ViewController(SDL_Renderer *ren) {
     //save the renderer
@@ -20,6 +21,7 @@ ViewController::ViewController(SDL_Renderer *ren) {
 void ViewController::becomeTop() {
     free(top);
     top = NULL;
+    SDL_SetRenderDrawColor(renderer,215,245,245,1);
     SDL_RenderClear(renderer);
 }
 
