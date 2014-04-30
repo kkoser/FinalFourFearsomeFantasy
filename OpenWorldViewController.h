@@ -50,6 +50,7 @@ private:
     
     //Map Textures
     LTexture mapTexture[8];
+    LTexture mapWithBallTexture[8];
     
     //The music that will be played
     Mix_Music *elsaMusic = NULL;
@@ -66,6 +67,7 @@ private:
     Mix_Chunk *elsaSoundEffect = NULL;
     Mix_Chunk *jackSoundEffect = NULL;
     Mix_Chunk *katSoundEffect = NULL;
+    Mix_Chunk *dragonBallSoundEffect = NULL;
     
     enum MainCharacters{
         ALBUS,

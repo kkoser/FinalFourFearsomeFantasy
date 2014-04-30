@@ -226,7 +226,7 @@ bool OpenWorldViewController::loadTextures() {
 		success = false;
 	}
     
-    //Load Maps
+    //Load Maps without Dragon Balls
     if( !mapTexture[0].loadFromFile( pathForFile("Images/map0.png"), renderer ) )
 	{
 		printf( "Failed to load map0 background texture image!\n" );
@@ -263,6 +263,48 @@ bool OpenWorldViewController::loadTextures() {
 		success = false;
 	}
     if( !mapTexture[7].loadFromFile( pathForFile("Images/map7.png"), renderer ) )
+	{
+		printf( "Failed to load map5 background texture image!\n" );
+		success = false;
+	}
+    
+    //Load Maps with Dragon Balls
+    if( !mapWithBallTexture[0].loadFromFile( pathForFile("Images/map0.png"), renderer ) )
+	{
+		printf( "Failed to load map0 background texture image!\n" );
+		success = false;
+	}
+    if( !mapWithBallTexture[1].loadFromFile( pathForFile("Images/map1.png"), renderer ) )
+	{
+		printf( "Failed to load map1 background texture image!\n" );
+		success = false;
+	}
+    if( !mapWithBallTexture[2].loadFromFile( pathForFile("Images/map2.png"), renderer ) )
+	{
+		printf( "Failed to load map2 background texture image!\n" );
+		success = false;
+	}
+    if( !mapWithBallTexture[3].loadFromFile( pathForFile("Images/map3.png"), renderer ) )
+	{
+		printf( "Failed to load map3 background texture image!\n" );
+		success = false;
+	}
+    if( !mapWithBallTexture[4].loadFromFile( pathForFile("Images/map4.png"), renderer ) )
+	{
+		printf( "Failed to load map4 background texture image!\n" );
+		success = false;
+	}
+    if( !mapWithBallTexture[5].loadFromFile( pathForFile("Images/map5.png"), renderer ) )
+	{
+		printf( "Failed to load map5 background texture image!\n" );
+		success = false;
+	}
+    if( !mapWithBallTexture[6].loadFromFile( pathForFile("Images/map6.png"), renderer ) )
+	{
+		printf( "Failed to load map5 background texture image!\n" );
+		success = false;
+	}
+    if( !mapWithBallTexture[7].loadFromFile( pathForFile("Images/map7.png"), renderer ) )
 	{
 		printf( "Failed to load map5 background texture image!\n" );
 		success = false;
@@ -351,6 +393,14 @@ bool OpenWorldViewController::loadTextures() {
         printf( "Failed to load albus sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
         success = false;
     }
+    
+    dragonBallSoundEffect = Mix_LoadWAV( pathForFile("Audio/dragonBallFound.wav").c_str());
+    if( katMusic == NULL )
+    {
+        printf( "Failed to load dragonBall sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
+        success = false;
+    }
+    
 
     return success;
 
@@ -376,7 +426,7 @@ int OpenWorldViewController::draw(SDL_Event e) {
                         dragonBallFoundText.draw();
                         break;*/
                         
-                    case SDLK_SPACE:
+                    case SDLK_SPACE: //clear text
                         dragonBallJustFound=0;
                         displayAllDragonBallsFound=0;
                         displayCastleRestriction=0;
@@ -659,7 +709,7 @@ int OpenWorldViewController::draw(SDL_Event e) {
                             dragonBallFoundText.setY(300);
                             dragonBallFoundText.setColor(0,0,0);
                             allDragonBallsFoundText.setColor(0,0,0);
-                            
+                            Mix_PlayChannel( -1, dragonBallSoundEffect, 0 );
                         }
                         if(dragonBallCount==7){
                             displayAllDragonBallsFound=1;
@@ -676,6 +726,7 @@ int OpenWorldViewController::draw(SDL_Event e) {
                             dragonBallFoundText.setY(300);
                             dragonBallFoundText.setColor(255,255,255);
                             allDragonBallsFoundText.setColor(255,255,255);
+                            Mix_PlayChannel( -1, dragonBallSoundEffect, 0 );
                         }
                         if(dragonBallCount==7){
                             displayAllDragonBallsFound=1;
@@ -692,6 +743,7 @@ int OpenWorldViewController::draw(SDL_Event e) {
                             dragonBallFoundText.setY(300);
                             dragonBallFoundText.setColor(0,0,0);
                             allDragonBallsFoundText.setColor(0,0,0);
+                            Mix_PlayChannel( -1, dragonBallSoundEffect, 0 );
                         }
                         if(dragonBallCount==7){
                             displayAllDragonBallsFound=1;
@@ -708,6 +760,7 @@ int OpenWorldViewController::draw(SDL_Event e) {
                             dragonBallFoundText.setY(300);
                             dragonBallFoundText.setColor(255,255,255);
                             allDragonBallsFoundText.setColor(255,255,255);
+                            Mix_PlayChannel( -1, dragonBallSoundEffect, 0 );
                         }
                         if(dragonBallCount==7){
                             displayAllDragonBallsFound=1;
@@ -724,6 +777,7 @@ int OpenWorldViewController::draw(SDL_Event e) {
                             dragonBallFoundText.setY(300);
                             dragonBallFoundText.setColor(255,255,255);
                             allDragonBallsFoundText.setColor(255,255,255);
+                            Mix_PlayChannel( -1, dragonBallSoundEffect, 0 );
                         }
                         if(dragonBallCount==7){
                             displayAllDragonBallsFound=1;
@@ -740,6 +794,7 @@ int OpenWorldViewController::draw(SDL_Event e) {
                             dragonBallFoundText.setY(300);
                             dragonBallFoundText.setColor(0,0,0);
                             allDragonBallsFoundText.setColor(0,0,0);
+                            Mix_PlayChannel( -1, dragonBallSoundEffect, 0 );
                         }
                         if(dragonBallCount==7){
                             displayAllDragonBallsFound=1;
@@ -758,20 +813,11 @@ int OpenWorldViewController::draw(SDL_Event e) {
                             dragonBallFoundText.setColor(0,0,0);
                             allDragonBallsFoundText.setColor(0,0,0);
                             dragonBallCountText.setColor(0,0,0);
+                            Mix_PlayChannel( -1, dragonBallSoundEffect, 0 );
                         }
                         if(dragonBallCount==7){
                             displayAllDragonBallsFound=1;
                         }
-                        break;
-                        
-                    case 31: //treasure1
-                        
-                        break;
-                    case 32: //treasure2
-                        
-                        break;
-                    case 33: //treasure3
-                        
                         break;
                         
                         
@@ -795,8 +841,6 @@ int OpenWorldViewController::draw(SDL_Event e) {
         mapScout.moveBackSmooth(mapNumber); //move scout back
         leader.moveSmooth(zone,mapNumber); //move character ahead
         mapScout.moveSmooth(zone,mapNumber); //move scout ahead, too
-        
-        //cout<<zone<<endl;
         
         //Center the camera over the dot
         camera[mapNumber].x = ( leader.getPosX() + Dot::DOT_WIDTH / 2 ) - SCREEN_WIDTH / 2;
@@ -876,7 +920,12 @@ int OpenWorldViewController::draw(SDL_Event e) {
         }
         
         //Render background
-        mapTexture[mapNumber].render( renderer, 0, 0, &camera[mapNumber] );
+        if(dragonBallFound[mapNumber]){
+            mapTexture[mapNumber].render( renderer, 0, 0, &camera[mapNumber] );
+        }
+        else{
+            mapWithBallTexture[mapNumber].render( renderer, 0, 0, &camera[mapNumber] );
+        }
         
         if (activeCharacter==KAT){
             if (charDir==UP) leader.renderRel( renderer, camera[mapNumber].x, camera[mapNumber].y, &katSpriteBack, SDL_FLIP_NONE );
