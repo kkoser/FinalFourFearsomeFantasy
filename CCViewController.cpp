@@ -13,6 +13,7 @@ CCViewController::CCViewController(SDL_Renderer *rend) : ViewController(rend) {
     //load textures etc
     
     backgroundImage = ImageView(0, 0, pathForFile("Images/CCBackgroundImage.png"), renderer);
+    redXImage = ImageView(0,0, pathForFile("Images/redX.png"), renderer);
     
     string pathName = pathForFile("Audio/DesideratusBellum.wav");
     music = Mix_LoadMUS(pathName.c_str());
@@ -29,30 +30,54 @@ int CCViewController::draw(SDL_Event e) {
         return 0;
     }
     //draw!
-    
-    
     backgroundImage.draw();
-    
+
+    //get user input
     if (e.key.keysym.sym == SDLK_1) {
         //katniss left behind
-        OpenWorldViewController *vc = new OpenWorldViewController(renderer, 1);
-        pushViewController(vc);
+        characterToLeaveBehind = 1;
+
     }
     else if (e.key.keysym.sym == SDLK_2) {
         //albus left behind
-        OpenWorldViewController *vc = new OpenWorldViewController(renderer, 2);
-        pushViewController(vc);
+        characterToLeaveBehind = 2;
+
     }
     else if (e.key.keysym.sym == SDLK_3) {
         //elsa left behind
-        OpenWorldViewController *vc = new OpenWorldViewController(renderer, 3);
-        pushViewController(vc);
+        characterToLeaveBehind = 3;
+
     }
     else if (e.key.keysym.sym == SDLK_4) {
         //jack left behind
-        OpenWorldViewController *vc = new OpenWorldViewController(renderer, 4);
-        pushViewController(vc);
+        characterToLeaveBehind = 4;
+
     }
+    else if (e.key.keysym.sym == SDLK_RETURN && characterToLeaveBehind != 0) {
+        OpenWorldViewController *vc = new OpenWorldViewController(renderer, characterToLeaveBehind);
+        pushViewController(vc);
+
+    }
+    
+    //draw red x
+    if (characterToLeaveBehind == 1) {
+        redXImage.moveAbs(90, 75);
+        redXImage.draw();
+    }
+    else if (characterToLeaveBehind == 2) {
+        redXImage.moveAbs(90, 380);
+        redXImage.draw();
+    }
+    else if (characterToLeaveBehind == 3) {
+        redXImage.moveAbs(920, 75);
+        redXImage.draw();
+    }
+    else if (characterToLeaveBehind == 4) {
+        redXImage.moveAbs(920, 380);
+        redXImage.draw();
+    }
+    
+
     return 1;
 }
 
@@ -68,5 +93,5 @@ void CCViewController::becomeTop() {
     ViewController::becomeTop();
     //Mix_ResumeMusic();
     
-    Mix_PlayMusic(music, -1);
+    Mix_PlayMusic(music, 0);
 }

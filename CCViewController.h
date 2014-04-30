@@ -25,6 +25,8 @@ public:
     
 private:
     ImageView backgroundImage;
+    ImageView redXImage;
+    int characterToLeaveBehind = 0;
 };
 
 #endif /* defined(__FFFF__CCViewController__) */
