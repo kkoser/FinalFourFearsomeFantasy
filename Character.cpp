@@ -153,7 +153,7 @@ void Character::actMoveOnTarget(string moveName, vector<Character *> targets) {
                 else if (word=="Health") {
                     getline(iss, word);
                     int oldVal = ch->getCurrentHealth();
-                    int val = getValueForCommand(word, ch->getCurrentHealth(), ch->getCurrentPower());
+                    int val = getValueForCommand(word, ch->getCurrentHealth(), this->getCurrentPower());
                     ch->changeHealth(val);
                     
                     if (ch == this) {
@@ -166,7 +166,7 @@ void Character::actMoveOnTarget(string moveName, vector<Character *> targets) {
                 else if (word=="Power") {
                     getline(iss, word);
                     
-                    int val = getValueForCommand(word, ch->getCurrentPower(), ch->getCurrentPower());
+                    int val = getValueForCommand(word, ch->getCurrentPower(), this->getCurrentPower());
                     ch->setCurrentPower(val);
                 }
                 else if (word=="PP") {
@@ -178,12 +178,16 @@ void Character::actMoveOnTarget(string moveName, vector<Character *> targets) {
                 else if (word=="PPRegen") {
                     getline(iss, word);
                     
-                    int val = getValueForCommand(word, ch->getCurrentPPRegen(), ch->getCurrentPower());
+                    int val = getValueForCommand(word, ch->getCurrentPPRegen(), this->getCurrentPower());
                     ch->setCurrentPPRegen(val);
                 }
                 else if (word=="Status") {
                     getline(iss, word);
-                    ch->applyStatus(word, getCurrentPower()); //pass in power of caster
+                    ch->applyStatus(word, this->getCurrentPower()); //pass in power of caster
+                }
+                else if (word=="Shield") {
+                    getline(iss, word);
+                    ch->setCurrentShield(getValueForCommand(word, ch->getCurrentShield(), this->getCurrentPower()));
                 }
                 
                 else {

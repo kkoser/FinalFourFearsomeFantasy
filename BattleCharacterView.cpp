@@ -89,10 +89,10 @@ void BattleCharacterView::draw() {
 
 void BattleCharacterView::animate() {
     if(image.getDegs()>3) {
-        animateDelta = -0.7;
+        animateDelta = -0.5;
     }
     else if(image.getDegs() < -3) {
-        animateDelta = 0.7;
+        animateDelta = 0.5;
     }
     image.setDegs(image.getDegs() + animateDelta);
 }
