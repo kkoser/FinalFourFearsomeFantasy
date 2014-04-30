@@ -581,9 +581,15 @@ int OpenWorldViewController::draw(SDL_Event e) {
                         
                     case 16: //FINAL BATTLE
                         if(dragonBallCount==7){
-                            //implement final battle
+                            vector<string> finalEnemyFileLocations;
+                            finalEnemyFileLocations.push_back(pathForFile("Characters/GoblinArsonist.character"));
+                            finalEnemyFileLocations.push_back(pathForFile("Characters/Troll.character"));
+                            
+                            BattleViewController *finalVC = createBattleViewController(pathForFile("Images/castleBattle.jpg"), finalEnemyFileLocations);
+                            pushViewController(finalVC);
                         }
                         break;
+                        
                     case 17:
                         mapNumber=0;
                         mapReturningFrom=1;
@@ -983,7 +989,6 @@ int OpenWorldViewController::draw(SDL_Event e) {
             enemyFileLocations.push_back(pathForFile("Characters/Troll.character"));
             
             BattleViewController *vc;
-            string testString = "nothing";
             
             switch(mapNumber){
                 case 1:
