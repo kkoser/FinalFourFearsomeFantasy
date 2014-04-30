@@ -18,7 +18,7 @@
 
 OpenWorldViewController::OpenWorldViewController(SDL_Renderer *ren, int charLeftBehind) : ViewController(ren) {
     
-    srand (time(NULL));
+    srand ((int)time(NULL));
     
     loadTextures();
     
