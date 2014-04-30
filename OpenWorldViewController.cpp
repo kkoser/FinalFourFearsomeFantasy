@@ -276,6 +276,18 @@ bool OpenWorldViewController::loadTextures() {
         printf( "Failed to load mustafar music! SDL_mixer Error: %s\n", Mix_GetError() );
         success = false;
     }
+    desertMusic = Mix_LoadMUS( pathForFile("Audio/nascence.wav" ).c_str());
+    if( desertMusic == NULL )
+    {
+        printf( "Failed to load desert music! SDL_mixer Error: %s\n", Mix_GetError() );
+        success = false;
+    }
+    castleMusic = Mix_LoadMUS( pathForFile("Audio/dracarys.wav" ).c_str());
+    if( castleMusic == NULL )
+    {
+        printf( "Failed to load castle music! SDL_mixer Error: %s\n", Mix_GetError() );
+        success = false;
+    }
     
     //Load sound effects
     elsaSoundEffect = Mix_LoadWAV( pathForFile("Audio/elsaSoundEffect.wav" ).c_str());
@@ -785,6 +797,12 @@ int OpenWorldViewController::draw(SDL_Event e) {
                 case 5:
                     Mix_PlayMusic( jackMusic, -1 );
                     break;
+                case 6:
+                    Mix_PlayMusic( desertMusic, -1);
+                    break;
+                case 7:
+                    Mix_PlayMusic( castleMusic, -1);
+                    break;
             }
         }
         
@@ -980,7 +998,7 @@ void OpenWorldViewController::becomeTop() {
     mapScout.clearVels();
     
     //cout<<"X: "<<leader.getPosX()<<" Y: "<<leader.getPosY()<<endl;
-    //Mix_ResumeMusic();
+    Mix_ResumeMusic();
 }
 
 void OpenWorldViewController::dismiss() {

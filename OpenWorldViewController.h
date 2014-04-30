@@ -53,6 +53,8 @@ private:
     Mix_Music *jackMusic = NULL;
     Mix_Music *cityMusic = NULL;
     Mix_Music *mustafarMusic = NULL;
+    Mix_Music *desertMusic = NULL;
+    Mix_Music *castleMusic = NULL;
     
     //The sound effects that will be used
     Mix_Chunk *albusSoundEffect = NULL;
