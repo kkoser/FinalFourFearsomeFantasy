@@ -114,6 +114,8 @@ private:
     int characterLeftBehind;
     //1 is Kat, 2 is Albus, 3 is Elsa, 4 is Jack
     
+    int charIterator;
+    
     BattleViewController* createBattleViewController(string backgroundLocation, vector<string> enemyFileLocations);
     
 public:

@@ -23,10 +23,25 @@ OpenWorldViewController::OpenWorldViewController(SDL_Renderer *ren, int charLeft
     loadTextures();
     
     layoutReset=1;
-    activeCharacter=ELSA;
     charDir=DOWN;
     stepCount=0;
     characterLeftBehind = charLeftBehind;
+    
+    switch(characterLeftBehind){
+        case 1:
+            activeCharacter=ELSA;
+            break;
+        case 2:
+            activeCharacter=ELSA;
+            break;
+        case 3:
+            activeCharacter=ALBUS;
+            break;
+        case 4:
+            activeCharacter=ELSA;
+            break;
+    }
+    charIterator=0;
     
 
     blank = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
@@ -291,28 +306,85 @@ int OpenWorldViewController::draw(SDL_Event e) {
         if( e.type == SDL_KEYDOWN ){
                 switch( e.key.keysym.sym )
                 {
-                        //set Albus as active
-                    case SDLK_1:
-                        activeCharacter=ALBUS;
-                        Mix_PlayChannel( -1, albusSoundEffect, 0 );
-                        break;
+                        //cycle through characters
+                    case SDLK_RETURN:
+                        if(characterLeftBehind==1){ //kat
+                            switch(charIterator){
+                                case 0:
+                                    activeCharacter=ALBUS;
+                                    Mix_PlayChannel( -1, albusSoundEffect, 0 );
+                                    charIterator++;
+                                    break;
+                                case 1:
+                                    activeCharacter=JACK;
+                                    Mix_PlayChannel( -1, jackSoundEffect, 0 );
+                                    charIterator++;
+                                    break;
+                                case 2:
+                                    activeCharacter=ELSA;
+                                    Mix_PlayChannel( -1, elsaSoundEffect, 0 );
+                                    charIterator=0;
+                                    break;
+                            }
+                        }
+                        else if(characterLeftBehind==2){ //albus
+                            switch(charIterator){
+                                case 0:
+                                    activeCharacter=KAT;
+                                    Mix_PlayChannel( -1, katSoundEffect, 0 );
+                                    charIterator++;
+                                    break;
+                                case 1:
+                                    activeCharacter=JACK;
+                                    Mix_PlayChannel( -1, jackSoundEffect, 0 );
+                                    charIterator++;
+                                    break;
+                                case 2:
+                                    activeCharacter=ELSA;
+                                    Mix_PlayChannel( -1, elsaSoundEffect, 0 );
+                                    charIterator=0;
+                                    break;
+                            }
+                        }
+                        if(characterLeftBehind==3){ //ELSA
+                            switch(charIterator){
+                                case 0:
+                                    activeCharacter=KAT;
+                                    Mix_PlayChannel( -1, katSoundEffect, 0 );
+                                    charIterator++;
+                                    break;
+                                case 1:
+                                    activeCharacter=JACK;
+                                    Mix_PlayChannel( -1, jackSoundEffect, 0 );
+                                    charIterator++;
+                                    break;
+                                case 2:
+                                    activeCharacter=ALBUS;
+                                    Mix_PlayChannel( -1, albusSoundEffect, 0 );
+                                    charIterator=0;
+                                    break;
+                            }
+                        }
+                        if(characterLeftBehind==4){ //jack
+                            switch(charIterator){
+                                case 0:
+                                    activeCharacter=ALBUS;
+                                    Mix_PlayChannel( -1, albusSoundEffect, 0 );
+                                    charIterator++;
+                                    break;
+                                case 1:
+                                    activeCharacter=KAT;
+                                    Mix_PlayChannel( -1, katSoundEffect, 0 );
+                                    charIterator++;
+                                    break;
+                                case 2:
+                                    activeCharacter=ELSA;
+                                    Mix_PlayChannel( -1, elsaSoundEffect, 0 );
+                                    charIterator=0;
+                                    break;
+                            }
+                        }
                         
-                        //set Elsa as active
-                    case SDLK_2:
-                        activeCharacter=ELSA;
-                        Mix_PlayChannel( -1, elsaSoundEffect, 0 );
-                        break;
-                        
-                        //set Jack as active
-                    case SDLK_3:
-                        activeCharacter=JACK;
-                        Mix_PlayChannel( -1, jackSoundEffect, 0 );
-                        break;
-                        
-                        //set Kat as active
-                    case SDLK_4:
-                        activeCharacter=KAT;
-                        Mix_PlayChannel( -1, katSoundEffect, 0 );
                         break;
                         
                     case SDLK_UP:
