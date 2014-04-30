@@ -15,7 +15,8 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     //init vc
     victory = 0;
     defeat = 0;
-    finalText = TextLabel(300, 300, "", defaultFont, 24);
+    finalText = TextLabel(300, 300, "FINAL", defaultFont, 24, renderer);
+    finalText.setColor(0,0,0);
     displayingFinalText = 0;
     
     //plot main characters around circle
@@ -56,12 +57,37 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     drawActiveMoves();
     
     //music!
-    Mix_Music *music;
-    
     string pathName = pathForFile("Audio/FFXIIIBattle.wav");
     music = Mix_LoadMUS(pathName.c_str());
     
     Mix_PlayMusic(music, -1);
+    
+    switch(Mix_GetMusicType(NULL))
+    {
+        case MUS_NONE:
+        MUS_CMD:
+            printf("Command based music is playing.\n");
+            break;
+        MUS_WAV:
+            printf("WAVE/RIFF music is playing.\n");
+            break;
+        MUS_MOD:
+            printf("MOD music is playing.\n");
+            break;
+        MUS_MID:
+            printf("MIDI music is playing.\n");
+            break;
+        MUS_OGG:
+            printf("OGG music is playing.\n");
+            break;
+        MUS_MP3:
+            printf("MP3 music is playing.\n");
+            break;
+        default:
+            printf("Unknown music is playing.\n");
+            break;
+    }
+     
 
 }
 
@@ -76,6 +102,8 @@ BattleViewController::~BattleViewController() {
         mainChars.erase(mainChars.begin() + 0);
         delete character;
     }
+    
+    Mix_FreeMusic(music);
 }
 
 vector<BattleCharacterView> BattleViewController::plotViewsAroundCircle(int x, int y, int radius, vector<Character *> chars) {

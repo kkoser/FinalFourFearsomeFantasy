@@ -180,6 +180,7 @@ int main( int argc, char* args[] )
         
         MainMenuViewController baseVC(gRenderer);
         
+        
         //While application is running
         while( !quit )
         {

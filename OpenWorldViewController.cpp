@@ -175,6 +175,7 @@ bool OpenWorldViewController::loadTextures() {
 		printf( "Failed to load map4 background texture image!\n" );
 		success = false;
 	}
+    
     //Load music
     elsaMusic = Mix_LoadMUS( pathForFile("Audio/LetItGo.wav" ).c_str());
     if( elsaMusic == NULL )
@@ -582,7 +583,7 @@ int OpenWorldViewController::draw(SDL_Event e) {
 
 void OpenWorldViewController::pushViewController(ViewController *vc) {
     ViewController::pushViewController(vc);
-    Mix_HaltMusic();
+    Mix_PauseMusic();
 }
 
 void OpenWorldViewController::becomeTop() {
@@ -591,7 +592,8 @@ void OpenWorldViewController::becomeTop() {
     leader.clearVels();
     mapScout.clearVels();
     
-    cout<<"X: "<<leader.getPosX()<<" Y: "<<leader.getPosY()<<endl;
+    //cout<<"X: "<<leader.getPosX()<<" Y: "<<leader.getPosY()<<endl;
+    Mix_ResumeMusic();
 }
 
 

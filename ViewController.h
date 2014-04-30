@@ -25,6 +25,7 @@ protected:
     SDL_Renderer *renderer;
     ViewController *base = NULL;
     ViewController *top = NULL;
+    Mix_Music *music; //pointer to music
 
 public:
     //the basic constructor. The renderer should be for the window that the VC should draw in

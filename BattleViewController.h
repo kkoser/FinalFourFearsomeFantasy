@@ -77,10 +77,12 @@ private:
     bool arePlayersDead(); //returns 1 if all friendlies dead
     bool areEnemiesDead(); //returns 1 if all enemies dead
     
+    
+    
 public:
     BattleViewController(vector<MainCharacter *> chars, vector<Enemy *> enem, string locName, SDL_Renderer *ren);
     ~BattleViewController();
-    
+        
     virtual int draw(SDL_Event e);
 };
 
