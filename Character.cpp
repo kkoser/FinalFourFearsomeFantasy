@@ -276,6 +276,7 @@ void Character::changeHealth(int newHealth) {
 //0 means all characters
 //-1 is all Friendlies
 //-2 is all enemies
+//-3 indicates the actor is the target
 int Character::numTargetsForMove(string moveName) {
     string fileName = pathForFile("Moves/" + moveName + ".move");
     //open file
@@ -305,6 +306,9 @@ int Character::numTargetsForMove(string moveName) {
                 }
                 else if (word == "ALL_ENEMIES") {
                     return -2;
+                }
+                else if (word == "SELF") {
+                    return -3;
                 }
                 else {
                     return atoi(word.c_str()); //convert to int

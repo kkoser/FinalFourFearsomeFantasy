@@ -144,7 +144,7 @@ string Enemy::selectMove(vector<Character *> enemies, vector<Character *> team){
 		if (moveVals[i]>0){
 			moveSelection-=moveVals[i];
 		}
-		if (total<=0) return *currentMove;
+		if (moveSelection<=0) return *currentMove;
 		currentMove++;
 	}
 	return "Rest"; //Hopefully it never gets here

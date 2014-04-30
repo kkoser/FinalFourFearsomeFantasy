@@ -151,6 +151,8 @@ int main( int argc, char* args[] )
 	}
 	else{
         
+        srand(time(NULL));
+        
         //Main loop flag
         bool quit = false;
         

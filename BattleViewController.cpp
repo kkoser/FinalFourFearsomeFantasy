@@ -15,8 +15,12 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     //init vc
     victory = 0;
     defeat = 0;
+<<<<<<< HEAD
     finalText = TextLabel(300, 300, "FINAL", defaultFont, 24, renderer);
     finalText.setColor(0,0,0);
+=======
+    finalText = TextLabel(360, 320, "", defaultFont, 48, renderer);
+>>>>>>> FETCH_HEAD
     displayingFinalText = 0;
     
     //plot main characters around circle
@@ -354,6 +358,10 @@ void BattleViewController::handleEvent(SDL_Event e) {
                         for (int i = 0; i < enemyViews.size(); i++) {
                             enemyViews[i].setIsTargeted(true);
                         }
+                    }
+                    else if (numTargets == -3) {
+                        targets.push_back(activeCharacter);
+                        activeCharacterView->setIsTargeted(true);
                     }
                     else {
                         getViewForIndex(arrowSelectedPos)->setHasCursor(true);
