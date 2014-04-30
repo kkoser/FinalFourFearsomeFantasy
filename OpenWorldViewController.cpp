@@ -191,7 +191,7 @@ bool OpenWorldViewController::loadTextures() {
         success = false;
     }
     
-    katMusic = Mix_LoadMUS( pathForFile("Audio/ArrowsAtTheSky.wav" ).c_str());
+    katMusic = Mix_LoadMUS( pathForFile("Audio/gapraWhitewood.wav" ).c_str());
     if( katMusic == NULL )
     {
         printf( "Failed to load Kat music! SDL_mixer Error: %s\n", Mix_GetError() );
