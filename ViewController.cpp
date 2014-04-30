@@ -37,6 +37,7 @@ void ViewController::pushViewController(ViewController *vc) {
     if (top == NULL) {
         top = vc;
         vc->setBase(this);
+        top->becomeTop();
     }
 }
 

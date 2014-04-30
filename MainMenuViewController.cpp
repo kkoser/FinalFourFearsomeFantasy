@@ -13,10 +13,8 @@ MainMenuViewController::MainMenuViewController(SDL_Renderer *rend) : ViewControl
     
     backgroundImage = ImageView(0, 0, pathForFile("Images/mainMenuBackground.png"), renderer);
     
-    //string pathName = pathForFile("Audio/DearlyBeloved.wav");
-    //music = Mix_LoadMUS(pathName.c_str());
-    
-    //Mix_PlayMusic(music, -1);
+    string pathName = pathForFile("Audio/DearlyBeloved.wav");
+    music = Mix_LoadMUS(pathName.c_str());
     
 }
 
@@ -57,9 +55,6 @@ void MainMenuViewController::becomeTop() {
         Mix_FreeMusic(music);
         music = NULL;
     }
-    
-    string pathName = pathForFile("Audio/DearlyBeloved.wav");
-    music = Mix_LoadMUS(pathName.c_str());
     
     Mix_PlayMusic(music, -1);
 }
