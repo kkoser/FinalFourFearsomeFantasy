@@ -68,6 +68,7 @@ private:
     Mix_Chunk *jackSoundEffect = NULL;
     Mix_Chunk *katSoundEffect = NULL;
     Mix_Chunk *dragonBallSoundEffect = NULL;
+    Mix_Chunk *youShallNotPassSoundEffect = NULL;
     
     enum MainCharacters{
         ALBUS,

@@ -269,37 +269,37 @@ bool OpenWorldViewController::loadTextures() {
 	}
     
     //Load Maps with Dragon Balls
-    if( !mapWithBallTexture[0].loadFromFile( pathForFile("Images/map0.png"), renderer ) )
+    if( !mapWithBallTexture[0].loadFromFile( pathForFile("Images/map0ball.png"), renderer ) )
 	{
 		printf( "Failed to load map0 background texture image!\n" );
 		success = false;
 	}
-    if( !mapWithBallTexture[1].loadFromFile( pathForFile("Images/map1.png"), renderer ) )
+    if( !mapWithBallTexture[1].loadFromFile( pathForFile("Images/map1ball.png"), renderer ) )
 	{
 		printf( "Failed to load map1 background texture image!\n" );
 		success = false;
 	}
-    if( !mapWithBallTexture[2].loadFromFile( pathForFile("Images/map2.png"), renderer ) )
+    if( !mapWithBallTexture[2].loadFromFile( pathForFile("Images/map2ball.png"), renderer ) )
 	{
 		printf( "Failed to load map2 background texture image!\n" );
 		success = false;
 	}
-    if( !mapWithBallTexture[3].loadFromFile( pathForFile("Images/map3.png"), renderer ) )
+    if( !mapWithBallTexture[3].loadFromFile( pathForFile("Images/map3ball.png"), renderer ) )
 	{
 		printf( "Failed to load map3 background texture image!\n" );
 		success = false;
 	}
-    if( !mapWithBallTexture[4].loadFromFile( pathForFile("Images/map4.png"), renderer ) )
+    if( !mapWithBallTexture[4].loadFromFile( pathForFile("Images/map4ball.png"), renderer ) )
 	{
 		printf( "Failed to load map4 background texture image!\n" );
 		success = false;
 	}
-    if( !mapWithBallTexture[5].loadFromFile( pathForFile("Images/map5.png"), renderer ) )
+    if( !mapWithBallTexture[5].loadFromFile( pathForFile("Images/map5ball.png"), renderer ) )
 	{
 		printf( "Failed to load map5 background texture image!\n" );
 		success = false;
 	}
-    if( !mapWithBallTexture[6].loadFromFile( pathForFile("Images/map6.png"), renderer ) )
+    if( !mapWithBallTexture[6].loadFromFile( pathForFile("Images/map6ball.png"), renderer ) )
 	{
 		printf( "Failed to load map5 background texture image!\n" );
 		success = false;
@@ -398,6 +398,13 @@ bool OpenWorldViewController::loadTextures() {
     if( katMusic == NULL )
     {
         printf( "Failed to load dragonBall sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
+        success = false;
+    }
+    
+    youShallNotPassSoundEffect = Mix_LoadWAV( pathForFile("Audio/youShallNotPass.wav").c_str());
+    if( katMusic == NULL )
+    {
+        printf( "Failed to load youShallNotPass sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
         success = false;
     }
     
@@ -610,6 +617,7 @@ int OpenWorldViewController::draw(SDL_Event e) {
                         }
                         else{
                             displayCastleRestriction=1;
+                            Mix_PlayChannel( -1, youShallNotPassSoundEffect, 0 );
                         }
                         break;
 
