@@ -202,18 +202,20 @@ vector<Character *> Enemy::targetSelect(vector<Character *> enemies, vector<Char
 		for (int i=0; i<enemies.size(); i++){
 			if (targetVals[i]>0) total+=targetVals[i];
 		}
-		int targetSelection=rand()%total;
-		for (int i=0; i<enemies.size(); i++){
-			if (targetVals[i]>0){
-				targetSelection-=targetVals[i];
-			}
-			if (targetSelection<=0 && EnemyAdded==0) {
-				enemiesSorted.push_back(*currentTarget);
-				targetVals[i]=0;
-				EnemyAdded=1;
-			}
-			currentTarget++;
-		}
+        if (total>0){
+            int targetSelection=rand()%total;
+            for (int i=0; i<enemies.size(); i++){
+                if (targetVals[i]>0){
+                    targetSelection-=targetVals[i];
+                }
+                if (targetSelection<=0 && EnemyAdded==0) {
+                    enemiesSorted.push_back(*currentTarget);
+                    targetVals[i]=0;
+                    EnemyAdded=1;
+                }
+                currentTarget++;
+            }
+        }
 		
 	}
 	
