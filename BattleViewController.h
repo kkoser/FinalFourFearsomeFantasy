@@ -84,6 +84,8 @@ public:
     ~BattleViewController();
         
     virtual int draw(SDL_Event e);
+    
+    virtual void becomeTop();
 };
 
 #endif /* defined(__FinalFourFearsomeFantasy__BattleController__) */

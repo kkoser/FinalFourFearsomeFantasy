@@ -14,8 +14,6 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     string pathName = pathForFile("Audio/FFXIIIBattle.wav");
     music = Mix_LoadMUS(pathName.c_str());
     
-    Mix_PlayMusic(music, -1);
-    
     mainChars = chars;
     enemies = enem;
     
@@ -591,5 +589,10 @@ void BattleViewController::updateCharacterViews() {
         enemyViews[i].setIsIncap(enemies[i]->getIsIncap());
         enemyViews[i].setHasStatus(enemies[i]->getNumberOfStatuses());
     }
+}
+
+void BattleViewController::becomeTop() {
+    ViewController::becomeTop();
+    Mix_PlayMusic(music, -1);
 }
 

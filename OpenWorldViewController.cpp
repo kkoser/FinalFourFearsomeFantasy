@@ -604,7 +604,6 @@ void OpenWorldViewController::becomeTop() {
 
 void OpenWorldViewController::dismiss() {
     Mix_HaltMusic();
-    
     ViewController::dismiss();
     
 }
