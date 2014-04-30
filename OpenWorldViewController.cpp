@@ -823,7 +823,7 @@ int OpenWorldViewController::draw(SDL_Event e) {
         //CHECK FOR BATTLE SWITCHING
         
         //int battleSteps = 10 + rand()%20;
-        if(stepCount>rand()%25 + 25 && mapNumber!=0){
+        if(stepCount>rand()%40 + 50 && mapNumber!=0){
             stepCount=0;
             //Mix_HaltMusic();
             cout<<"Switch to Battle Mode"<<endl;
