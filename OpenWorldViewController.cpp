@@ -314,7 +314,7 @@ int OpenWorldViewController::draw(SDL_Event e) {
             leader.handleEvent( e );
             mapScout.handleEvent( e );
         
-            //check for layout switch
+            //ZONE SWITCHING
             if(zone != 9){
                 
                 switch(zone){
