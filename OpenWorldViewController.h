@@ -133,6 +133,7 @@ private:
     TextLabel allDragonBallsFoundText;
     
     BattleViewController* createBattleViewController(string backgroundLocation, vector<string> enemyFileLocations);
+    vector<string> getEnemiesForArea(int mapNum);
     
 public:
     OpenWorldViewController(SDL_Renderer *ren, int charLeftBehind);
