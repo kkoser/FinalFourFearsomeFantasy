@@ -1052,6 +1052,40 @@ BattleViewController* OpenWorldViewController::createBattleViewController(string
     return vc;
 }
 
+vector<string> getEnemiesForArea(int mapNum) {
+    vector<string> enemies;
+    switch (mapNum) {
+        case 0:
+            //no enemies in the city
+            break;
+        case 1:
+            //mustafar (volcano)
+            break;
+        case 2:
+            //north mountain
+            break;
+        case 3:
+            //forbidden forest
+            break;
+        case 4:
+            //cave
+            break;
+        case 5:
+            //lonely island
+            break;
+        case 6:
+            //desert
+            break;
+        case 7:
+            //castle
+            break;
+        default:
+            break;
+    }
+    
+    return enemies;
+}
+
 void OpenWorldViewController::pushViewController(ViewController *vc) {
     Mix_PauseMusic();
     

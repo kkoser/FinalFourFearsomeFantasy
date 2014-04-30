@@ -140,6 +140,7 @@ private:
     TextLabel castleRestrictionText;
     
     BattleViewController* createBattleViewController(string backgroundLocation, vector<string> enemyFileLocations);
+    vector<string> getEnemiesForArea(int mapNum);
     
 public:
     OpenWorldViewController(SDL_Renderer *ren, int charLeftBehind);
