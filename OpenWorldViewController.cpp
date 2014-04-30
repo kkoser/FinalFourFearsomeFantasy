@@ -516,11 +516,13 @@ int OpenWorldViewController::draw(SDL_Event e) {
                         Mix_HaltMusic();
                         break;
                     case 7:
-                        mapNumber=7;
-                        layoutReset=1;
-                        isReturning=0;
-                        mapScout.initializeMap(7);
-                        Mix_HaltMusic();
+                        if(dragonBallCount==7){
+                            mapNumber=7;
+                            layoutReset=1;
+                            isReturning=0;
+                            mapScout.initializeMap(7);
+                            Mix_HaltMusic();
+                        }
                         break;
                     case 10: //INITIAL MAIN BATTLE
                         
@@ -542,8 +544,9 @@ int OpenWorldViewController::draw(SDL_Event e) {
                         Mix_HaltMusic();
                         break;
                     case 16: //FINAL BATTLE
-
-                        
+                        if(dragonBallCount==7){
+                            //implement final battle
+                        }
                         break;
                     case 17:
                         mapNumber=0;
