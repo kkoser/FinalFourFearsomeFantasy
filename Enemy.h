@@ -22,6 +22,7 @@ public:
     void actOnCharacters(vector<Character *> enemies, vector<Character *>team);
 private:
     string selectMove(vector<Character *>enemies, vector<Character *> team);
+    vector<Character *> targetSelect(vector<Character *> enemies, vector<Character *>team, string move);
     
 };
 
