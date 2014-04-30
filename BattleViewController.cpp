@@ -591,8 +591,15 @@ void BattleViewController::updateCharacterViews() {
     }
 }
 
+<<<<<<< HEAD
 void BattleViewController::becomeTop() {
     ViewController::becomeTop();
     Mix_PlayMusic(music, -1);
 }
 
+=======
+void BattleViewController::dismiss() {
+    Mix_HaltMusic();
+    ViewController::dismiss();
+}
+>>>>>>> FETCH_HEAD
