@@ -26,7 +26,7 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     
     //plot main characters around circle
     vector<Character *> tempVector(mainChars.begin(), mainChars.end());
-    mainCharViews = plotViewsAroundCircle(775, 140, 165, tempVector);
+    mainCharViews = plotViewsAroundCircle(775, 135, 165, tempVector);
     
     //repeat for enemies
     vector<Character *> tempVector2(enemies.begin(), enemies.end());

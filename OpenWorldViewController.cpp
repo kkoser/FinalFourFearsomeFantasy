@@ -18,7 +18,7 @@
 
 OpenWorldViewController::OpenWorldViewController(SDL_Renderer *ren, int charLeftBehind) : ViewController(ren) {
     
-    //srand (time(NULL));
+    srand (time(NULL));
     
     loadTextures();
     
@@ -334,6 +334,7 @@ int OpenWorldViewController::draw(SDL_Event e) {
                         stepCount++;
                         cout<<"Steps: "<<stepCount<<endl;
                         break;
+                        
                     case SDLK_ESCAPE:
                         dismiss();
                         return 1;
@@ -623,7 +624,7 @@ int OpenWorldViewController::draw(SDL_Event e) {
         //CHECK FOR BATTLE SWITCHING
         
         //int battleSteps = 10 + rand()%20;
-        if(stepCount>250 && mapNumber!=0){
+        if(stepCount>rand()%25 + 25 && mapNumber!=0){
             stepCount=0;
             //Mix_HaltMusic();
             cout<<"Switch to Battle Mode"<<endl;

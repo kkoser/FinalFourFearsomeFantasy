@@ -14,6 +14,7 @@
 #include "BattleViewController.h"
 #include "Dot.h"
 #include "ImageView.h"
+#include <cmath>
 
 class OpenWorldViewController : public ViewController {
 private:
