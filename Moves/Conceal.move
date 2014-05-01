@@ -1,4 +1,5 @@
 Move Conceal
+Targets SELF
 Once Actor PP -14
 Actor Shield +.5
 Actor PPRegen +.15

@@ -324,10 +324,13 @@ void BattleViewController::handleEvent(SDL_Event e) {
                 else if (numTargets == -2) {
                     stream << "all enemy";
                 }
+                else if (numTargets == -3) {
+                    stream << "the caster as";
+                }
                 else {
                     stream << numTargets;
                 }
-                stream << " targets."<<endl;
+                stream << " target(s)."<<endl;
                 displayLabel.setText(stream.str());
                 //get cursor showing
                 if (moveFinal) {

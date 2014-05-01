@@ -541,10 +541,12 @@ int OpenWorldViewController::draw(SDL_Event e) {
                         cout<<"Steps: "<<stepCount<<endl;
                         break;
                         
+                        /*
                     case SDLK_ESCAPE:
                         dismiss();
                         return 1;
                         break;
+                         */
                         
                 }
                 
