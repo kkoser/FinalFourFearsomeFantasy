@@ -26,11 +26,11 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     
     //plot main characters around circle
     vector<Character *> tempVector(mainChars.begin(), mainChars.end());
-    mainCharViews = plotViewsAroundCircle(775, 152, 175, tempVector);
+    mainCharViews = plotViewsAroundCircle(775, 165, 175, tempVector);
     
     //repeat for enemies
     vector<Character *> tempVector2(enemies.begin(), enemies.end());
-    enemyViews = plotViewsAroundCircle(220, 152, 175, tempVector2);
+    enemyViews = plotViewsAroundCircle(220, 165, 175, tempVector2);
     
     //load background too
     
