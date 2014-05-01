@@ -131,10 +131,12 @@ vector<BattleCharacterView> BattleViewController::plotViewsAroundCircle(int x, i
 
 void BattleViewController::drawActiveMoves() {
     //draw
-    activeMoves[0].draw(renderer);
-    activeMoves[1].draw(renderer);
-    activeMoves[2].draw(renderer);
-    activeMoves[3].draw(renderer);
+    if (!enemyActing) {
+        activeMoves[0].draw(renderer);
+        activeMoves[1].draw(renderer);
+        activeMoves[2].draw(renderer);
+        activeMoves[3].draw(renderer);
+    }
 
 }
 
@@ -238,10 +240,6 @@ void BattleViewController::handleEvent(SDL_Event e) {
         
         displayNextLine();
         
-        //clear all of the move labels
-        //for (int i = 0; i < 4; i++) {
-        //    activeMoves[0].setText("");
-        //}
         
         //need to update all of the mainChar views
         updateCharacterViews();
@@ -519,11 +517,13 @@ void BattleViewController::nextCharacter() {
     if (selectedPos >= mainChars.size()) {
         activeCharacter = enemies[selectedPos-mainChars.size()];
         activeCharacterView = &enemyViews[selectedPos -mainChars.size()];
+        enemyActing = true;
         
     }
     else {
         activeCharacter = mainChars[selectedPos];
         activeCharacterView = &mainCharViews[selectedPos];
+        enemyActing = false;
     }
     
     activeCharacterView->setIsAnimating(true);

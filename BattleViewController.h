@@ -77,7 +77,7 @@ private:
     bool arePlayersDead(); //returns 1 if all friendlies dead
     bool areEnemiesDead(); //returns 1 if all enemies dead
     
-    
+    bool enemyActing; //used to only draw character moves
     
 public:
     BattleViewController(vector<MainCharacter *> chars, vector<Enemy *> enem, string locName, SDL_Renderer *ren);
