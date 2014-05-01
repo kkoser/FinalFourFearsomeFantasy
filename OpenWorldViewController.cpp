@@ -42,6 +42,8 @@ OpenWorldViewController::OpenWorldViewController(SDL_Renderer *ren, int charLeft
             break;
     }
     charIterator=0;
+    
+    //relavant variables for displaying dragon ball information
     dragonBallCount=0;
     for(int q=0; q<7; q++) dragonBallFound[q]=0;
     dragonBallJustFound=0;
@@ -75,6 +77,7 @@ OpenWorldViewController::OpenWorldViewController(SDL_Renderer *ren, int charLeft
     for(int q=0; q<8; q++) startPosX[q]=50;
     for(int q=0; q<8; q++) startPosY[q]=50;
     
+    //character starts in a certain position for each map
     startPosX[0]=752;
     startPosY[0]=176;
     startPosX[1]=65;
@@ -95,6 +98,7 @@ OpenWorldViewController::OpenWorldViewController(SDL_Renderer *ren, int charLeft
     for(int q=0; q<8; q++) returnPosX[q]=50;
     for(int q=0; q<8; q++) returnPosY[q]=50;
 
+    //characters return from each map at a different location in main city
     returnPosX[1]=1110;
     returnPosY[1]=10;
     returnPosX[2]=480;
@@ -117,6 +121,7 @@ OpenWorldViewController::OpenWorldViewController(SDL_Renderer *ren, int charLeft
 
 }
 
+//load all images and music to be used in the game
 bool OpenWorldViewController::loadTextures() {
     
     bool success=true;
@@ -426,14 +431,6 @@ int OpenWorldViewController::draw(SDL_Event e) {
         if( e.type == SDL_KEYDOWN ){
                 switch( e.key.keysym.sym )
                 {
-                    /*case SDLK_1:
-                        dragonBallJustFound=1;
-                        dragonBallCount=7;
-                        dragonBallFoundString="Desert Dragon Ball Found!";
-                        dragonBallFoundText.setX(290);
-                        dragonBallFoundText.setY(300);
-                        dragonBallFoundText.draw();
-                        break;*/
                         
                     case SDLK_SPACE: //clear text
                         dragonBallJustFound=0;
@@ -568,7 +565,7 @@ int OpenWorldViewController::draw(SDL_Event e) {
         
             if(zone==9) timeInZone7=0;
         
-            //ZONE SWITCHING
+            //ZONE SWITCHING (handles dragon balls and map transitions)
             if(zone != 9){
                 
                 switch(zone){
@@ -971,6 +968,7 @@ int OpenWorldViewController::draw(SDL_Event e) {
             mapWithBallTexture[mapNumber].render( renderer, 0, 0, &camera[mapNumber] );
         }
         
+        //render the active character to the screen
         if (activeCharacter==KAT){
             if (charDir==UP) leader.renderRel( renderer, camera[mapNumber].x, camera[mapNumber].y, &katSpriteBack, SDL_FLIP_NONE );
             else if (charDir==DOWN) leader.renderRel( renderer, camera[mapNumber].x, camera[mapNumber].y, &katSpriteFront, SDL_FLIP_NONE );
