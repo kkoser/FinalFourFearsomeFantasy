@@ -238,6 +238,11 @@ void BattleViewController::handleEvent(SDL_Event e) {
         
         displayNextLine();
         
+        //clear all of the move labels
+        //for (int i = 0; i < 4; i++) {
+        //    activeMoves[0].setText("");
+        //}
+        
         //need to update all of the mainChar views
         updateCharacterViews();
         

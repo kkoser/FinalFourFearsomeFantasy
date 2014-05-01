@@ -1054,7 +1054,7 @@ int OpenWorldViewController::draw(SDL_Event e) {
             //enemyFileLocations.push_back(pathForFile("Characters/GoblinArsonist.character"));
             //enemyFileLocations.push_back(pathForFile("Characters/Troll.character"));
             
-            BattleViewController *vc;
+            BattleViewController *vc = nullptr;
             
             switch(mapNumber){
                 case 1:
