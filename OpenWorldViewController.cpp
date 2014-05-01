@@ -620,7 +620,7 @@ int OpenWorldViewController::draw(SDL_Event e) {
                         else{
                             displayCastleRestriction=1;
                             playYouShallNotPass=1;
-                            //Mix_PlayChannel( -1, youShallNotPassSoundEffect, 0 );
+                            Mix_PlayChannel( -1, youShallNotPassSoundEffect, 0 );
                         }
                         break;
 
