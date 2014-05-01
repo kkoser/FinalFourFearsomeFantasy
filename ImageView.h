@@ -21,7 +21,7 @@ private:
     int xLoc;
     int yLoc;
     double degs; //degrees of rotation
-    SDL_RendererFlip flipDir;
+    SDL_RendererFlip flipDir = SDL_FLIP_NONE;
     
     LTexture texture;
     string textFile;
