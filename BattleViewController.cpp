@@ -26,11 +26,18 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     
     //plot main characters around circle
     vector<Character *> tempVector(mainChars.begin(), mainChars.end());
-    mainCharViews = plotViewsAroundCircle(775, 165, 160, tempVector);
+    mainCharViews = plotViewsAroundCircle(775, 145, 162, 0, tempVector);
     
     //repeat for enemies
     vector<Character *> tempVector2(enemies.begin(), enemies.end());
-    enemyViews = plotViewsAroundCircle(220, 165, 175, tempVector2);
+    //if 3 enemies then move starting angle
+    if (tempVector2.size() == 3) {
+        enemyViews = plotViewsAroundCircle(220, 145, 162, 0, tempVector2);
+
+    }
+    else {
+        enemyViews = plotViewsAroundCircle(220, 150, 180, M_PI/4.0, tempVector2);
+    }
     
     //load background too
     
@@ -107,11 +114,11 @@ BattleViewController::~BattleViewController() {
     Mix_FreeMusic(music);
 }
 
-vector<BattleCharacterView> BattleViewController::plotViewsAroundCircle(int x, int y, int radius, vector<Character *> chars) {
+vector<BattleCharacterView> BattleViewController::plotViewsAroundCircle(int x, int y, int radius, float startingAngle, vector<Character *> chars) {
     //calculate position of character along circle
     float deltaAngle = (2.0*M_PI)/chars.size(); //get fraction of circle per person
     
-    float angle = M_PI/4.0;
+    float angle = startingAngle;
     
     //make vector
     vector<BattleCharacterView> views;

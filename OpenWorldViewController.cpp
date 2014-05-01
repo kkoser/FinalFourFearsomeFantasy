@@ -542,8 +542,13 @@ int OpenWorldViewController::draw(SDL_Event e) {
                         stepCount++;
                         cout<<"Steps: "<<stepCount<<endl;
                         break;
+                        
+                    //cheats!
                     case SDLK_7:
                         dragonBallCount = 7;
+                        break;
+                    case SDLK_b:
+                        stepCount = 1000; //to trigger battle
                         break;
                         
                         /*
