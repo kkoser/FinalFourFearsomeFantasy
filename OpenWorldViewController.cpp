@@ -301,7 +301,7 @@ bool OpenWorldViewController::loadTextures() {
 		printf( "Failed to load map5 background texture image!\n" );
 		success = false;
 	}
-    if( !mapWithBallTexture[6].loadFromFile( pathForFile("Images/map6.png"), renderer ) )
+    if( !mapWithBallTexture[6].loadFromFile( pathForFile("Images/map6ball.png"), renderer ) )
 	{
 		printf( "Failed to load map5 background texture image!\n" );
 		success = false;
