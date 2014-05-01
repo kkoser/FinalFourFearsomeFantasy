@@ -70,6 +70,8 @@ OpenWorldViewController::OpenWorldViewController(SDL_Renderer *ren, int charLeft
     charDirTemp=1;
     zone=9;
     
+    timeInZone7=0;
+    
     for(int q=0; q<8; q++) startPosX[q]=50;
     for(int q=0; q<8; q++) startPosY[q]=50;
     
@@ -556,6 +558,8 @@ int OpenWorldViewController::draw(SDL_Event e) {
             leader.handleEvent( e );
             mapScout.handleEvent( e );
         
+            if(zone==9) timeInZone7=0;
+        
             //ZONE SWITCHING
             if(zone != 9){
                 
@@ -619,8 +623,10 @@ int OpenWorldViewController::draw(SDL_Event e) {
                         }
                         else{
                             displayCastleRestriction=1;
-                            playYouShallNotPass=1;
-                            Mix_PlayChannel( -1, youShallNotPassSoundEffect, 0 );
+                            timeInZone7++;
+                            if(timeInZone7==1){
+                                Mix_PlayChannel( -1, youShallNotPassSoundEffect, 0 );
+                            }
                         }
                         break;
 
@@ -831,9 +837,9 @@ int OpenWorldViewController::draw(SDL_Event e) {
                         }
                         break;
                         
-                        
                     default: break;
                 }
+                
             }
 
         //MOVE THE CHARACTERS AND CAMERA

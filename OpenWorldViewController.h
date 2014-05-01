@@ -133,6 +133,7 @@ private:
     int displayAllDragonBallsFound;
     int displayCastleRestriction;
     int playYouShallNotPass;
+    int timeInZone7;
     
     string dragonBallFoundString;
     string dragonBallCountString;
