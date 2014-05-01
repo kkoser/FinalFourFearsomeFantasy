@@ -64,6 +64,7 @@ protected:
     string displayLog;
     
     int exp;
+	int getValueForCommand(string command, int baseVal, int power); //baseval typically a char's stat, this parses and multiplies by the actor's power
         
 public:
 	Character();
@@ -111,7 +112,6 @@ public:
 private:
     
     string displayStringForMove(string command, Character *target, int targetDamage, int actorDamage); //creates text to be displayed
-    int getValueForCommand(string command, int baseVal, int power); //baseval typically a char's stat, this parses and multiplies by the actor's power
     
 
 };

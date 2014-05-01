@@ -104,14 +104,14 @@ string Enemy::selectMove(vector<Character *> enemies, vector<Character *> team){
 				}
 				else if (word=="Power"){
 					getline(iss, word);
-					int powVal=stoi(word,NULL,10);
+					int val=getValueForCommand(word, 1, getCurrentPower());
 					double healthPercent=(double)currentHealth/(double)maxHealth;
-					if(powVal<1 && benefit) moveVals[i]--;
-					if(powVal>1 && benefit) moveVals[i]++;
-					if(powVal>1 && benefit && healthPercent>.5) moveVals[i]++;
-					if(powVal>1 && benefit && healthPercent>.7) moveVals[i]+=2;
-					if(powVal>1 && benefit && healthPercent>.9) moveVals[i]+=3;
-					if(!benefit && powVal<1) moveVals[i]+=3;
+					if(val < getCurrentPower() && benefit) moveVals[i]--;
+					if(val > getCurrentPower() && benefit) moveVals[i]++;
+					if(val > getCurrentPower() && benefit && healthPercent>.5) moveVals[i]++;
+					if(val > getCurrentPower() && benefit && healthPercent>.7) moveVals[i]+=2;
+					if(val > getCurrentPower() && benefit && healthPercent>.9) moveVals[i]+=3;
+					if(!benefit && val < getCurrentPower()) moveVals[i]+=3;
 				}
 				else if (word=="PPRegen"){
 					getline(iss, word);
