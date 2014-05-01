@@ -649,8 +649,25 @@ int OpenWorldViewController::draw(SDL_Event e) {
                     case 16: //FINAL BATTLE
                         if(dragonBallCount==7){
                             vector<string> finalEnemyFileLocations;
-                            finalEnemyFileLocations.push_back(pathForFile("Characters/GoblinArsonist.character"));
-                            finalEnemyFileLocations.push_back(pathForFile("Characters/Troll.character"));
+                            finalEnemyFileLocations.push_back(pathForFile("Characters/Saphira.character"));
+                            //finalEnemyFileLocations.push_back(pathForFile("Characters/Troll.character"));
+                            switch (characterLeftBehind) {
+                                case 1:
+                                    finalEnemyFileLocations.push_back(pathForFile("/Characters/Kat.character"));
+                                    break;
+                                case 2:
+                                    finalEnemyFileLocations.push_back(pathForFile("/Characters/Albus.character"));
+                                    break;
+                                case 3:
+                                    finalEnemyFileLocations.push_back(pathForFile("/Characters/Elsa.character"));
+                                    break;
+                                case 4:
+                                    finalEnemyFileLocations.push_back(pathForFile("/Characters/Jack.character"));
+                                    break;
+                                    
+                                default:
+                                    break;
+                            }
                             
                             BattleViewController *finalVC = createBattleViewController(pathForFile("Images/castleBattle.jpg"), finalEnemyFileLocations);
                             pushViewController(finalVC);

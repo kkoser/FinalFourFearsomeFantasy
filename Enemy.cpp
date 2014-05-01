@@ -90,14 +90,14 @@ string Enemy::selectMove(vector<Character *> enemies, vector<Character *> team){
 					getline(iss, word);
 					word.erase(0,1);
 					//Do not select move if not enough PP is available for it
-					if (0>currentPP-stoi(word,NULL,10)) moveVals[i]-=1000;
+					if (0>currentPP-stod(word)) moveVals[i]-=1000;
 					double PPpercent=(double)currentPP/(double)maxPP;
-					if (PPpercent<.5 && stoi(word,NULL,10)>0) moveVals[i]++;
-					if (PPpercent<.3 && stoi(word,NULL,10)>0) moveVals[i]+=2;
-					if (PPpercent<.1 && stoi(word,NULL,10)>0) moveVals[i]+=3;
-					if (PPpercent>.5 && stoi(word,NULL,10)<0) moveVals[i]++;
-					if (PPpercent>.7 && stoi(word,NULL,10)<0) moveVals[i]+=2;
-					if (PPpercent>.9 && stoi(word,NULL,10)<0) moveVals[i]+=4;
+					if (PPpercent<.5 && stod(word)>0) moveVals[i]++;
+					if (PPpercent<.3 && stod(word)>0) moveVals[i]+=2;
+					if (PPpercent<.1 && stod(word)>0) moveVals[i]+=3;
+					if (PPpercent>.5 && stod(word)<0) moveVals[i]++;
+					if (PPpercent>.7 && stod(word)<0) moveVals[i]+=2;
+					if (PPpercent>.9 && stod(word)<0) moveVals[i]+=4;
 				}
 				else if (word=="Power"){
 					getline(iss, word);
