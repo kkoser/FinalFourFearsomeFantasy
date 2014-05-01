@@ -26,11 +26,11 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     
     //plot main characters around circle
     vector<Character *> tempVector(mainChars.begin(), mainChars.end());
-    mainCharViews = plotViewsAroundCircle(775, 135, 165, tempVector);
+    mainCharViews = plotViewsAroundCircle(775, 152, 175, tempVector);
     
     //repeat for enemies
     vector<Character *> tempVector2(enemies.begin(), enemies.end());
-    enemyViews = plotViewsAroundCircle(200, 140, 165, tempVector2);
+    enemyViews = plotViewsAroundCircle(200, 152, 175, tempVector2);
     
     //load background too
     
@@ -109,10 +109,9 @@ BattleViewController::~BattleViewController() {
 
 vector<BattleCharacterView> BattleViewController::plotViewsAroundCircle(int x, int y, int radius, vector<Character *> chars) {
     //calculate position of character along circle
-    int deltaAngle = (2*M_PI)/chars.size(); //get fraction of circle per person
+    float deltaAngle = (2.0*M_PI)/chars.size(); //get fraction of circle per person
     
-    //center of character "circle"
-    int angle = 0;
+    float angle = M_PI/4.0;
     
     //make vector
     vector<BattleCharacterView> views;
