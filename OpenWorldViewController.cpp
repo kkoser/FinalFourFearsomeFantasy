@@ -1044,9 +1044,9 @@ int OpenWorldViewController::draw(SDL_Event e) {
             stepCount=0;
             cout<<"Switch to Battle Mode"<<endl;
             
-            vector<string> enemyFileLocations;
-            enemyFileLocations.push_back(pathForFile("Characters/GoblinArsonist.character"));
-            enemyFileLocations.push_back(pathForFile("Characters/Troll.character"));
+            vector<string> enemyFileLocations = getEnemiesForArea(mapNumber);
+            //enemyFileLocations.push_back(pathForFile("Characters/GoblinArsonist.character"));
+            //enemyFileLocations.push_back(pathForFile("Characters/Troll.character"));
             
             BattleViewController *vc;
             
@@ -1118,7 +1118,7 @@ BattleViewController* OpenWorldViewController::createBattleViewController(string
     return vc;
 }
 
-vector<string> getEnemiesForArea(int mapNum) {
+vector<string> OpenWorldViewController::getEnemiesForArea(int mapNum) {
     vector<string> enemies;
     switch (mapNum) {
         case 0:
@@ -1126,30 +1126,52 @@ vector<string> getEnemiesForArea(int mapNum) {
             break;
         case 1:
             //mustafar (volcano)
+            enemies.push_back(pathForFile("/Characters/GoblinWarrior.character"));
+            enemies.push_back(pathForFile("/Characters/GoblinArcher.character"));
+            enemies.push_back(pathForFile("/Characters/GoblinArsonist.character"));
+            enemies.push_back(pathForFile("/Characters/Troll.character"));
             break;
         case 2:
             //north mountain
+            enemies.push_back(pathForFile("/Characters/FrozenFalcon.character"));
+            enemies.push_back(pathForFile("/Characters/Wampa.character"));
+            enemies.push_back(pathForFile("/Characters/Wight.character"));
             break;
         case 3:
             //forbidden forest
+            enemies.push_back(pathForFile("/Characters/ROUS.character"));
+            enemies.push_back(pathForFile("/Characters/GiantSpider.character"));
+            enemies.push_back(pathForFile("/Characters/DireWolf.character"));
             break;
         case 4:
             //cave
+            enemies.push_back(pathForFile("/Characters/Zubat.character"));
+            enemies.push_back(pathForFile("/Characters/Inferi.character"));
             break;
         case 5:
             //lonely island
+            enemies.push_back(pathForFile("/Characters/Brigand.character"));
+            enemies.push_back(pathForFile("/Characters/Zora.character"));
+            enemies.push_back(pathForFile("/Characters/LizardMan.character"));
             break;
         case 6:
             //desert
+            enemies.push_back(pathForFile("/Characters/SandBender.character"));
+            enemies.push_back(pathForFile("/Characters/GiantScorpion.character"));
             break;
         case 7:
             //castle
+            enemies.push_back(pathForFile("/Characters/GoblinArcher.character"));
+            enemies.push_back(pathForFile("/Characters/GoblinPikeman.character"));
+            enemies.push_back(pathForFile("/Characters/GoblinBerserker.character"));
+            enemies.push_back(pathForFile("/Characters/GoblinArsonist.character"));
             break;
         default:
             break;
     }
     
     return enemies;
+
 }
 
 void OpenWorldViewController::pushViewController(ViewController *vc) {
