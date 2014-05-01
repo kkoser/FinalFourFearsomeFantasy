@@ -142,7 +142,7 @@ void Character::actMoveOnTarget(string moveName, vector<Character *> targets) {
                     }
                 }
                 else if (word=="Display") {
-                    displayLog =  displayLog + this->displayStringForMove(line, targets[0], targetDamage, actorDamage);
+                    displayLog =  displayLog + this->displayStringForMove(line, *currentTarget, targetDamage, actorDamage);
                 }
                 else if (word=="Target") {
                     ch = *currentTarget;
