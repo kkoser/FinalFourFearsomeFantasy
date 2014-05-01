@@ -10,8 +10,10 @@
 
 MainMenuViewController::MainMenuViewController(SDL_Renderer *rend) : ViewController(rend) {
     //load textures etc
-    
+    //load background images
     backgroundImage = ImageView(0, 0, pathForFile("Images/mainMenuBackground.png"), renderer);
+    controlsImage = ImageView(0,0, pathForFile("Images/controlsBackgroundImage.png"), renderer);
+    plotImage = ImageView(0,0, pathForFile("Images/plotBackgroundImage.png"), renderer);
     
     string pathName = pathForFile("Audio/DearlyBeloved.wav");
     music = Mix_LoadMUS(pathName.c_str());
@@ -29,13 +31,34 @@ int MainMenuViewController::draw(SDL_Event e) {
     }
     //draw!
     
+    //draw main menu first
+    if (displayPlot) {
+        plotImage.draw();
+    }
+    else if (displayControls) {
+        controlsImage.draw();
+    }
+    else {
+        backgroundImage.draw();
+    }
     
-    backgroundImage.draw();
-    
-    if (e.key.keysym.sym == SDLK_RETURN) {
-        CCViewController *vc = new CCViewController(renderer);
-        
-        pushViewController(vc);
+    if (e.key.keysym.sym == SDLK_RETURN && e.type == SDL_KEYDOWN) {
+        //first display controls
+        if (displayControls == 0) {
+            //display controls
+            displayControls = 1;
+        }
+        //then display plot
+        else if (displayPlot == 0) {
+            //display plot
+            displayPlot = 1;
+        }
+        //then move on
+        else {
+            //push on
+            CCViewController *vc = new CCViewController(renderer);
+            pushViewController(vc);
+        }
     }
     return 1;
 }

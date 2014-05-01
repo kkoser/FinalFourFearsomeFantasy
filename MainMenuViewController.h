@@ -30,7 +30,12 @@ public:
     virtual void becomeTop();
     
 private:
-    ImageView backgroundImage;    
+    ImageView backgroundImage;
+    ImageView controlsImage;
+    ImageView plotImage;
+
+    int displayControls = 0;
+    int displayPlot = 0;
 };
 
 #endif /* defined(__FFFF__MainMenuViewController__) */

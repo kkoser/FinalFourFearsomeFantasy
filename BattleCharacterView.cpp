@@ -31,7 +31,7 @@ BattleCharacterView::BattleCharacterView(string n, int x, int y, int cHealth, in
     animateDelta = 0.7;
     
     //init Cursor, status, dead, incap
-    cursorImage = ImageView(x-50, y, pathForFile("Images/FF7Cursor.png"), renderer);
+    cursorImage = ImageView(x-50, y + 20, pathForFile("Images/FF7Cursor.png"), renderer);
     statusImage = ImageView(x, y + 220, pathForFile("Images/statusIcon.png"), renderer);
     incapImage = ImageView(x + 20, y + 220, pathForFile("Images/incapIcon.png"), renderer);
     deadImage = ImageView(x + 40, y + 220, pathForFile("Images/deadIcon.png"), renderer);
