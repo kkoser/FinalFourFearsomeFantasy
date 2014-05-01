@@ -657,6 +657,7 @@ int OpenWorldViewController::draw(SDL_Event e) {
                                     break;
                                 case 2:
                                     finalEnemyFileLocations.push_back(pathForFile("/Characters/Albus.character"));
+                                    
                                     break;
                                 case 3:
                                     finalEnemyFileLocations.push_back(pathForFile("/Characters/Elsa.character"));
