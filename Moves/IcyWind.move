@@ -1,5 +1,5 @@
 Move Icy Wind
-Targets 1
+Targets ALL_ENEMIES
 Once Actor PP -14
-Target Status HPT -.25 Incap NO Length 2
+Target Status HPT -.2 Incap NO Length 3
 Once Display $ACTOR_NAME conjured an icy gust of wind!

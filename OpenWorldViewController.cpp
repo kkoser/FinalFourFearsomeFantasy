@@ -396,7 +396,7 @@ bool OpenWorldViewController::loadTextures() {
         success = false;
     }
     
-    dragonBallSoundEffect = Mix_LoadWAV( pathForFile("Audio/dragonBallFound.wav").c_str());
+    dragonBallSoundEffect = Mix_LoadWAV( pathForFile("Audio/zeldaTearVessel.wav").c_str());
     if( katMusic == NULL )
     {
         printf( "Failed to load dragonBall sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
