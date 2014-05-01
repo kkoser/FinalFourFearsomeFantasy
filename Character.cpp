@@ -474,7 +474,7 @@ int Character::getCurrentHealth() {
 }
 
 void Character::setCurrentHealth(int health) {
-    if (health <= 0) {
+    if (health <= 0 || currentHealth <= 0) {
         health = 0;
     }
     else if (health > maxHealth) {
