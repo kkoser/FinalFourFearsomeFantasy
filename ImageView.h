@@ -28,10 +28,12 @@ private:
     
     SDL_Renderer *renderer;
     
-    void load();
+    void load(); //used for lazy loading
     
 public:
+    //default constructor
     ImageView();
+    //copy constructor to fix image rendering issue
     ImageView( ImageView const &other);
     ImageView(int x, int y, string fileName, SDL_Renderer *ren);
     ~ImageView();

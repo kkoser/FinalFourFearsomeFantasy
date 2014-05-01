@@ -27,6 +27,8 @@ ImageView::ImageView(int x, int y, string fileName, SDL_Renderer *ren) {
     
 }
 
+//copy constructor
+//fixes issue where strange images show up when copied by forcing the texture to reload
 ImageView::ImageView(ImageView const &other) {
     xLoc = other.xLoc;
     yLoc = other.yLoc;
@@ -38,6 +40,8 @@ ImageView::~ImageView() {
     texture.free();
 }
 
+//if the image has not yet been loaded, load it
+//lazy loading!
 void ImageView::load() {
     if (!(texture.getWidth() > 0)) {
         texture.loadFromFile(textFile, renderer);
