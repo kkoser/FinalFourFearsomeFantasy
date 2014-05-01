@@ -31,27 +31,18 @@ class Character {
 protected:
     
     //these are stored to be returned to after battle (except health)
-    //these can be improved by leveling up
 	int maxHealth;
 	int standardPower;
 	int maxPP; //mana for moves
 	int standardPPRegen;
-	//int standardArmor;
-    
-	int currentHealth; //current health in/out battle
     
 	//these are augmented in battle and reset afterwords to the above values
+    int currentHealth;
 	int currentPower;
 	int currentPP;
 	int currentPPRegen;
-    int currentShield; //reset to 0
-
-	//int currentArmor;
-    
-	//these are not increased by level points
-	//int accuracy;
-    
-    int isIncap;
+    int currentShield = 0;
+    int isIncap = 0;
     
 	string name;
 	
@@ -64,6 +55,7 @@ protected:
     string displayLog;
     
     int exp;
+    //returns new stat value after command
 	int getValueForCommand(string command, int baseVal, int power); //baseval typically a char's stat, this parses and multiplies by the actor's power
         
 public:
@@ -111,7 +103,7 @@ public:
     
 private:
     
-    string displayStringForMove(string command, Character *target, int targetDamage, int actorDamage); //creates text to be displayed
+    string displayStringForMove(string command, Character *target, int targetDamage, int actorDamage); //creates text to be displayed from a move
     
 
 };

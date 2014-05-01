@@ -9,14 +9,12 @@
 #include "Character.h"
 
 Character::Character() {
-    
-    
 
+    //default character
     maxHealth = 100;
     standardPower = 10;
     maxPP = 10;
     standardPPRegen = 1;
-    
     currentPPRegen = 1;
     currentPP = 10;
     currentPower = 10;
@@ -27,6 +25,7 @@ Character::Character() {
 
 Character::Character(string fileName) {
     
+    //open file
     ifstream file;
     file.open(fileName.c_str());
     
@@ -35,38 +34,7 @@ Character::Character(string fileName) {
         return;
     }
     
-    /*
-    for (int i = 0; i < 10; i++) {
-        int val;
-        file >> val;
-        
-        //the only things in the save file are the 4 base values and the health, which persists
-        //characters are read in line by line in this order
-        //pp and statuses do NOT persist from battle to battle, so aren't written to file
-        switch (i) {
-            case 0:
-                maxHealth = val;
-                break;
-            case 1:
-                standardPower = val;
-                break;
-            case 2:
-                maxPP = val;
-                break;
-            case 3:
-                standardPPRegen = val;
-                break;
-            case 4:
-                currentHealth = val;
-                break;
-            case 5:
-                spriteName = val;
-                
-            default:
-                break;
-        }
-    }*/
-    
+    //read values from file
     file >> name;
     file >> maxHealth;
     file >> standardPower;
@@ -76,11 +44,8 @@ Character::Character(string fileName) {
     file >> exp;
     //get full path of sprite
     file >> spriteName;
-    stringstream fullPath;
-    fullPath << "Images/" << spriteName;
-    spriteFullPath = pathForFile(fullPath.str());
+    spriteFullPath = pathForFile("Images/" + spriteName);
 
-    
     
     string moveList;
     file >> moveList;
@@ -95,8 +60,7 @@ Character::Character(string fileName) {
     currentPower = standardPower;
     currentPPRegen = standardPPRegen;
     currentPP = maxPP;
-    currentShield = 0;
-    isIncap = 0;
+
 }
 
 void Character::actMoveOnTarget(string moveName, vector<Character *> targets) {
@@ -119,7 +83,7 @@ void Character::actMoveOnTarget(string moveName, vector<Character *> targets) {
     string line;
     while (getline(file, line)) {
         
-        Character *ch = this;
+        Character *ch = this; //the target of each action of the move
         
         int hasRun = 0; //for once keyword
         
@@ -134,22 +98,25 @@ void Character::actMoveOnTarget(string moveName, vector<Character *> targets) {
             string word;
             
             
-            
+            //parse word from line
             while (getline(iss, word, ' ')) {
                 if (word=="Once") {
                     if (hasRun == 1) {
                         break; //skips whole line if prefaced with "Once" and it has already been done to one target this move
                     }
                 }
+                //display text
                 else if (word=="Display") {
                     displayLog =  displayLog + this->displayStringForMove(line, *currentTarget, targetDamage, actorDamage);
                 }
+                //change target of move action
                 else if (word=="Target") {
                     ch = *currentTarget;
                 }
                 else if (word=="Actor") {
                     ch = this;
                 }
+                //stat changers
                 else if (word=="Health") {
                     getline(iss, word);
                     int oldVal = ch->getCurrentHealth();
@@ -193,7 +160,7 @@ void Character::actMoveOnTarget(string moveName, vector<Character *> targets) {
                 else {
                     cout << "Error reading word " << word << endl;
                 }
-                hasRun = 1;
+                hasRun = 1; //for once keyword
             }
         }
     }
@@ -206,6 +173,7 @@ void Character::applyStatus(string line, int casterPower) {
     
     Status thisStatus;
     
+    //parse line
     while (getline(issline, word, ' ')) {
         if (word=="HPT") {
             getline(issline, word, ' ');
@@ -257,7 +225,7 @@ void Character::updateStatuses() {
         
     }
     
-    isIncap = shouldBeIncap;
+    isIncap = shouldBeIncap; //update incap
 }
 
 void Character::changeHealth(int newHealth) {
@@ -292,6 +260,7 @@ int Character::numTargetsForMove(string moveName) {
     
     string line;
     
+    //search file for targets keyword
     while (file.good()) {
         getline(file, line); //split file into lines
         
@@ -335,6 +304,7 @@ int Character::getValueForCommand(string com, int baseVal, int power) {
     float movePower = atof(com.c_str()); //get move power
     int totalPower = power*movePower; //int totalPower truncates decimals
 
+    //parse sign
     switch (c) {
         case '+':
             val = baseVal + totalPower;
@@ -377,6 +347,7 @@ string Character::displayStringForMove(string com, Character *target, int target
         if (c != '$') {
             output << word;
         }
+        //swap variables with values
         else {
             if (word == "$ACTOR_NAME") {
                 output << this->getName();
