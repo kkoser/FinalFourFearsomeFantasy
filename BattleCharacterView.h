@@ -54,14 +54,13 @@ private:
     int maxPP;
     int currentShield;
     
-    bool isAnimating;
     double animateDelta; //amount to change animation by
     void animate();
-    
-    bool isTargeted;
-    bool hasCursor;
-    bool hasStatus;
-    bool isIncap;
+    bool isAnimating = 0;
+    bool isTargeted = 0;
+    bool hasCursor = 0;
+    bool hasStatus = 0;
+    bool isIncap = 0;
 
     string name;
     string spriteLocation;
