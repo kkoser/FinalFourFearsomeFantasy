@@ -674,6 +674,7 @@ int OpenWorldViewController::draw(SDL_Event e) {
                             }
                             
                             BattleViewController *finalVC = createBattleViewController(pathForFile("Images/castleBattle.jpg"), finalEnemyFileLocations);
+                            gameOver = true;
                             pushViewController(finalVC);
                         }
                         break;
@@ -1210,6 +1211,11 @@ void OpenWorldViewController::pushViewController(ViewController *vc) {
 
 void OpenWorldViewController::becomeTop() {
     ViewController::becomeTop();
+    
+    if (gameOver) {
+        SDL_Quit();
+        exit(EXIT_SUCCESS);
+    }
     
     leader.clearVels();
     mapScout.clearVels();

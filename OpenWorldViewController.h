@@ -124,6 +124,7 @@ private:
     int mapReturningFrom;
     
     int characterLeftBehind;
+    bool gameOver = false;
     //1 is Kat, 2 is Albus, 3 is Elsa, 4 is Jack
     
     int charIterator;
