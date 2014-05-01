@@ -52,12 +52,12 @@ string Enemy::selectMove(vector<Character *> enemies, vector<Character *> team){
 			
 			while (getline(iss,word,' ')){
 				if (word=="Actor"){
-					benefit=1;
+					benefit=1; //switch which team current part of the move benefits
 				}
 				else if (word=="Target"){
 					benefit=0;
 				}
-				else if (word=="Targets"){
+				else if (word=="Targets"){ //Adds value to the move for more targets if multiple targets are available
 					getline(iss,word);
 					if(word=="1") targetNum=1;
 					if(word=="2") targetNum=2;
@@ -71,7 +71,7 @@ string Enemy::selectMove(vector<Character *> enemies, vector<Character *> team){
 					if (enemies.size()==2 && targetNum==1) moveVals[i]+=2;
 					if (enemies.size()==1 && targetNum==1) moveVals[i]+=6;
 				}
-				else if (word=="Health"){
+				else if (word=="Health"){ //Adds value for restoring health to your party and self
 					getline(iss, word);
 					int power=getValueForCommand(word, 1, getCurrentPower());
 					if(benefit && power>0){ //Restoring Health
@@ -81,7 +81,7 @@ string Enemy::selectMove(vector<Character *> enemies, vector<Character *> team){
 						if((double)currentHealth/(double)maxHealth<.2) moveVals[i]+=1;
 						moveVals[i]+=2*((targetNum<team.size())?targetNum:team.size());
 					}
-					if(!benefit){
+					if(!benefit){ //Adds value if detracting from enemy health
 						if(power<getCurrentPower()) moveVals[i]+=2;
 						moveVals[i]++;
 					}
@@ -91,6 +91,8 @@ string Enemy::selectMove(vector<Character *> enemies, vector<Character *> team){
 					word.erase(0,1);
 					//Do not select move if not enough PP is available for it
 					if (0>currentPP-stod(word)) moveVals[i]-=1000;
+					//Switch for the move PP you have, more likely to use high PP moves
+					//Less PP, means more likely to recover PP (with Rest typically)
 					double PPpercent=(double)currentPP/(double)maxPP;
 					if (PPpercent<.5 && stod(word)>0) moveVals[i]++;
 					if (PPpercent<.3 && stod(word)>0) moveVals[i]+=2;
@@ -101,6 +103,7 @@ string Enemy::selectMove(vector<Character *> enemies, vector<Character *> team){
 				}
 				else if (word=="Power"){
 					getline(iss, word);
+					//Adds value increasing power based upon how much health you have (better to buff if high health)
 					int val=getValueForCommand(word, 1, getCurrentPower());
 					double healthPercent=(double)currentHealth/(double)maxHealth;
 					if(val < getCurrentPower() && benefit) moveVals[i]--;
@@ -112,6 +115,7 @@ string Enemy::selectMove(vector<Character *> enemies, vector<Character *> team){
 				}
 				else if (word=="PPRegen"){
 					getline(iss, word);
+					//Better to buff ppregen if you will be alive to use it (aka high health)
 					double healthPercent=(double)currentHealth/(double)maxHealth;
 					if(benefit && healthPercent>.5) moveVals[i]++;
 					if(benefit && healthPercent>.7) moveVals[i]++;
@@ -121,6 +125,7 @@ string Enemy::selectMove(vector<Character *> enemies, vector<Character *> team){
 					getline(iss,word);
 					istringstream issline(word);
 					string word2;
+					//Adds values to moves based upon status inflictions
 					while (getline(issline, word2, ' ')){
                         if (word2=="HPT") moveVals[i]+=3;
                         if (word2=="Incap") moveVals[i]+=2;
@@ -131,15 +136,16 @@ string Enemy::selectMove(vector<Character *> enemies, vector<Character *> team){
 		}
 		currentMove++;
     }
-	int total=0;
+	int total=0; //Sum total vals of moves
 	for (int i=0; i<moves.size(); i++){
 		if (moveVals[i]>0) total+=moveVals[i];
 	}
     int moveSelection = 0;
-    if (total > 0) {
+    if (total > 0) { //Select random value in range
         moveSelection=rand()%total;
     }
 	
+	//Find rand value and select the move corresponding to that value (broken apart by ranges)
 	currentMove=moves.begin();
 	for (int i=0; i<moves.size(); i++){
 		if (moveVals[i]>0){
@@ -196,7 +202,7 @@ vector<Character *> Enemy::targetSelect(vector<Character *> enemies, vector<Char
 		}
 	}
 	
-	//Sort Enemies
+	//Sort Enemies based upon how valuable they are to target
 	for (int j=0; j<enemies.size(); j++){
 		currentTarget = enemies.begin();
 		int EnemyAdded=0;
