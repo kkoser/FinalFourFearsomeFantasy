@@ -1,7 +1,7 @@
 Move Conceal
-Targets SELF
+Targets 1
 Once Actor PP -14
-Actor Shield +.5
-Actor PPRegen +.15
-Actor Power +.1
-Once Display $ACTOR_NAME didn't feel.
+Target Shield +.5
+Target PPRegen +.15
+Target Power +.1
+Once Display $TARGET_NAME didn't feel.
