@@ -73,7 +73,7 @@ string Enemy::selectMove(vector<Character *> enemies, vector<Character *> team){
 				}
 				else if (word=="Health"){
 					getline(iss, word);
-					int power=stoi(word,NULL,10);
+					int power=getValueForCommand(word, 1, getCurrentPower());
 					if(benefit && power>0){ //Restoring Health
 						if((double)currentHealth/(double)maxHealth<.8) moveVals[i]+=1;
 						if((double)currentHealth/(double)maxHealth<.6) moveVals[i]+=2;
@@ -82,16 +82,13 @@ string Enemy::selectMove(vector<Character *> enemies, vector<Character *> team){
 						moveVals[i]+=2*((targetNum<team.size())?targetNum:team.size());
 					}
 					if(!benefit){
-						if(power<-2) moveVals[i]+=2;
-						if(power<-1.5) moveVals[i]+=2;
-						if(power<-1.25) moveVals[i]+=1;
-						if(power<-1) moveVals[i]+=1;
-						if(power<-.75) moveVals[i]+=1;
+						if(power<getCurrentPower()) moveVals[i]+=2;
 						moveVals[i]++;
 					}
 				}
 				else if (word=="PP"){
 					getline(iss, word);
+					word.erase(0,1);
 					//Do not select move if not enough PP is available for it
 					if (0>currentPP-stoi(word,NULL,10)) moveVals[i]-=1000;
 					double PPpercent=(double)currentPP/(double)maxPP;
