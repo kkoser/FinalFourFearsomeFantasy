@@ -299,7 +299,7 @@ bool OpenWorldViewController::loadTextures() {
 		printf( "Failed to load map5 background texture image!\n" );
 		success = false;
 	}
-    if( !mapWithBallTexture[6].loadFromFile( pathForFile("Images/map6ball.png"), renderer ) )
+    if( !mapWithBallTexture[6].loadFromFile( pathForFile("Images/map6.png"), renderer ) )
 	{
 		printf( "Failed to load map5 background texture image!\n" );
 		success = false;
@@ -617,7 +617,8 @@ int OpenWorldViewController::draw(SDL_Event e) {
                         }
                         else{
                             displayCastleRestriction=1;
-                            Mix_PlayChannel( -1, youShallNotPassSoundEffect, 0 );
+                            playYouShallNotPass=1;
+                            //Mix_PlayChannel( -1, youShallNotPassSoundEffect, 0 );
                         }
                         break;
 
