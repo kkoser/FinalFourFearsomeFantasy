@@ -20,10 +20,6 @@ BattleCharacterView::BattleCharacterView(string n, int x, int y, int cHealth, in
     isIncap = incap;
     spriteLocation = spriteLoc;
     renderer = rend;
-    isAnimating = 0; //init no animate
-    isTargeted = 0;
-    hasCursor = 0;
-    hasStatus = 0;
     
     
     //init image
@@ -56,6 +52,7 @@ BattleCharacterView::BattleCharacterView(string n, int x, int y, int cHealth, in
 }
 
 void BattleCharacterView::draw() {
+    //draw basic stuff
     image.draw();
     nameLabel.draw(renderer);
     shieldLabel.draw(renderer);
@@ -89,12 +86,12 @@ void BattleCharacterView::draw() {
 
 void BattleCharacterView::animate() {
     if(image.getDegs()>3) {
-        animateDelta = -0.5;
+        animateDelta = -0.5; //rock back other way
     }
     else if(image.getDegs() < -3) {
-        animateDelta = 0.5;
+        animateDelta = 0.5; //rock back other way
     }
-    image.setDegs(image.getDegs() + animateDelta);
+    image.setDegs(image.getDegs() + animateDelta); //iterate by delta
 }
 
 //SETTERS / GETTERS
