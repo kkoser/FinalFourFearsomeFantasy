@@ -67,39 +67,12 @@ BattleViewController::BattleViewController(vector<MainCharacter *> chars, vector
     
     updateActiveMoves();
     drawActiveMoves();
-    
-
-    
-    switch(Mix_GetMusicType(NULL))
-    {
-        case MUS_NONE:
-        MUS_CMD:
-            printf("Command based music is playing.\n");
-            break;
-        MUS_WAV:
-            printf("WAVE/RIFF music is playing.\n");
-            break;
-        MUS_MOD:
-            printf("MOD music is playing.\n");
-            break;
-        MUS_MID:
-            printf("MIDI music is playing.\n");
-            break;
-        MUS_OGG:
-            printf("OGG music is playing.\n");
-            break;
-        MUS_MP3:
-            printf("MP3 music is playing.\n");
-            break;
-        default:
-            printf("Unknown music is playing.\n");
-            break;
-    }
      
 
 }
 
 BattleViewController::~BattleViewController() {
+    //free all of the characters, which should have been allocated on the heap
     while (enemies.size() > 0) {
         Enemy* enemy = enemies[0];
         enemies.erase(enemies.begin() + 0);
@@ -520,6 +493,7 @@ void BattleViewController::nextCharacter() {
     
     activeCharacterView->setIsAnimating(false);
     
+    //check if we are getting from the enemy of mainChars vectors
     selectedPos = selectedPos > (mainChars.size() + enemies.size()-1) ? 0 : selectedPos;
     if (selectedPos >= mainChars.size()) {
         activeCharacter = enemies[selectedPos-mainChars.size()];
@@ -542,8 +516,6 @@ void BattleViewController::nextCharacter() {
     
       activeCharacter->updateStatuses();
       activeCharacter->regenPP();
-//    activeCharacterView->setCurrentPP(activeCharacter->getCurrentPP());
-//    activeCharacterView->setIsIncap(activeCharacter->getIsIncap());
 
     targets = vector<Character *>();
     
@@ -581,6 +553,7 @@ void BattleViewController::nextCharacter() {
     }
 }
 
+//displays the next line in the displayText vector, then removes it
 void BattleViewController::displayNextLine() {
     displayLabel.setText(displayText[0]);
     displayText.erase(displayText.begin());

@@ -67,8 +67,11 @@ private:
     
     void handleEvent(SDL_Event e);
     void nextCharacter();
+    
+    //resets all of the CharacterViews' values to match their models
     void updateCharacterViews();
     
+    //displays the next line in the displayText vector, then removes it
     void displayNextLine();
     
     BattleCharacterView* getViewForIndex(int index); //gets view corresponding to character + enemies array

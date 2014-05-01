@@ -158,27 +158,7 @@ int main( int argc, char* args[] )
         
         //Event handler
         SDL_Event e;
-        SDL_Event empty;
-        
-        //temporary character stuff
-        vector<MainCharacter *> chars;
-        vector<Enemy *> enemies;
-        
-        MainCharacter Elsa(pathForFile("Characters/Elsa.character"));
-        MainCharacter Elsa2(pathForFile("Characters/Elsa.character"));
-        MainCharacter Elsa3(pathForFile("Characters/Elsa.character"));
-        chars.push_back(&Elsa);
-        chars.push_back(&Elsa2);
-        chars.push_back(&Elsa3);
-        
-        Enemy goblin(pathForFile("Characters/Goblin.character"));
-        Enemy goblin2(pathForFile("Characters/Troll.character"));
-        enemies.push_back(&goblin);
-        enemies.push_back(&goblin2);
-
-        //BattleViewController baseVC(chars, enemies, pathForFile("Images/arendelle.jpg"), gRenderer);
-        //OpenWorldViewController baseVC(gRenderer);
-        //ExampleViewController baseVC(gRenderer);
+        SDL_Event empty; //needed to clear the events
         
         MainMenuViewController baseVC(gRenderer);
         baseVC.becomeTop();

@@ -15,6 +15,8 @@ MainCharacter::~MainCharacter() {
     this->writeToFile(fileName);
 }
 
+//used to save stats changes (i.e. leveling)
+//mirrors the Constructor of Character
 void MainCharacter::writeToFile(string fileName) {
     ofstream file;
     file.open(fileName.c_str());
@@ -41,6 +43,7 @@ void MainCharacter::writeToFile(string fileName) {
     
 }
 
+//convenience method for leveling up
 void MainCharacter::levelUp(int healthAdded, int powerAdded, int ppRegenAdded) {
     maxHealth += healthAdded;
     standardPower += powerAdded;

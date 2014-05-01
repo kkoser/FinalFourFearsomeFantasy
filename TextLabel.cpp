@@ -21,11 +21,10 @@ TextLabel::TextLabel(int cx, int cy, string str, string fontName, int size, SDL_
 
 TextLabel::~TextLabel() {
     texture.free();
-    //TTF_CloseFont(font);
+    //TTF_CloseFont(font); //not working
 }
 
 void TextLabel::draw(SDL_Renderer *ren) {
-    //texture.loadFromRenderedText(text, textColor, ren, font);
     renderer = ren;
     draw();
 
@@ -43,6 +42,7 @@ string TextLabel::getText() {
     return text;
 }
 
+//re-loads the texture for the new text
 void TextLabel::setText(string str) {
     text = str;
     texture.loadFromRenderedText(text, textColor, renderer, font);
@@ -68,11 +68,13 @@ SDL_Color TextLabel::getColor() {
     return textColor;
 }
 
+//reloads the texture for the new color
 void TextLabel::setColor(SDL_Color col) {
     textColor = col;
     texture.loadFromRenderedText(text, textColor, renderer, font);
 }
 
+//convenience method
 void TextLabel::setColor(Uint8 r, Uint8 g, Uint8 b) {
     setColor({r,g,b});
 }

@@ -66,8 +66,6 @@ int MainMenuViewController::draw(SDL_Event e) {
 void MainMenuViewController::pushViewController(ViewController *vc) {
     Mix_HaltMusic();
     ViewController::pushViewController(vc);
-    //stop the music!
-    //Mix_PauseMusic();
     
 }
 
